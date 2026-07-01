@@ -1,0 +1,14 @@
+"How well can a transformer-based extractive QA model answer student questions from official university documents?"
+or "Can a German extractive QA model accurately answer questions based on Modulhandbuch text passages?"
+
+Also: baseline first without fine-tuning
+
+Then compare: 
+pre-trained model without fine-tuning against after fine-tuning
+and/or:
+pre-trained model without segmenting against with segmenting, ran on all, choose highest confidence against with segmenting ran on k-best after bm25
+
+The goal:
+Train a german extractive QA model on manually created question-answer pairs from the PO25 and Modulhandbuch of CL integrativ.
+Compare that model against a simple retrieval baseline.
+Analyze common failure cases.

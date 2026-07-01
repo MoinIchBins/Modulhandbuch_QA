@@ -1,0 +1,13 @@
+QA-Model comparison on German corpus Modulhandbuch
+
+1. Vector embedding and cosine similarity on passages
+2. Machine learning approach for indices in main corpus (likely bad due to big data)
+3. Machine learning approach for text passages
+
+Steps:
+Handle Data (into sections, with metadata)
+Create QA Trainingdata (Question-segment pairs, 200-400)
+Split into training set, test set, validation set
+Code QA-Model (embedding based, machine learning based, implemented QA Model)
+Create Testing functions (EM, F1) to compare
+Visualize results
