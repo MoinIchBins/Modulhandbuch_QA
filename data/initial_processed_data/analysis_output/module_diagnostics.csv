@@ -1,0 +1,385 @@
+module_id,record_type,source_file,module_code,module_title,module_title_normalized,program,degree_level,module_group,module_group_source_value,recommended_semester,ects,workload_total_hours,workload_contact_hours,workload_self_study_hours,workload_details,duration,frequency,language,responsible_person_count,lecturer_count,prerequisites_required,prerequisites_recommended,prerequisites_text,learning_outcomes_word_count,learning_outcome_item_count,content_word_count,content_item_count,exam_type,exam_duration,exam_duration_numeric,exam_graded,exam_weighting,exam_details,exam_description_word_count,teaching_methods,course_component_count,literature_word_count,literature_item_count,note_count,cross_reference_count,source_page_start,source_page_end,source_page_refs_count,extracted_page_numbers,module_total_text_chars,module_total_text_words,chunk_count,table_count,has_ects,has_exam,has_prerequisites,has_recommended_semester,has_language,has_source_pages,extraction_confidence,extraction_notes,duplicate_module_id,duplicate_module_title,unusually_small_text_volume,unusually_large_text_volume
+module-2100,module,modulhandbuch.pdf,2100,Basismodul – Mathematische und logische Grundlagen,basismodul – mathematische und logische grundlagen,Computerlinguistik (integrativ),Bachelorstudium,Basismodul,Basismodul,"a: 1. Fachsemester (Wintersemester)
+b: 1. Fachsemester (Wintersemester)
+Prüfung im 1. Fachsemester (Wintersemester)",12.0,360.0,120.0,120.0,"{'workload_text': '360 Stunden', 'contact_time': 'a: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte\nb: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte', 'self_study': 'a: 60 Stunden / 2 ECTS-Leistungspunkte\nb: 60 Stunden / 2 ECTS-Leistungspunkte', 'exam_ects': '4 ECTS-Leistungspunkte'}",1 Semester,"a: Jedes Wintersemester
+b: Jedes Wintersemester",de,0,0,Keine,Keine,"Formal: Keine
+Inhaltlich: Keine",41,0,42,0,Portfolio (Pnr. 2110),,,,,"Prüfungsformen:
+Portfolio (Pnr. 2110)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+4 ECTS-Leistungspunkte
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in den Lehrveranstaltungen (a) und (b) und bestandene Modulprüfung.
+
+Prüfungssemester:
+Prüfung im 1. Fachsemester (Wintersemester)",44,"Lehrveranstaltungen und Lehrformen:
+a: Einführung in die computationelle Logik (Seminar & Übung) / 2101
+b: Mathematische Grundlagen (Seminar) / 2102
+
+Belegung:
+Seminar und Übung (a) und Seminar (b)",2,0,0,1,0,4,5,2,"4,5",2467,292,10,1,True,True,True,True,True,True,high,,False,False,False,False
+module-2200,module,modulhandbuch.pdf,2200,Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,basismodul – grundlagen der computerlinguistik und formale grammatikbeschreibung,Computerlinguistik (integrativ),Bachelorstudium,Basismodul,Basismodul,"a: 1. Fachsemester (Wintersemester)
+b: 1. Fachsemester (Wintersemester)
+c: 2. Fachsemester (Sommersemester)
+d: 2. Fachsemester (Sommersemester)
+Prüfung im 2. Fachsemester (Sommersemester)",12.0,360.0,120.0,120.0,"{'workload_text': '360 Stunden', 'contact_time': 'a: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nc: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nd: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': 'a: 30 Stunden / 1 ECTS-Leistungspunkt\nb: 30 Stunden / 1 ECTS-Leistungspunkt\nc: 30 Stunden / 1 ECTS-Leistungspunkt\nd: 30 Stunden / 1 ECTS-Leistungspunkt', 'exam_ects': '4 ECTS-Leistungspunkte'}",2 Semester,"a: Jedes Wintersemester
+b: Jedes Wintersemester
+c: Jedes Sommersemester
+d: Jedes Sommersemester",de,0,0,Keine,Keine,"Formal: Keine
+Inhaltlich: Keine",27,0,57,0,Klausur (Pnr. 2210),,,,,"Prüfungsformen:
+Klausur (Pnr. 2210)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+4 ECTS-Leistungspunkte
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in den Lehrveranstaltungen (a) und (b): 4 ECTS-Leistungspunkte
+Erbrachte Studienleistungen (SL) in den Lehrveranstaltungen (c) und (d): 4 ECTS-Leistungspunkte
+Bestandene Modulprüfung: 4 ECTS-Leistungspunkte
+
+Prüfungssemester:
+Prüfung im 2. Fachsemester (Sommersemester)",58,"Lehrveranstaltungen und Lehrformen:
+a: Einführung in die Computerlinguistik (Seminar) / 2201
+b: Einführung in die Computerlinguistik (Übung) / 2202
+c: Grammatikformalismen (Seminar) / 2203
+d: Grammatikformalismen (Übung) / 2204
+
+Belegung:
+Seminar (a) mit Übung (b) und Seminar (c) mit Übung (d)",4,0,0,1,0,6,7,2,"6,7",3514,413,10,1,True,True,True,True,True,True,high,,False,False,False,False
+module-2300,module,modulhandbuch.pdf,2300,Basismodul – Python-Programmierung,basismodul – python-programmierung,Computerlinguistik (integrativ),Bachelorstudium,Basismodul,Basismodul,"a: 1. Fachsemester (Wintersemester)
+b: 1. Fachsemester (Wintersemester)
+c: 2. Fachsemester (Sommersemester)
+d: 2. Fachsemester (Sommersemester)
+Prüfung im 2. Fachsemester (Sommersemester)",12.0,360.0,120.0,120.0,"{'workload_text': '360 Stunden', 'contact_time': 'a: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nc: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nd: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': 'a: 30 Stunden / 1 ECTS-Leistungspunkt\nb: 30 Stunden / 1 ECTS-Leistungspunkt\nc: 30 Stunden / 1 ECTS-Leistungspunkt\nd: 30 Stunden / 1 ECTS-Leistungspunkt', 'exam_ects': '4 ECTS-Leistungspunkte (120 Stunden)'}",2 Semester,"a: Jedes Wintersemester
+b: Jedes Wintersemester
+c: Jedes Sommersemester
+d: Jedes Sommersemester",de,0,0,Keine,Keine,"Formal: Keine
+Inhaltlich: Keine",51,0,31,0,Projektarbeit (Pnr. 2310),,,,,"Prüfungsformen:
+Projektarbeit (Pnr. 2310)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+4 ECTS-Leistungspunkte (120 Stunden)
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in den Lehrveranstaltungen (a) und (b): 4 ECTS-Leistungspunkte
+Erbrachte Studienleistungen (SL) in den Lehrveranstaltungen (c) und (d): 4 ECTS-Leistungspunkte
+Bestandene Modulprüfung: 4 ECTS-Leistungspunkte
+
+Prüfungssemester:
+Prüfung im 2. Fachsemester (Sommersemester)",60,"Lehrveranstaltungen und Lehrformen:
+a: Einführung in die Programmierung mit Python (Seminar) / 2301
+b: Einführung in die Programmierung mit Python (Übung) / 2302
+c: Fortgeschrittene Python-Programmierung mit NLP-Anwendungen (Seminar) / 2303
+d: Fortgeschrittene Python-Programmierung mit NLP-Anwendungen (Übung) / 2304
+
+Belegung:
+Seminar (a) mit Übung (b) und Seminar (c) mit Übung (d)",4,0,0,1,0,8,9,2,"8,9",3868,440,10,1,True,True,True,True,True,True,high,Quelltext enthält die Schreibweise 'Sorftware-Entwicklung'.,False,False,False,False
+module-1300,module,modulhandbuch.pdf,1300,Basiswissen Linguistik – Morphologie und Syntax,basiswissen linguistik – morphologie und syntax,Computerlinguistik (integrativ),Bachelorstudium,Basiswissen Linguistik,Basiswissen Linguistik,"a: 1. Fachsemester (Wintersemester)
+b: 1. Fachsemester (Wintersemester)
+Prüfung im 1. Fachsemester (Wintersemester)",9.0,270.0,90.0,90.0,"{'workload_text': '270 Stunden', 'contact_time': 'a: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': '90 Stunden / 3 ECTS-Leistungspunkte', 'exam_ects': '3 ECTS-Leistungspunkte'}",1 Semester,"a: Jedes Wintersemester
+b: Jedes Wintersemester",de,0,0,-keine-,,-keine-,48,0,53,0,Klausur (Pnr. 1310),,,,,"Prüfungsformen:
+Klausur (Pnr. 1310)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+3 ECTS-Leistungspunkte
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in allen Lehrveranstaltungen und bestandene Modulprüfung.
+
+Prüfungssemester:
+Prüfung im 1. Fachsemester (Wintersemester)",41,"Lehrveranstaltungen und Lehrformen:
+a: Morphologie und Syntax (Vorlesung) / 1301
+b: Tutorium zu Morphologie und Syntax (Tutorium) / 1302
+
+Belegung:
+Vorlesung (a) und Tutorium (b)",2,0,0,1,0,10,11,2,"10,11",2452,290,10,1,True,True,True,True,True,True,high,,False,False,False,False
+module-1400,module,modulhandbuch.pdf,1400,Basiswissen Linguistik – Semantik und Pragmatik,basiswissen linguistik – semantik und pragmatik,Computerlinguistik (integrativ),Bachelorstudium,Basiswissen Linguistik,Basiswissen Linguistik,"a: 2. Fachsemester (Sommersemester)
+b: 2. Fachsemester (Sommersemester)
+Prüfung im 2. Fachsemester (Sommersemester)",9.0,270.0,90.0,90.0,"{'workload_text': '270 Stunden', 'contact_time': 'a: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': '90 Stunden / 3 ECTS-Leistungspunkte', 'exam_ects': '3 ECTS-Leistungspunkte'}",1 Semester,"a: Jedes Sommersemester
+b: Jedes Sommersemester",de,0,0,-keine-,,-keine-,97,7,47,0,Klausur (Pnr. 1410),,,,,"Prüfungsformen:
+Klausur (Pnr. 1410)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+3 ECTS-Leistungspunkte
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in allen Lehrveranstaltungen und bestandene Modulprüfung.
+
+Prüfungssemester:
+Prüfung im 2. Fachsemester (Sommersemester)",41,"Lehrveranstaltungen und Lehrformen:
+a: Semantik und Pragmatik (Vorlesung) / 1401
+b: Tutorium zu Semantik und Pragmatik (Tutorium) / 1402
+
+Belegung:
+Vorlesung (a) und Tutorium (b)",2,0,0,1,0,12,13,2,"12,13",3591,404,10,1,True,True,True,True,True,True,high,,False,False,False,False
+module-2400,module,modulhandbuch.pdf,2400,Basismodul – Statistische Methoden in der Computerlinguistik,basismodul – statistische methoden in der computerlinguistik,Computerlinguistik (integrativ),Bachelorstudium,Basismodul,Basismodul,"a: 2. Fachsemester (Sommersemester)
+b: 3. Fachsemester (Wintersemester)",6.0,180.0,90.0,90.0,"{'workload_text': '180 Stunden', 'contact_time': 'a: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': 'a: 60 Stunden / 2 ECTS-Leistungspunkte\nb: 30 Stunden / 1 ECTS-Leistungspunkt', 'exam_ects': '-keine-'}",2 Semester,"a: Jedes Wintersemester
+b: Jedes Sommersemester",de,0,0,keine,Basismodul Mathematische und logische Grundlagen,"Formal: keine
+Inhaltlich: Basismodul Mathematische und logische Grundlagen",27,0,45,2,-keine-,,,,,"Prüfungsformen:
+-keine-
+
+ECTS-Leistungspunkte für die Modulprüfung:
+-keine-
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) oder Hausaufgaben in allen Lehrveranstaltungen",29,"Lehrveranstaltungen und Lehrformen:
+a: Wahrscheinlichkeitstheorie und Statistik (Seminar und Übung) / 2401
+b: Linguistische Ressourcen (Seminar) / 2402
+
+Belegung:
+Seminar mit Übung (a) und Seminar (b)",2,0,0,1,1,14,15,2,"14,15",2799,312,10,1,True,True,True,True,True,True,high,"Quelltext enthält mögliche Inkonsistenz: Empfohlenes Studiensemester a ist Sommersemester, Häufigkeit des Angebots a ist Wintersemester.",False,False,False,False
+module-4100,module,modulhandbuch.pdf,4100,Aufbaumodul – Maschinelles Lernen,aufbaumodul – maschinelles lernen,Computerlinguistik (integrativ),Bachelorstudium,Aufbaumodul,Aufbaumodul,"a: 3. Fachsemester (Wintersemester)
+b: 4. Fachsemester (Sommersemester)
+Prüfung im 4. Fachsemester (Sommersemester)",12.0,360.0,120.0,120.0,"{'workload_text': '360 Stunden', 'contact_time': 'a: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte\nb: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte', 'self_study': 'a: 60 Stunden / 2 ECTS-Leistungspunkte\nb: 60 Stunden / 2 ECTS-Leistungspunkte', 'exam_ects': '4 ECTS-Leistungspunkte'}",2 Semester,"a: Jedes Wintersemester
+b: Jedes Sommersemester",de,0,0,Keine,Basismodul – Statistische Methoden in der Computerlinguistik,"Formal: Keine
+Inhaltlich: Basismodul – Statistische Methoden in der Computerlinguistik",31,0,46,0,Hausarbeit (mit Programmierprojekt) (Pnr. 4110) oder Studienarbeit (mit Programmierprojekt) (Pnr. 4120),,,,,"Prüfungsformen:
+Hausarbeit (mit Programmierprojekt) (Pnr. 4110) oder Studienarbeit (mit Programmierprojekt) (Pnr. 4120)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+4 ECTS-Leistungspunkte
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in allen Lehrveranstaltungen und bestandene Modulprüfung.
+
+Prüfungssemester:
+Prüfung im 4. Fachsemester (Sommersemester)",57,"Lehrveranstaltungen und Lehrformen:
+a: Grundlagen des maschinellen Lernens (Seminar und Übung) / 4101
+b: Deep Learning (Seminar) / 4102
+
+Belegung:
+Seminar mit Übung (a) und Seminar (b)",2,0,0,1,1,16,17,2,"16,17",2729,319,10,1,True,True,True,True,True,True,high,,False,False,False,False
+module-4200,module,modulhandbuch.pdf,4200,Aufbaumodul – Mathematische Linguistik,aufbaumodul – mathematische linguistik,Computerlinguistik (integrativ),Bachelorstudium,Aufbaumodul,Aufbaumodul,"a: 3. Fachsemester (Wintersemester)
+b: 3. Fachsemester (Wintersemester)",6.0,180.0,60.0,120.0,"{'workload_text': '180 Stunden', 'contact_time': 'a: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': 'a: 60 Stunden / 2 ECTS-Leistungspunkte\nb: 60 Stunden / 2 ECTS-Leistungspunkte', 'exam_ects': '-keine-'}",1 Semester,"a: Jedes Wintersemester
+b: Jedes Wintersemester",de,0,0,keine,"Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung","Formal: keine
+Inhaltlich: Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung",28,0,22,4,-keine-,,,,,"Prüfungsformen:
+-keine-
+
+ECTS-Leistungspunkte für die Modulprüfung:
+-keine-
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in allen Lehrveranstaltungen",27,"Lehrveranstaltungen und Lehrformen:
+a: Automatentheorie & Formale Sprachen (Seminar) / 4201
+b: Übung zu Automatentheorie & Formale Sprachen (Übung) / 4202
+
+Belegung:
+Seminar (a) und Übung (b)",2,0,0,1,2,18,19,2,"18,19",2947,302,10,1,True,True,True,True,True,True,high,,False,False,False,False
+module-4300,module,modulhandbuch.pdf,4300,Aufbaumodul – Parsing,aufbaumodul – parsing,Computerlinguistik (integrativ),Bachelorstudium,Aufbaumodul,Aufbaumodul,"a: 4. Fachsemester (Sommersemester)
+b: 4. Fachsemester (Sommersemester)",6.0,180.0,60.0,120.0,"{'workload_text': '180 Stunden', 'contact_time': 'a: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': 'a: 60 Stunden / 2 ECTS-Leistungspunkte\nb: 60 Stunden / 2 ECTS-Leistungspunkte', 'exam_ects': '-keine-'}",1 Semester,"a: Jedes Sommersemester
+b: Jedes Sommersemester",de,0,0,keine,"Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,
+Basiswissen Linguistik – Morphologie und Syntax","Formal: keine
+Inhaltlich: Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,
+Basiswissen Linguistik – Morphologie und Syntax",32,4,65,0,-keine-,,,,,"Prüfungsformen:
+-keine-
+
+ECTS-Leistungspunkte für die Modulprüfung:
+-keine-
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in allen Lehrveranstaltungen",27,"Lehrveranstaltungen und Lehrformen:
+a: Parsing (Seminar) / 4301
+b: Übung zu Parsing (Übung) / 4302
+
+Belegung:
+Seminar (a) und Übung (b)",2,0,0,1,3,20,21,2,"20,21",3354,367,10,1,True,True,True,True,True,True,high,,False,False,False,False
+module-4400,module,modulhandbuch.pdf,4400,Aufbaumodul – Logische Programmierung,aufbaumodul – logische programmierung,Computerlinguistik (integrativ),Bachelorstudium,Aufbaumodul,Aufbaumodul,"a: 4. Fachsemester (Sommersemester)
+b: 4. Fachsemester (Sommersemester)",6.0,180.0,60.0,120.0,"{'workload_text': '180 Stunden', 'contact_time': 'a: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': 'a: 60 Stunden / 2 ECTS-Leistungspunkte\nb: 60 Stunden / 2 ECTS-Leistungspunkte', 'exam_ects': '-keine-'}",1 Semester,"a: Jedes Sommersemester
+b: Jedes Sommersemester",de,0,0,keine,Basismodul – Mathematische und logische Grundlagen,"Formal: keine
+Inhaltlich: Basismodul – Mathematische und logische Grundlagen",29,0,37,0,-keine-,,,,,"Prüfungsformen:
+-keine-
+
+ECTS-Leistungspunkte für die Modulprüfung:
+-keine-
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in den Lehrveranstaltungen (a) und (b).",30,"Lehrveranstaltungen und Lehrformen:
+a: Einführung in Prolog (Seminar) / 4401
+b: Übung Prolog (Übung) / 4402
+
+Belegung:
+Seminar (a) mit Übung (b)",2,0,0,1,1,22,23,2,"22,23",2289,269,10,1,True,True,True,True,True,True,high,Quelltext enthält die Satzfolge 'Prolog. ist eine logische Programmiersprache'.,False,False,False,False
+module-4500,module,modulhandbuch.pdf,4500,Aufbaumodul – Objektorientierte Programmierung,aufbaumodul – objektorientierte programmierung,Computerlinguistik (integrativ),Bachelorstudium,Aufbaumodul,Aufbaumodul,"a: 3. Fachsemester (Wintersemester)
+b: 3. Fachsemester (Wintersemester)
+c: 3. Fachsemester (Wintersemester)",12.0,360.0,120.0,120.0,"{'workload_text': '360 Stunden', 'contact_time': 'a: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nc: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': 'a: 60 Stunden / 2 ECTS-Leistungspunkte\nb: 30 Stunden / 1 ECTS-Leistungspunkt\nc: 30 Stunden / 1 ECTS-Leistungspunk', 'exam_ects': '4 ECTS-Leistungspunkte'}",1 Semester,"a: Jedes Wintersemester
+b: Jedes Wintersemester
+c: Jedes Wintersemester",de,0,0,Keine,"Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Python-Programmierung","Formal: Keine
+Inhaltlich: Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Python-Programmierung",57,5,74,11,Klausur (Pnr. 4510),,,,,"Prüfungsformen:
+Klausur (Pnr. 4510)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+4 ECTS-Leistungspunkte
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in den Lehrveranstaltungen (b) und (c)
+Bestandene Modulprüfung: 4 ECTS-Leistungspunkte",39,"Lehrveranstaltungen und Lehrformen:
+a: Programmierung (Vorlesung) / 4501
+b: Übung zur Vorlesung (Übung) / 4502
+c: Praktische Übung zur Vorlesung (Praktische Übung) / 4503
+
+Belegung:
+Vorlesung (a) mit Übung (b) und praktischer Übung (c)",3,0,0,1,2,24,25,2,"24,25",4630,510,10,1,True,True,True,True,True,True,high,Quelltext enthält bei Selbststudium c die Schreibweise '1 ECTS-Leistungspunk'.,False,False,False,True
+module-3000,module,modulhandbuch.pdf,3000,Praktikum & Orientierung,praktikum & orientierung,Computerlinguistik (integrativ),Bachelorstudium,,,"a: 4. Fachsemester (Sommersemester)
+b: 5. Fachsemester (Wintersemester)",12.0,360.0,30.0,330.0,"{'workload_text': '360 Stunden', 'contact_time': 'a: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nb: keine', 'self_study': 'a: 60 Stunden / 2 ECTS-Leistungspunkte\nb: 270 Stunden / 9 ECTS-Leistungspunkte', 'exam_ects': '-keine-'}",2 Semester,"a: Jedes Sommersemester
+b: Jedes Semester",de,0,0,4. Fachsemester oder höher,"Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,
+Basismodul – Python-Programmierung","Formal: 4. Fachsemester oder höher
+Inhaltlich: Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,
+Basismodul – Python-Programmierung",81,0,35,4,-keine-,,,,,"Prüfungsformen:
+-keine-
+
+ECTS-Leistungspunkte für die Modulprüfung:
+-keine-
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Erbrachte Studienleistungen (SL) in (a) und 6-wöchiges Praktikum nachgewiesen über Praktikumsnachweis und Praktikums-
+bericht.",35,"Lehrveranstaltungen und Lehrformen:
+a: Orientierungsseminar (Seminar) / 3001
+b: Praktikum (in der Regel 6 Wochen in Vollzeit) / 3010
+
+Belegung:
+Seminar (a)",2,0,0,1,3,26,27,2,"26,27",3590,368,10,1,True,True,True,True,True,True,high,,False,False,False,False
+module-5100,module,modulhandbuch.pdf,5100,Vertiefungsmodul – Interdisziplinär,vertiefungsmodul – interdisziplinär,Computerlinguistik (integrativ),Bachelorstudium,Vertiefungsmodul,Vertiefungsmodul,"4. Fachsemester (Sommersemester)
+5. Fachsemester (Wintersemester)",12.0,360.0,,,"{'workload_text': '360 Stunden', 'contact_time': 'Nach Vorgabe der gewählten Veranstaltungen', 'self_study': 'Nach Vorgabe der gewählten Veranstaltungen', 'exam_ects': 'Nach Vorgabe der gewählten Veranstaltungen'}",2 Semester,Jedes Semester,de,0,0,keine,,Formal: keine,6,0,75,10,"Mündliche Prüfung (Pnr. 5110) oder
+Klausur (Pnr. 5120) oder
+Hausarbeit (Pnr. 5130) oder
+Studienarbeit (Pnr. 5140) oder
+Projektarbeit (Pnr. 5150)",,,,,"Prüfungsformen:
+Mündliche Prüfung (Pnr. 5110) oder
+Klausur (Pnr. 5120) oder
+Hausarbeit (Pnr. 5130) oder
+Studienarbeit (Pnr. 5140) oder
+Projektarbeit (Pnr. 5150)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+Nach Vorgabe der gewählten Veranstaltungen
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Bestandene Modulprüfung, aktive und erfolgreiche Mitwirkung in den Seminaren und theoretischen und praktischen Übun-
+gen.",78,"Lehrveranstaltungen und Lehrformen:
+Zwei Vorlesungen oder Seminare aus Linguistik oder Informatik
+Vorlesung Linguistik: 5101, 5105
+Vorlesung Informatik: 5102, 5106
+Seminar Linguistik: 5103, 5107
+Seminar Informatik: 5104, 5108
+
+Belegung:
+Nach Vorgabe der gewählten Veranstaltungen",5,0,0,1,0,28,29,2,"28,29",2822,315,10,1,True,True,True,True,True,True,high,Quelltext enthält bei Zulassung zur Modulprüfung '-keine' ohne abschließenden Bindestrich.,False,False,False,False
+module-5200,module,modulhandbuch.pdf,5200,Vertiefungsmodul – Computerlinguistik 1,vertiefungsmodul – computerlinguistik 1,Computerlinguistik (integrativ),Bachelorstudium,Vertiefungsmodul,Vertiefungsmodul,"a: 5. Fachsemester (Wintersemester)
+b: 5. Fachsemester (Wintersemester)",12.0,360.0,60.0,240.0,"{'workload_text': '360 Stunden', 'contact_time': 'a: 4 SWS / 30 Stunden / 2 ECTS-Leistungspunkte\nb: 4 SWS / 30 Stunden / 2 ECTS-Leistungspunkte', 'self_study': 'Im 5. Fachsemester: 240 Stunden / 8 ECTS-Leistungspunkte', 'exam_ects': '-keine-'}",1 Semester,Jedes Wintersemester,de,0,0,"Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,
+Aufbaumodul – Maschinelles Lernen",Je nach Thema,"Formal: Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,
+Aufbaumodul – Maschinelles Lernen
+Inhaltlich: Je nach Thema",8,0,41,3,-keine-,,,,,"Prüfungsformen:
+-keine-
+
+ECTS-Leistungspunkte für die Modulprüfung:
+-keine-
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Aktive und erfolgreiche Mitwirkung im Forschungsseminar",27,"Lehrveranstaltungen und Lehrformen:
+a: Seminar Computerlinguistik (Seminar) / 5201
+b: Seminar Computerlinguistik (Seminar) / 5202
+
+Belegung:
+Seminar (a) und Seminar (b)",2,0,0,1,3,30,31,2,"30,31",2880,295,10,1,True,True,True,True,True,True,high,Quelltext verwendet bei Voraussetzungen für die Vergabe von ECTS-Leistungspunkten den Begriff 'Forschungsseminar'.,False,False,False,False
+module-5300,module,modulhandbuch.pdf,5300,Vertiefungsmodul – Computerlinguistik 2,vertiefungsmodul – computerlinguistik 2,Computerlinguistik (integrativ),Bachelorstudium,Vertiefungsmodul,Vertiefungsmodul,"a: 6. Fachsemester (Sommersemester)
+Prüfung im 6. Fachsemester (Sommersemester)",9.0,270.0,60.0,90.0,"{'workload_text': '270 Stunden', 'contact_time': 'a: 4 SWS / 60 Stunden / 2 ECTS-Leistungspunkte', 'self_study': 'a: 90 Stunden / 3 ECTS-Leistungspunkte', 'exam_ects': '4 ECTS-Leistungspunkte'}",1 Semester,a: Jedes Sommersemester,de,0,0,"Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,
+Aufbaumodul – Maschinelles Lernen",Je nach Thema,"Formal: Basismodul – Mathematische und logische Grundlagen,
+Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,
+Aufbaumodul – Maschinelles Lernen
+Inhaltlich: Je nach Thema",8,0,26,3,"Mündliche Prüfung (Pnr. 5310) oder
+Klausur (Pnr. 5320) oder
+Hausarbeit (Pnr. 5330) oder
+Studienarbeit (Pnr. 5340) oder
+Projektarbeit (Pnr. 5350)",,,,,"Prüfungsformen:
+Mündliche Prüfung (Pnr. 5310) oder
+Klausur (Pnr. 5320) oder
+Hausarbeit (Pnr. 5330) oder
+Studienarbeit (Pnr. 5340) oder
+Projektarbeit (Pnr. 5350)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+4 ECTS-Leistungspunkte
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Aktive und erfolgreiche Mitwirkung im Forschungsseminar, bestandene Modulprüfung
+
+Prüfungssemester:
+Prüfung im 6. Fachsemester (Sommersemester)",74,"Lehrveranstaltungen und Lehrformen:
+a: thematisches Seminar in der Computerlinguistik (Seminar) / 5301
+
+Belegung:
+Seminar (a)",1,0,0,1,3,32,33,2,"32,33",2949,306,10,1,True,True,True,True,True,True,high,Quelltext verwendet bei Voraussetzungen für die Vergabe von ECTS-Leistungspunkten den Begriff 'Forschungsseminar'.,False,False,False,False
+module-5900,module,modulhandbuch.pdf,5900,Abschlussarbeit und Forschungskolloquium,abschlussarbeit und forschungskolloquium,Computerlinguistik (integrativ),Bachelorstudium,,,"a: 6. Fachsemester (Sommersemester)
+b: 6. Fachsemester (Sommersemester)",15.0,450.0,60.0,60.0,"{'workload_text': '450 Stunden', 'contact_time': 'a: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt\nb: 2 SWS / 30 Stunden / 1 ECTS-Leistungspunkt', 'self_study': 'Im 6. Fachsemester: 60 Stunden / 2 ECTS-Leistungspunkte', 'exam_ects': '12 ECTS-Leistungspunkte'}",1 Semester,"a: Jedes Sommersemester
+b: Jedes Sommersemester",de,0,0,Alle Basis- und Aufbaumodule,,Formal: Alle Basis- und Aufbaumodule,15,0,41,0,Bachelorarbeit (Pnr. 6000),,,,,"Prüfungsformen:
+Bachelorarbeit (Pnr. 6000)
+
+ECTS-Leistungspunkte für die Modulprüfung:
+12 ECTS-Leistungspunkte
+
+Voraussetzungen für die Zulassung zur Modulprüfung/Prüfung:
+-keine-
+
+Voraussetzungen für die Vergabe von ECTS-Leistungspunkten:
+Aktive und erfolgreiche Mitwirkung im Forschungsseminar, bestandene Bachelorarbeit.",34,"Lehrveranstaltungen und Lehrformen:
+a: Forschungskolloquium Computerlinguistik (Kolloquium) / 5901
+b: Seminar (Seminar) / 5902
+
+Belegung:
+Forschungskolloquium (a) oder Seminar (b)",2,0,0,1,1,34,35,2,"34,35",2019,225,10,1,True,True,True,True,True,True,high,,False,False,True,False

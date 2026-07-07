@@ -1,0 +1,34 @@
+recommended_semester,count
+"a: 1. Fachsemester (Wintersemester)
+b: 1. Fachsemester (Wintersemester)
+Prüfung im 1. Fachsemester (Wintersemester)",2
+"a: 1. Fachsemester (Wintersemester)
+b: 1. Fachsemester (Wintersemester)
+c: 2. Fachsemester (Sommersemester)
+d: 2. Fachsemester (Sommersemester)
+Prüfung im 2. Fachsemester (Sommersemester)",2
+"a: 4. Fachsemester (Sommersemester)
+b: 4. Fachsemester (Sommersemester)",2
+"a: 2. Fachsemester (Sommersemester)
+b: 2. Fachsemester (Sommersemester)
+Prüfung im 2. Fachsemester (Sommersemester)",1
+"a: 2. Fachsemester (Sommersemester)
+b: 3. Fachsemester (Wintersemester)",1
+"a: 3. Fachsemester (Wintersemester)
+b: 4. Fachsemester (Sommersemester)
+Prüfung im 4. Fachsemester (Sommersemester)",1
+"a: 3. Fachsemester (Wintersemester)
+b: 3. Fachsemester (Wintersemester)",1
+"a: 3. Fachsemester (Wintersemester)
+b: 3. Fachsemester (Wintersemester)
+c: 3. Fachsemester (Wintersemester)",1
+"a: 4. Fachsemester (Sommersemester)
+b: 5. Fachsemester (Wintersemester)",1
+"4. Fachsemester (Sommersemester)
+5. Fachsemester (Wintersemester)",1
+"a: 5. Fachsemester (Wintersemester)
+b: 5. Fachsemester (Wintersemester)",1
+"a: 6. Fachsemester (Sommersemester)
+Prüfung im 6. Fachsemester (Sommersemester)",1
+"a: 6. Fachsemester (Sommersemester)
+b: 6. Fachsemester (Sommersemester)",1

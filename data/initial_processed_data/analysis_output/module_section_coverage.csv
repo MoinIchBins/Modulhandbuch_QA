@@ -1,0 +1,17 @@
+module_id,module_code,module_title,chunk_count,overview,learning_outcomes,content,prerequisites,exam,workload,literature,tables,course_components
+module-2100,2100,Basismodul – Mathematische und logische Grundlagen,10,0,1,0,1,1,7,0,0,0
+module-2200,2200,Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung,10,1,1,1,1,1,2,0,1,1
+module-2300,2300,Basismodul – Python-Programmierung,10,0,1,0,1,1,7,0,0,0
+module-1300,1300,Basiswissen Linguistik – Morphologie und Syntax,10,0,1,0,1,1,7,0,0,0
+module-1400,1400,Basiswissen Linguistik – Semantik und Pragmatik,10,0,1,0,1,1,7,0,0,0
+module-2400,2400,Basismodul – Statistische Methoden in der Computerlinguistik,10,0,1,0,1,1,7,0,0,0
+module-4100,4100,Aufbaumodul – Maschinelles Lernen,10,0,1,0,1,1,7,0,0,0
+module-4200,4200,Aufbaumodul – Mathematische Linguistik,10,0,1,0,1,1,7,0,0,0
+module-4300,4300,Aufbaumodul – Parsing,10,0,1,0,1,1,7,0,0,0
+module-4400,4400,Aufbaumodul – Logische Programmierung,10,0,1,0,1,1,7,0,0,0
+module-4500,4500,Aufbaumodul – Objektorientierte Programmierung,10,0,1,0,1,1,7,0,0,0
+module-3000,3000,Praktikum & Orientierung,10,0,1,0,1,1,7,0,0,0
+module-5100,5100,Vertiefungsmodul – Interdisziplinär,10,0,1,0,1,1,7,0,0,0
+module-5200,5200,Vertiefungsmodul – Computerlinguistik 1,10,0,1,0,1,1,7,0,0,0
+module-5300,5300,Vertiefungsmodul – Computerlinguistik 2,10,0,1,0,1,1,7,0,0,0
+module-5900,5900,Abschlussarbeit und Forschungskolloquium,10,0,1,0,1,1,7,0,0,0
