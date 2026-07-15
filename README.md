@@ -2,6 +2,8 @@
 
 Project for Python II, QA-model comparison on Modulhandbuch
 
+In how far do different embeddings and preprocessing data and question influence the performance of a embedding based QA-Model.
+
 ## Description
 
 QA-Model comparison on German corpus Modulhandbuch
