@@ -11,8 +11,7 @@
     "Bachelorstudium"
   ],
   "language": "de",
-  "document_date": "30.09.2025",
-  "version": "Vorläufige Lesefassung - Stand 30.09.2025",
+  "document_date": "20.01.2026",
   "page_count": 35,
   "module_count": 16,
   "table_count": 17,
@@ -21,7 +20,6 @@
   "global_extraction_notes": [
     "PDF text layer was used; no OCR was required.",
     "All 35 pages were processed.",
-    "The visual watermark 'ENTWURF' is present in rendered pages but was not emitted as flowing body text in the extracted text layer.",
     "No explicit module-level responsible persons, lecturers, literature, language, grading, weighting, or exam-duration fields were present in the PDF."
   ]
 }
