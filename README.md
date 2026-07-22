@@ -2,6 +2,8 @@
 
 Project for Python II, QA-model comparison on Modulhandbuch
 
+In how far do different embeddings and preprocessing data and question influence the performance of a embedding based QA-Model.
+
 ## Description
 
 QA-Model comparison on German corpus Modulhandbuch
@@ -21,6 +23,7 @@ QA-Model comparison on German corpus Modulhandbuch
   - automatically with ai?
 - Split into training set, test set, validation set
 - Code QA-Models (embedding based, machine learning based, implemented QA Model)
+- choose threshhold as well
 - Create Testing functions (Accuracy, EM, F1) to compare
 - Visualize results
 
