@@ -1,3 +1,5 @@
-in this folder lives the segmented and cleaned data in chunks of about 100-400 words
-necessary info for the segments:
-id, source, title, text, section, page
+| File | Contains | Role | Main relationships |
+|---|---|---|---|
+| `retrieval_chunks.jsonl` | JSON Lines file, one retrieval chunk per line | Embedding/search-ready chunks. Each chunk repeats enough context to stand alone and includes page references | `parent_module_id` links module chunks to `modules.json`; document chunks have `parent_module_id: null` |
+| `modules.json` | Array of module records | Canonical structured module data. Best source for exact module facts such as ECTS, workload, prerequisites, exam, courses/components, notes, and cross-references | `module_id` links to `retrieval_chunks.parent_module_id` and `tables.parent_module_id`; module `tables` lists table IDs |
+| `question_answer_mapping.json`| JSON file, 500 questions with a list of retrieval_chunk_ids | Mapping of canonical questions to retrieval chunks for QA applications | None |
