@@ -1,1 +1,2 @@
 Modulhandbuch.pdf, link: https://www.philo.hhu.de/fileadmin/redaktion/Fakultaeten/Philosophische_Fakultaet/ALLGEMEIN_Dateien/Modulhandbücher_2025/Modulhandbücher_BA_2025/Modulhandbücher_BA_2025_Stand_20.01.2026/BA25_MHB_Compling_int_HP.pdf, date: 22.07.2026
+module_aliases.json, created by hand, author: Alexander Drewes, date: 22.07.2026
