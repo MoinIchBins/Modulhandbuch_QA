@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "description": "Aliases used to resolve informal module names in the QA model. Edit only the aliases arrays.",
+  "description": "Aliases used to resolve informal module names.",
   "normalization": {
     "case_sensitive": false,
     "strip_whitespace": true,
