@@ -1,0 +1,60 @@
+{"record_type":"retrieval_chunk",
+"chunk_id":"modulhandbuch-po2025-2200-table",
+"parent_module_id":"module-2200",
+"source_file":"modulhandbuch.pdf",
+"page_start":6,
+"page_end":7,
+"page_refs":[6,7],
+"program":"Computerlinguistik (integrativ)",
+"degree_level":"Bachelorstudium",
+"module_code":"2200",
+"module_title":"Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung",
+"module_group":"Basismodul",
+"recommended_semester":"a: 1. Fachsemester (Wintersemester)
+b: 1. Fachsemester (Wintersemester)
+c: 2. Fachsemester (Sommersemester)
+d: 2. Fachsemester (Sommersemester)
+Prüfung im 2. Fachsemester (Sommersemester)",
+"ects":12,
+"language":"de",
+"section_type":"module",
+"chunk_type":"table",
+"retrieval_priority":"normal",
+"text":"Quelle: modulhandbuch.pdf,
+ Seiten 6-7
+Studiengang: Computerlinguistik (integrativ),
+ Bachelorstudium,
+ PO 2025
+Modul 2200: Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung
+ECTS: 12
+Abschnitt: Modultabelle
+Tabellen-ID: table-module-2200
+Die Modultabelle enthält alle Feld-Wert-Angaben des Moduls,
+ darunter ECTS,
+ Workload,
+ Lehrveranstaltungen,
+ Semesterempfehlung,
+ Häufigkeit,
+ Inhalte,
+ Lernergebnisse,
+ Teilnahmevoraussetzungen,
+ Prüfungsformen und Voraussetzungen für die Vergabe von ECTS-Leistungspunkten.",
+"structured_facts":{"table_id":"table-module-2200"},
+"keywords":["2200",
+"Basismodul – Grundlagen der Computerlinguistik und formale Grammatikbeschreibung",
+"Basismodul",
+"Computerlinguistik (integrativ)",
+"Bachelorstudium",
+"12 ECTS",
+"Klausur (Pnr. 2210)",
+"Pnr. 2210",
+"Einführung in die Computerlinguistik",
+"2201",
+"2202",
+"Grammatikformalismen",
+"2203",
+"2204",
+"Tabelle",
+"Modultabelle",
+"table-module-2200"],
+"extraction_notes":[]}
