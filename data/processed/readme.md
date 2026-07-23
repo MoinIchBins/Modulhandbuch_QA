@@ -1,5 +1,5 @@
-| File | Contains | Role | Main relationships |
+| File | Contains | Description / Role | Main Relationships |
 |---|---|---|---|
-| `retrieval_chunks.jsonl` | JSON Lines file, one retrieval chunk per line | Embedding/search-ready chunks. Each chunk repeats enough context to stand alone and includes page references | `parent_module_id` links module chunks to `modules.json`; document chunks have `parent_module_id: null` |
-| `modules.json` | Array of module records | Canonical structured module data. Best source for exact module facts such as ECTS, workload, prerequisites, exam, courses/components, notes, and cross-references | `module_id` links to `retrieval_chunks.parent_module_id` and `tables.parent_module_id`; module `tables` lists table IDs |
-| `question_answer_mapping.json`| JSON file, 500 questions with a list of retrieval_chunk_ids | Mapping of canonical questions to retrieval chunks for QA applications | None |
+| `modules.json` | File with all modules in structured JSON format, created manually | Canonical source for structured module facts (ECTS, workload, prerequisites, exam, courses/components, notes, cross-references) | `module_id` matches `retrieval_chunks.parent_module_id`; module `tables` lists table IDs (for table-module relationship if `tables.json` present) |
+| `retrieval_chunks.jsonl` | File with all retrieval chunks, including reference to resource | Embedding/search-ready text chunks; each contains enough context to be self-contained and includes page references | Each chunk’s `parent_module_id` links to `modules.json`; document-level chunks have `parent_module_id: null` |
+| `question_answer_mapping.json` | List of questions (work in progress), mapped to chunks of old version of retrieval_chunks (work in progress) | Maps canonical questions to sets of relevant retrieval chunk IDs for QA tasks | References chunks in `retrieval_chunks.jsonl` by chunk ID; currently no direct external question reference |
