@@ -1,0 +1,3588 @@
+{
+  "generated_at": "2026-08-05",
+  "mapping_labels": {
+    "A": "qa_mappings_v1.jsonl",
+    "B": "qa_mappings_v2.jsonl",
+    "C": "qa_mappings_v11.jsonl"
+  },
+  "random_seed": 42,
+  "questions_compared": 600,
+  "input_validation": {
+    "questions": {
+      "filename": "qSet_PO(1).jsonl",
+      "line_count": 600,
+      "valid_json_objects": 600,
+      "invalid_json_lines": 0,
+      "unique_ids": 600,
+      "duplicate_ids": 0,
+      "duplicate_id_values": {},
+      "missing_required_fields": 0,
+      "empty_ids": 0,
+      "empty_texts": 0,
+      "inconsistent_datatypes": 0
+    },
+    "chunks": {
+      "filename": "PO_25_CL_chunks(1).jsonl",
+      "line_count": 201,
+      "valid_json_objects": 201,
+      "invalid_json_lines": 0,
+      "unique_ids": 201,
+      "duplicate_ids": 0,
+      "duplicate_id_values": {},
+      "missing_required_fields": 0,
+      "empty_ids": 0,
+      "empty_texts": 0,
+      "inconsistent_datatypes": 0
+    },
+    "A": {
+      "filename": "qa_mappings_v1.jsonl",
+      "line_count": 600,
+      "valid_json_objects": 600,
+      "invalid_json_lines": 0,
+      "unique_ids": 600,
+      "duplicate_ids": 0,
+      "duplicate_id_values": {},
+      "missing_required_fields": 0,
+      "empty_ids": 0,
+      "empty_texts": 0,
+      "inconsistent_datatypes": 0
+    },
+    "B": {
+      "filename": "qa_mappings_v2.jsonl",
+      "line_count": 600,
+      "valid_json_objects": 600,
+      "invalid_json_lines": 0,
+      "unique_ids": 600,
+      "duplicate_ids": 0,
+      "duplicate_id_values": {},
+      "missing_required_fields": 0,
+      "empty_ids": 0,
+      "empty_texts": 0,
+      "inconsistent_datatypes": 0
+    },
+    "C": {
+      "filename": "qa_mappings_v11.jsonl",
+      "line_count": 600,
+      "valid_json_objects": 600,
+      "invalid_json_lines": 0,
+      "unique_ids": 600,
+      "duplicate_ids": 0,
+      "duplicate_id_values": {},
+      "missing_required_fields": 0,
+      "empty_ids": 0,
+      "empty_texts": 0,
+      "inconsistent_datatypes": 0
+    }
+  },
+  "validation_issue_counts": {
+    "total": 137,
+    "errors": 0,
+    "warnings": 0,
+    "info": 137,
+    "by_category": {
+      "noncanonical_list_order": 60,
+      "source_pages_partial_coverage": 77
+    }
+  },
+  "normalization": {
+    "rules": [
+      "Chunk-ID-Listen als sortierte Mengen",
+      "Doppelte IDs technisch entfernt",
+      "null und [] für semantisch leere Listen gleichgesetzt",
+      "Status-Groß/Kleinschreibung nur diagnostisch",
+      "Quellenlisten sortiert"
+    ],
+    "original_values_preserved": true
+  },
+  "metrics_definitions": {
+    "jaccard": "|A∩B| / |A∪B|; beide leer = 1",
+    "overlap_coefficient": "|A∩B| / min(|A|,|B|); beide leer = 1",
+    "weighted_role_agreement": "Gewichteter Jaccard über Chunk-Rollen; Hauptgewichtung primary=3, supporting=2, disambiguating=1",
+    "sensitivity_weighting": "primary=5, supporting=2, disambiguating=1",
+    "quality_score": "12 Kriterien je 0-2, maximal 24; Rohscore unterstützt, ersetzt aber nicht die qualitative Entscheidung",
+    "binary_correctness": "Exakte empfohlene Chunk-Menge und Rollen sowie empfohlener Status/Evidenzstärke, ohne kritischen Validierungsfehler",
+    "ece_bins": [
+      "[0.00,0.80)",
+      "[0.80,0.90)",
+      "[0.90,0.95)",
+      "[0.95,1.00]"
+    ]
+  },
+  "pairwise": {
+    "A-B": {
+      "exact_original_list_count": 600,
+      "exact_original_list_rate": 100.0,
+      "same_set_count": 600,
+      "same_set_rate": 100.0,
+      "jaccard_mean": 1.0,
+      "jaccard_median": 1.0,
+      "jaccard_std": 0.0,
+      "jaccard_buckets_counts": {
+        "1.00": 600,
+        ">=0.75": 0,
+        "0.50-0.74": 0,
+        "0.01-0.49": 0,
+        "0.00": 0
+      },
+      "jaccard_buckets_rates": {
+        "1.00": 100.0,
+        ">=0.75": 0.0,
+        "0.50-0.74": 0.0,
+        "0.01-0.49": 0.0,
+        "0.00": 0.0
+      },
+      "overlap_mean": 1.0,
+      "precision_x_vs_y_mean": 1.0,
+      "recall_x_vs_y_mean": 1.0,
+      "precision_y_vs_x_mean": 1.0,
+      "recall_y_vs_x_mean": 1.0,
+      "mean_signed_count_difference_y_minus_x": 0.0,
+      "mean_absolute_count_difference": 0.0,
+      "same_role_assignment_count": 600,
+      "same_role_assignment_rate": 100.0,
+      "same_mapping_status_count": 600,
+      "same_mapping_status_rate": 100.0,
+      "same_evidence_strength_count": 593,
+      "same_evidence_strength_rate": 98.83,
+      "cohens_kappa_mapping_status": null,
+      "cohens_kappa_evidence_strength": 0.4971,
+      "confidence_pearson": 1.0,
+      "confidence_spearman": 1.0,
+      "confidence_mean_absolute_difference": 0.0115,
+      "weighted_role_agreement_mean_primary3_support2_disamb1": 1.0,
+      "weighted_role_agreement_mean_primary5_support2_disamb1": 1.0
+    },
+    "A-C": {
+      "exact_original_list_count": 564,
+      "exact_original_list_rate": 94.0,
+      "same_set_count": 564,
+      "same_set_rate": 94.0,
+      "jaccard_mean": 0.97,
+      "jaccard_median": 1.0,
+      "jaccard_std": 0.1187,
+      "jaccard_buckets_counts": {
+        "1.00": 564,
+        ">=0.75": 0,
+        "0.50-0.74": 36,
+        "0.01-0.49": 0,
+        "0.00": 0
+      },
+      "jaccard_buckets_rates": {
+        "1.00": 94.0,
+        ">=0.75": 0.0,
+        "0.50-0.74": 6.0,
+        "0.01-0.49": 0.0,
+        "0.00": 0.0
+      },
+      "overlap_mean": 1.0,
+      "precision_x_vs_y_mean": 1.0,
+      "recall_x_vs_y_mean": 0.97,
+      "precision_y_vs_x_mean": 0.97,
+      "recall_y_vs_x_mean": 1.0,
+      "mean_signed_count_difference_y_minus_x": 0.06,
+      "mean_absolute_count_difference": 0.06,
+      "same_role_assignment_count": 564,
+      "same_role_assignment_rate": 94.0,
+      "same_mapping_status_count": 564,
+      "same_mapping_status_rate": 94.0,
+      "same_evidence_strength_count": 564,
+      "same_evidence_strength_rate": 94.0,
+      "cohens_kappa_mapping_status": 0.0,
+      "cohens_kappa_evidence_strength": 0.2715,
+      "confidence_pearson": 0.8412,
+      "confidence_spearman": 0.4162,
+      "confidence_mean_absolute_difference": 0.0024,
+      "weighted_role_agreement_mean_primary3_support2_disamb1": 0.976,
+      "weighted_role_agreement_mean_primary5_support2_disamb1": 0.9829
+    },
+    "B-C": {
+      "exact_original_list_count": 564,
+      "exact_original_list_rate": 94.0,
+      "same_set_count": 564,
+      "same_set_rate": 94.0,
+      "jaccard_mean": 0.97,
+      "jaccard_median": 1.0,
+      "jaccard_std": 0.1187,
+      "jaccard_buckets_counts": {
+        "1.00": 564,
+        ">=0.75": 0,
+        "0.50-0.74": 36,
+        "0.01-0.49": 0,
+        "0.00": 0
+      },
+      "jaccard_buckets_rates": {
+        "1.00": 94.0,
+        ">=0.75": 0.0,
+        "0.50-0.74": 6.0,
+        "0.01-0.49": 0.0,
+        "0.00": 0.0
+      },
+      "overlap_mean": 1.0,
+      "precision_x_vs_y_mean": 1.0,
+      "recall_x_vs_y_mean": 0.97,
+      "precision_y_vs_x_mean": 0.97,
+      "recall_y_vs_x_mean": 1.0,
+      "mean_signed_count_difference_y_minus_x": 0.06,
+      "mean_absolute_count_difference": 0.06,
+      "same_role_assignment_count": 564,
+      "same_role_assignment_rate": 94.0,
+      "same_mapping_status_count": 564,
+      "same_mapping_status_rate": 94.0,
+      "same_evidence_strength_count": 557,
+      "same_evidence_strength_rate": 92.83,
+      "cohens_kappa_mapping_status": 0.0,
+      "cohens_kappa_evidence_strength": 0.1238,
+      "confidence_pearson": 0.8412,
+      "confidence_spearman": 0.4162,
+      "confidence_mean_absolute_difference": 0.0139,
+      "weighted_role_agreement_mean_primary3_support2_disamb1": 0.976,
+      "weighted_role_agreement_mean_primary5_support2_disamb1": 0.9829
+    }
+  },
+  "three_way": {
+    "identical_chunk_sets_count": 564,
+    "identical_chunk_sets_rate": 94.0,
+    "identical_status_count": 564,
+    "identical_evidence_strength_count": 557,
+    "identical_roles_count": 564,
+    "strict_full_agreement_count": 0,
+    "substantive_full_agreement_count": 557,
+    "two_vs_one_count": 43,
+    "all_three_substantively_different_count": 0,
+    "one_mapping_empty_others_nonempty_count": 0,
+    "different_chunk_count_count": 36,
+    "different_source_layers_count": 0,
+    "primary_difference_class_counts": {
+      "confidence_only_difference": 557,
+      "same_core_extra_context": 36,
+      "other": 7
+    }
+  },
+  "parsimony": {
+    "A": {
+      "mean": 1.0,
+      "median": 1.0,
+      "min": 1,
+      "max": 1,
+      "std": 0.0,
+      "single_chunk_count": 600,
+      "single_chunk_rate": 100.0,
+      "multi_chunk_count": 0,
+      "multi_chunk_rate": 0.0,
+      "more_than_2_count": 0,
+      "more_than_2_rate": 0.0,
+      "more_than_3_count": 0,
+      "more_than_3_rate": 0.0,
+      "more_than_4_count": 0,
+      "more_than_4_rate": 0.0,
+      "more_than_5_count": 0,
+      "more_than_5_rate": 0.0,
+      "empty_count": 0,
+      "empty_rate": 0.0,
+      "potentially_redundant_count": 0,
+      "potentially_missing_required_count": 32,
+      "scope_class_counts": {
+        "complete_and_minimal": 568,
+        "incomplete": 32
+      }
+    },
+    "B": {
+      "mean": 1.0,
+      "median": 1.0,
+      "min": 1,
+      "max": 1,
+      "std": 0.0,
+      "single_chunk_count": 600,
+      "single_chunk_rate": 100.0,
+      "multi_chunk_count": 0,
+      "multi_chunk_rate": 0.0,
+      "more_than_2_count": 0,
+      "more_than_2_rate": 0.0,
+      "more_than_3_count": 0,
+      "more_than_3_rate": 0.0,
+      "more_than_4_count": 0,
+      "more_than_4_rate": 0.0,
+      "more_than_5_count": 0,
+      "more_than_5_rate": 0.0,
+      "empty_count": 0,
+      "empty_rate": 0.0,
+      "potentially_redundant_count": 0,
+      "potentially_missing_required_count": 32,
+      "scope_class_counts": {
+        "complete_and_minimal": 568,
+        "incomplete": 32
+      }
+    },
+    "C": {
+      "mean": 1.06,
+      "median": 1.0,
+      "min": 1,
+      "max": 2,
+      "std": 0.2375,
+      "single_chunk_count": 564,
+      "single_chunk_rate": 94.0,
+      "multi_chunk_count": 36,
+      "multi_chunk_rate": 6.0,
+      "more_than_2_count": 0,
+      "more_than_2_rate": 0.0,
+      "more_than_3_count": 0,
+      "more_than_3_rate": 0.0,
+      "more_than_4_count": 0,
+      "more_than_4_rate": 0.0,
+      "more_than_5_count": 0,
+      "more_than_5_rate": 0.0,
+      "empty_count": 0,
+      "empty_rate": 0.0,
+      "potentially_redundant_count": 4,
+      "potentially_missing_required_count": 0,
+      "scope_class_counts": {
+        "complete_and_minimal": 596,
+        "complete_but_redundant": 4
+      }
+    }
+  },
+  "qualitative_overall": {
+    "A": {
+      "fully_correct_count": 568,
+      "fully_correct_rate": 94.67,
+      "partially_correct_count": 32,
+      "scope_class_counts": {
+        "complete_and_minimal": 568,
+        "incomplete": 32
+      },
+      "incomplete_mappings": 32,
+      "redundant_mappings": 0,
+      "unsupported_mappings": 0,
+      "wrong_or_extra_chunk_assignments": 0,
+      "missing_required_chunk_assignments": 32,
+      "wrong_document_layer_count": 0,
+      "status_errors": 32,
+      "evidence_strength_or_quote_errors": 32,
+      "confidence_problems_high_confidence_incorrect": 32,
+      "mean_raw_score": 23.5583,
+      "median_raw_score": 24.0,
+      "mean_normalized_quality": 0.9816,
+      "mean_chunks_per_question": 1.0,
+      "macro_precision_vs_corrected_consensus": 1.0,
+      "macro_recall_vs_corrected_consensus": 0.9733,
+      "macro_f1_vs_corrected_consensus": 0.9822,
+      "micro_precision_vs_corrected_consensus": 1.0,
+      "micro_recall_vs_corrected_consensus": 0.9494,
+      "micro_f1_vs_corrected_consensus": 0.974,
+      "exact_match_corrected_consensus_count": 568,
+      "exact_match_corrected_consensus_rate": 94.67
+    },
+    "B": {
+      "fully_correct_count": 561,
+      "fully_correct_rate": 93.5,
+      "partially_correct_count": 39,
+      "scope_class_counts": {
+        "complete_and_minimal": 568,
+        "incomplete": 32
+      },
+      "incomplete_mappings": 32,
+      "redundant_mappings": 0,
+      "unsupported_mappings": 0,
+      "wrong_or_extra_chunk_assignments": 0,
+      "missing_required_chunk_assignments": 32,
+      "wrong_document_layer_count": 0,
+      "status_errors": 32,
+      "evidence_strength_or_quote_errors": 39,
+      "confidence_problems_high_confidence_incorrect": 39,
+      "mean_raw_score": 23.5583,
+      "median_raw_score": 24.0,
+      "mean_normalized_quality": 0.9816,
+      "mean_chunks_per_question": 1.0,
+      "macro_precision_vs_corrected_consensus": 1.0,
+      "macro_recall_vs_corrected_consensus": 0.9733,
+      "macro_f1_vs_corrected_consensus": 0.9822,
+      "micro_precision_vs_corrected_consensus": 1.0,
+      "micro_recall_vs_corrected_consensus": 0.9494,
+      "micro_f1_vs_corrected_consensus": 0.974,
+      "exact_match_corrected_consensus_count": 568,
+      "exact_match_corrected_consensus_rate": 94.67
+    },
+    "C": {
+      "fully_correct_count": 596,
+      "fully_correct_rate": 99.33,
+      "partially_correct_count": 4,
+      "scope_class_counts": {
+        "complete_and_minimal": 596,
+        "complete_but_redundant": 4
+      },
+      "incomplete_mappings": 0,
+      "redundant_mappings": 4,
+      "unsupported_mappings": 0,
+      "wrong_or_extra_chunk_assignments": 4,
+      "missing_required_chunk_assignments": 0,
+      "wrong_document_layer_count": 0,
+      "status_errors": 4,
+      "evidence_strength_or_quote_errors": 4,
+      "confidence_problems_high_confidence_incorrect": 4,
+      "mean_raw_score": 23.955,
+      "median_raw_score": 24.0,
+      "mean_normalized_quality": 0.9981,
+      "mean_chunks_per_question": 1.06,
+      "macro_precision_vs_corrected_consensus": 0.9967,
+      "macro_recall_vs_corrected_consensus": 1.0,
+      "macro_f1_vs_corrected_consensus": 0.9978,
+      "micro_precision_vs_corrected_consensus": 0.9937,
+      "micro_recall_vs_corrected_consensus": 1.0,
+      "micro_f1_vs_corrected_consensus": 0.9968,
+      "exact_match_corrected_consensus_count": 596,
+      "exact_match_corrected_consensus_rate": 99.33
+    }
+  },
+  "decision_counts": {
+    "all_tied": 557,
+    "A_and_B_tied": 4,
+    "C_best": 32,
+    "A_and_C_tied": 7
+  },
+  "inclusive_wins": {
+    "A": 568,
+    "B": 561,
+    "C": 596
+  },
+  "fractional_wins": {
+    "A": 191.17,
+    "B": 187.67,
+    "C": 221.17
+  },
+  "consensus_oracle": {
+    "majority_consensus": {
+      "exact_corrected_consensus_count": 568,
+      "exact_corrected_consensus_rate": 94.67,
+      "complete_count": 568,
+      "complete_rate": 94.67,
+      "redundant_count": 0,
+      "redundant_rate": 0.0,
+      "missing_required_count": 32,
+      "missing_required_rate": 5.33,
+      "mean_chunks_per_question": 1.0,
+      "total_chunks_selected": 600
+    },
+    "union": {
+      "exact_corrected_consensus_count": 596,
+      "exact_corrected_consensus_rate": 99.33,
+      "complete_count": 600,
+      "complete_rate": 100.0,
+      "redundant_count": 4,
+      "redundant_rate": 0.67,
+      "missing_required_count": 0,
+      "missing_required_rate": 0.0,
+      "mean_chunks_per_question": 1.06,
+      "total_chunks_selected": 636
+    },
+    "intersection": {
+      "exact_corrected_consensus_count": 568,
+      "exact_corrected_consensus_rate": 94.67,
+      "complete_count": 568,
+      "complete_rate": 94.67,
+      "redundant_count": 0,
+      "redundant_rate": 0.0,
+      "missing_required_count": 32,
+      "missing_required_rate": 5.33,
+      "mean_chunks_per_question": 1.0,
+      "total_chunks_selected": 600
+    },
+    "corrected_consensus": {
+      "mean_chunks_per_question": 1.0533,
+      "total_chunks_selected": 632
+    },
+    "oracle": {
+      "fully_correct_count": 600,
+      "fully_correct_rate": 100.0,
+      "decision_counts": {
+        "all_tied": 557,
+        "A_and_B_tied": 4,
+        "C_best": 32,
+        "A_and_C_tied": 7
+      },
+      "inclusive_wins": {
+        "A": 568,
+        "B": 561,
+        "C": 596
+      },
+      "fractional_wins": {
+        "A": 191.17,
+        "B": 187.67,
+        "C": 221.17
+      },
+      "none_fully_correct_count": 0,
+      "undecidable_count": 0
+    }
+  },
+  "confidence_calibration": {
+    "A": {
+      "confidence_bands": {
+        "<0.80": {
+          "count": 0,
+          "mean_quality": null,
+          "binary_accuracy": null
+        },
+        "0.80-0.89": {
+          "count": 7,
+          "mean_quality": 0.9583,
+          "binary_accuracy": 1.0
+        },
+        "0.90-0.94": {
+          "count": 0,
+          "mean_quality": null,
+          "binary_accuracy": null
+        },
+        ">=0.95": {
+          "count": 593,
+          "mean_quality": 0.9819,
+          "binary_accuracy": 0.946
+        }
+      },
+      "error_at_confidence_ge_0_90": {
+        "count": 593,
+        "error_count": 32,
+        "error_rate": 0.054
+      },
+      "error_at_confidence_ge_0_80": {
+        "count": 600,
+        "error_count": 32,
+        "error_rate": 0.0533
+      },
+      "correct_rate_low_confidence_lt_0_90": 1.0,
+      "brier_score": 0.0519,
+      "ece": 0.0354,
+      "ece_bins": [
+        {
+          "bin": "[0.00,0.80)",
+          "count": 0,
+          "mean_confidence": null,
+          "binary_accuracy": null,
+          "mean_quality": null
+        },
+        {
+          "bin": "[0.80,0.90)",
+          "count": 7,
+          "mean_confidence": 0.84,
+          "binary_accuracy": 1.0,
+          "mean_quality": 0.9583
+        },
+        {
+          "bin": "[0.90,0.95)",
+          "count": 0,
+          "mean_confidence": null,
+          "binary_accuracy": null,
+          "mean_quality": null
+        },
+        {
+          "bin": "[0.95,1.00]",
+          "count": 593,
+          "mean_confidence": 0.98,
+          "binary_accuracy": 0.946,
+          "mean_quality": 0.9819
+        }
+      ],
+      "spearman_confidence_vs_quality": 0.3884,
+      "pearson_confidence_vs_quality": 0.0335,
+      "overconfident_error_count": 32,
+      "underconfident_correct_count": 7
+    },
+    "B": {
+      "confidence_bands": {
+        "<0.80": {
+          "count": 0,
+          "mean_quality": null,
+          "binary_accuracy": null
+        },
+        "0.80-0.89": {
+          "count": 0,
+          "mean_quality": null,
+          "binary_accuracy": null
+        },
+        "0.90-0.94": {
+          "count": 0,
+          "mean_quality": null,
+          "binary_accuracy": null
+        },
+        ">=0.95": {
+          "count": 600,
+          "mean_quality": 0.9816,
+          "binary_accuracy": 0.935
+        }
+      },
+      "error_at_confidence_ge_0_90": {
+        "count": 600,
+        "error_count": 39,
+        "error_rate": 0.065
+      },
+      "error_at_confidence_ge_0_80": {
+        "count": 600,
+        "error_count": 39,
+        "error_rate": 0.065
+      },
+      "correct_rate_low_confidence_lt_0_90": null,
+      "brier_score": 0.0636,
+      "ece": 0.0549,
+      "ece_bins": [
+        {
+          "bin": "[0.00,0.80)",
+          "count": 0,
+          "mean_confidence": null,
+          "binary_accuracy": null,
+          "mean_quality": null
+        },
+        {
+          "bin": "[0.80,0.90)",
+          "count": 0,
+          "mean_confidence": null,
+          "binary_accuracy": null,
+          "mean_quality": null
+        },
+        {
+          "bin": "[0.90,0.95)",
+          "count": 0,
+          "mean_confidence": null,
+          "binary_accuracy": null,
+          "mean_quality": null
+        },
+        {
+          "bin": "[0.95,1.00]",
+          "count": 600,
+          "mean_confidence": 0.9899,
+          "binary_accuracy": 0.935,
+          "mean_quality": 0.9816
+        }
+      ],
+      "spearman_confidence_vs_quality": 0.3884,
+      "pearson_confidence_vs_quality": 0.0335,
+      "overconfident_error_count": 39,
+      "underconfident_correct_count": 0
+    },
+    "C": {
+      "confidence_bands": {
+        "<0.80": {
+          "count": 0,
+          "mean_quality": null,
+          "binary_accuracy": null
+        },
+        "0.80-0.89": {
+          "count": 7,
+          "mean_quality": 0.9583,
+          "binary_accuracy": 1.0
+        },
+        "0.90-0.94": {
+          "count": 36,
+          "mean_quality": 0.9769,
+          "binary_accuracy": 0.8889
+        },
+        ">=0.95": {
+          "count": 557,
+          "mean_quality": 1.0,
+          "binary_accuracy": 1.0
+        }
+      },
+      "error_at_confidence_ge_0_90": {
+        "count": 593,
+        "error_count": 4,
+        "error_rate": 0.0067
+      },
+      "error_at_confidence_ge_0_80": {
+        "count": 600,
+        "error_count": 4,
+        "error_rate": 0.0067
+      },
+      "correct_rate_low_confidence_lt_0_90": 1.0,
+      "brier_score": 0.0068,
+      "ece": 0.0235,
+      "ece_bins": [
+        {
+          "bin": "[0.00,0.80)",
+          "count": 0,
+          "mean_confidence": null,
+          "binary_accuracy": null,
+          "mean_quality": null
+        },
+        {
+          "bin": "[0.80,0.90)",
+          "count": 7,
+          "mean_confidence": 0.84,
+          "binary_accuracy": 1.0,
+          "mean_quality": 0.9583
+        },
+        {
+          "bin": "[0.90,0.95)",
+          "count": 36,
+          "mean_confidence": 0.94,
+          "binary_accuracy": 0.8889,
+          "mean_quality": 0.9769
+        },
+        {
+          "bin": "[0.95,1.00]",
+          "count": 557,
+          "mean_confidence": 0.98,
+          "binary_accuracy": 1.0,
+          "mean_quality": 1.0
+        }
+      ],
+      "spearman_confidence_vs_quality": 0.5095,
+      "pearson_confidence_vs_quality": 0.3777,
+      "overconfident_error_count": 4,
+      "underconfident_correct_count": 7
+    }
+  },
+  "group_results": {
+    "question_family": [
+      {
+        "group": "general_exam_rules",
+        "count": 244,
+        "chunk_set_agreement_rate": 0.9959,
+        "average_pairwise_jaccard": 0.9986,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.0041,
+          "B": 0.0041,
+          "C": 0.0
+        },
+        "most_common_error_cause": "anaphora_or_reference_resolution",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0041
+        }
+      },
+      {
+        "group": "examination_format",
+        "count": 60,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "program_entry",
+        "count": 50,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "bachelor_thesis",
+        "count": 44,
+        "chunk_set_agreement_rate": 0.9773,
+        "average_pairwise_jaccard": 0.9924,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.0227,
+          "B": 0.0227,
+          "C": 0.0
+        },
+        "most_common_error_cause": "anaphora_or_reference_resolution",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0227
+        }
+      },
+      {
+        "group": "workload_and_credits",
+        "count": 41,
+        "chunk_set_agreement_rate": 0.8293,
+        "average_pairwise_jaccard": 0.9431,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.1463,
+          "B": 0.1463,
+          "C": 0.0244
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.1707
+        }
+      },
+      {
+        "group": "examination_number",
+        "count": 40,
+        "chunk_set_agreement_rate": 0.4,
+        "average_pairwise_jaccard": 0.8,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.6,
+          "B": 0.775,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.6
+        }
+      },
+      {
+        "group": "document_clarification",
+        "count": 34,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "module_identity",
+        "count": 32,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "study_planning",
+        "count": 25,
+        "chunk_set_agreement_rate": 0.92,
+        "average_pairwise_jaccard": 0.9733,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.08
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.08
+        }
+      },
+      {
+        "group": "practical_training",
+        "count": 18,
+        "chunk_set_agreement_rate": 0.9444,
+        "average_pairwise_jaccard": 0.9815,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0556
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0556
+        }
+      },
+      {
+        "group": "exemplary_semester",
+        "count": 12,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      }
+    ],
+    "complexity": [
+      {
+        "group": "single_field",
+        "count": 600,
+        "chunk_set_agreement_rate": 0.94,
+        "average_pairwise_jaccard": 0.98,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.0533,
+          "B": 0.065,
+          "C": 0.0067
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.06
+        }
+      }
+    ],
+    "source_layer": [
+      {
+        "group": "general_regulation",
+        "count": 464,
+        "chunk_set_agreement_rate": 0.9871,
+        "average_pairwise_jaccard": 0.9957,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0043,
+          "B": 0.0043,
+          "C": 0.0086
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0129
+        }
+      },
+      {
+        "group": "exemplary_plan",
+        "count": 68,
+        "chunk_set_agreement_rate": 0.5588,
+        "average_pairwise_jaccard": 0.8529,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.4412,
+          "B": 0.4412,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.4412
+        }
+      },
+      {
+        "group": "program_appendix",
+        "count": 68,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.1029,
+          "C": 0.0
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      }
+    ],
+    "plan_status": [
+      {
+        "group": "not_applicable",
+        "count": 532,
+        "chunk_set_agreement_rate": 0.9887,
+        "average_pairwise_jaccard": 0.9962,
+        "best_mapping": "A",
+        "error_rates": {
+          "A": 0.0038,
+          "B": 0.0169,
+          "C": 0.0075
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0113
+        }
+      },
+      {
+        "group": "exemplary_non_binding",
+        "count": 68,
+        "chunk_set_agreement_rate": 0.5588,
+        "average_pairwise_jaccard": 0.8529,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.4412,
+          "B": 0.4412,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.4412
+        }
+      }
+    ],
+    "answer_scope_estimate": [
+      {
+        "group": "single_clause",
+        "count": 464,
+        "chunk_set_agreement_rate": 0.9871,
+        "average_pairwise_jaccard": 0.9957,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0043,
+          "B": 0.0043,
+          "C": 0.0086
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0129
+        }
+      },
+      {
+        "group": "single_cell",
+        "count": 123,
+        "chunk_set_agreement_rate": 0.7561,
+        "average_pairwise_jaccard": 0.9187,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.2439,
+          "B": 0.3008,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.2439
+        }
+      },
+      {
+        "group": "single_sentence",
+        "count": 13,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      }
+    ],
+    "paragraph": [
+      {
+        "group": "not_applicable",
+        "count": 136,
+        "chunk_set_agreement_rate": 0.7794,
+        "average_pairwise_jaccard": 0.9265,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.2206,
+          "B": 0.2721,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.2206
+        }
+      },
+      {
+        "group": "§ 14",
+        "count": 40,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 15",
+        "count": 28,
+        "chunk_set_agreement_rate": 0.9643,
+        "average_pairwise_jaccard": 0.9881,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.0357,
+          "B": 0.0357,
+          "C": 0.0
+        },
+        "most_common_error_cause": "anaphora_or_reference_resolution",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0357
+        }
+      },
+      {
+        "group": "§ 11",
+        "count": 26,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 18",
+        "count": 26,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 24",
+        "count": 26,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 17",
+        "count": 23,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 28",
+        "count": 23,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 19",
+        "count": 22,
+        "chunk_set_agreement_rate": 0.9545,
+        "average_pairwise_jaccard": 0.9848,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.0455,
+          "B": 0.0455,
+          "C": 0.0
+        },
+        "most_common_error_cause": "anaphora_or_reference_resolution",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0455
+        }
+      },
+      {
+        "group": "§ 21",
+        "count": 20,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 4",
+        "count": 20,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 12",
+        "count": 18,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 7",
+        "count": 17,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 16",
+        "count": 16,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 25",
+        "count": 16,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 3",
+        "count": 16,
+        "chunk_set_agreement_rate": 0.9375,
+        "average_pairwise_jaccard": 0.9792,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0625
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0625
+        }
+      },
+      {
+        "group": "§ 5",
+        "count": 16,
+        "chunk_set_agreement_rate": 0.875,
+        "average_pairwise_jaccard": 0.9583,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.125
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.125
+        }
+      },
+      {
+        "group": "§ 1",
+        "count": 14,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 13",
+        "count": 14,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 9",
+        "count": 14,
+        "chunk_set_agreement_rate": 0.9286,
+        "average_pairwise_jaccard": 0.9762,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0714
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0714
+        }
+      },
+      {
+        "group": "§ 8",
+        "count": 13,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 20",
+        "count": 9,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 27",
+        "count": 9,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 2",
+        "count": 7,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 31",
+        "count": 5,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 23",
+        "count": 4,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 26",
+        "count": 4,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 29",
+        "count": 4,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 10",
+        "count": 3,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 30",
+        "count": 3,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 32",
+        "count": 3,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 6",
+        "count": 3,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "§ 22",
+        "count": 2,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      }
+    ],
+    "module": [
+      {
+        "group": "not_applicable",
+        "count": 518,
+        "chunk_set_agreement_rate": 0.9768,
+        "average_pairwise_jaccard": 0.9923,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.0154,
+          "B": 0.0154,
+          "C": 0.0077
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0232
+        }
+      },
+      {
+        "group": "MOD_INTERNSHIP_ORIENTATION",
+        "count": 9,
+        "chunk_set_agreement_rate": 0.7778,
+        "average_pairwise_jaccard": 0.9259,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.2222,
+          "B": 0.3333,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.2222
+        }
+      },
+      {
+        "group": "MOD_MATH_LOGIC",
+        "count": 6,
+        "chunk_set_agreement_rate": 0.6667,
+        "average_pairwise_jaccard": 0.8889,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.3333,
+          "B": 0.3333,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.3333
+        }
+      },
+      {
+        "group": "MOD_PBB",
+        "count": 6,
+        "chunk_set_agreement_rate": 0.0,
+        "average_pairwise_jaccard": 0.6667,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 2.0
+        }
+      },
+      {
+        "group": "MOD_CL_GRAMMAR",
+        "count": 5,
+        "chunk_set_agreement_rate": 0.6,
+        "average_pairwise_jaccard": 0.8667,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.4,
+          "B": 0.4,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.4
+        }
+      },
+      {
+        "group": "MOD_INTERDISCIPLINARY",
+        "count": 5,
+        "chunk_set_agreement_rate": 0.6,
+        "average_pairwise_jaccard": 0.8667,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.4,
+          "B": 0.4,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.4
+        }
+      },
+      {
+        "group": "MOD_MACHINE_LEARNING",
+        "count": 5,
+        "chunk_set_agreement_rate": 0.6,
+        "average_pairwise_jaccard": 0.8667,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.4,
+          "B": 0.4,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.4
+        }
+      },
+      {
+        "group": "MOD_PYTHON",
+        "count": 5,
+        "chunk_set_agreement_rate": 0.8,
+        "average_pairwise_jaccard": 0.9333,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.2,
+          "B": 0.2,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.2
+        }
+      },
+      {
+        "group": "MOD_STATISTICS",
+        "count": 5,
+        "chunk_set_agreement_rate": 0.6,
+        "average_pairwise_jaccard": 0.8667,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.4,
+          "B": 0.6,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.4
+        }
+      },
+      {
+        "group": "MOD_THESIS_COLLOQUIUM",
+        "count": 5,
+        "chunk_set_agreement_rate": 0.8,
+        "average_pairwise_jaccard": 0.9333,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.2,
+          "B": 0.4,
+          "C": 0.0
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.2
+        }
+      },
+      {
+        "group": "MOD_CL_1",
+        "count": 4,
+        "chunk_set_agreement_rate": 0.75,
+        "average_pairwise_jaccard": 0.9167,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.25,
+          "B": 0.5,
+          "C": 0.0
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.25
+        }
+      },
+      {
+        "group": "MOD_LOGIC_PROGRAMMING",
+        "count": 4,
+        "chunk_set_agreement_rate": 0.75,
+        "average_pairwise_jaccard": 0.9167,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.25,
+          "B": 0.5,
+          "C": 0.0
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.25
+        }
+      },
+      {
+        "group": "MOD_MATH_LINGUISTICS",
+        "count": 4,
+        "chunk_set_agreement_rate": 0.75,
+        "average_pairwise_jaccard": 0.9167,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.25,
+          "B": 0.5,
+          "C": 0.0
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.25
+        }
+      },
+      {
+        "group": "MOD_MORPH_SYNTAX",
+        "count": 4,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "MOD_OOP",
+        "count": 4,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "MOD_PARSING",
+        "count": 4,
+        "chunk_set_agreement_rate": 0.75,
+        "average_pairwise_jaccard": 0.9167,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.25,
+          "B": 0.5,
+          "C": 0.0
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.25
+        }
+      },
+      {
+        "group": "MOD_SEM_PRAG",
+        "count": 4,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "MOD_CL_2",
+        "count": 3,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      }
+    ],
+    "semester": [
+      {
+        "group": "not_applicable",
+        "count": 541,
+        "chunk_set_agreement_rate": 0.9889,
+        "average_pairwise_jaccard": 0.9963,
+        "best_mapping": "A",
+        "error_rates": {
+          "A": 0.0037,
+          "B": 0.0166,
+          "C": 0.0074
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0111
+        }
+      },
+      {
+        "group": "1",
+        "count": 12,
+        "chunk_set_agreement_rate": 0.5,
+        "average_pairwise_jaccard": 0.8333,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.5,
+          "B": 0.5,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.5
+        }
+      },
+      {
+        "group": "4",
+        "count": 11,
+        "chunk_set_agreement_rate": 0.3636,
+        "average_pairwise_jaccard": 0.7879,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.6364,
+          "B": 0.6364,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.6364
+        }
+      },
+      {
+        "group": "2",
+        "count": 10,
+        "chunk_set_agreement_rate": 0.6,
+        "average_pairwise_jaccard": 0.8667,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.4,
+          "B": 0.4,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.4
+        }
+      },
+      {
+        "group": "3",
+        "count": 10,
+        "chunk_set_agreement_rate": 0.5,
+        "average_pairwise_jaccard": 0.8333,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.5,
+          "B": 0.5,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.5
+        }
+      },
+      {
+        "group": "5",
+        "count": 9,
+        "chunk_set_agreement_rate": 0.4444,
+        "average_pairwise_jaccard": 0.8148,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.5556,
+          "B": 0.5556,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.5556
+        }
+      },
+      {
+        "group": "6",
+        "count": 7,
+        "chunk_set_agreement_rate": 0.5714,
+        "average_pairwise_jaccard": 0.8571,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.4286,
+          "B": 0.4286,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.4286
+        }
+      }
+    ],
+    "page_range": [
+      {
+        "group": "23-23",
+        "count": 64,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.1094,
+          "C": 0.0
+        },
+        "most_common_error_cause": "other",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "5-5",
+        "count": 35,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "3-3",
+        "count": 32,
+        "chunk_set_agreement_rate": 0.9688,
+        "average_pairwise_jaccard": 0.9896,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0312
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0312
+        }
+      },
+      {
+        "group": "9-9",
+        "count": 32,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "13-13",
+        "count": 28,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "26-26",
+        "count": 28,
+        "chunk_set_agreement_rate": 0.4643,
+        "average_pairwise_jaccard": 0.8214,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.5357,
+          "B": 0.5357,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.5357
+        }
+      },
+      {
+        "group": "18-18",
+        "count": 27,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "17-17",
+        "count": 26,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "6-6",
+        "count": 25,
+        "chunk_set_agreement_rate": 0.96,
+        "average_pairwise_jaccard": 0.9867,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.04
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.04
+        }
+      },
+      {
+        "group": "8-8",
+        "count": 25,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "24-24",
+        "count": 24,
+        "chunk_set_agreement_rate": 0.75,
+        "average_pairwise_jaccard": 0.9167,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.25,
+          "B": 0.25,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.25
+        }
+      },
+      {
+        "group": "7-7",
+        "count": 22,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "14-14",
+        "count": 21,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "2-2",
+        "count": 21,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "4-4",
+        "count": 21,
+        "chunk_set_agreement_rate": 0.9048,
+        "average_pairwise_jaccard": 0.9683,
+        "best_mapping": "A_and_B",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0952
+        },
+        "most_common_error_cause": "redundant_chunk",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0952
+        }
+      },
+      {
+        "group": "11-11",
+        "count": 20,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "20-20",
+        "count": 20,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "25-25",
+        "count": 20,
+        "chunk_set_agreement_rate": 0.55,
+        "average_pairwise_jaccard": 0.85,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.45,
+          "B": 0.45,
+          "C": 0.0
+        },
+        "most_common_error_cause": "missing_definition",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.45
+        }
+      },
+      {
+        "group": "19-19",
+        "count": 19,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "12-12",
+        "count": 18,
+        "chunk_set_agreement_rate": 0.9444,
+        "average_pairwise_jaccard": 0.9815,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.0556,
+          "B": 0.0556,
+          "C": 0.0
+        },
+        "most_common_error_cause": "anaphora_or_reference_resolution",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0556
+        }
+      },
+      {
+        "group": "16-16",
+        "count": 18,
+        "chunk_set_agreement_rate": 0.9444,
+        "average_pairwise_jaccard": 0.9815,
+        "best_mapping": "C",
+        "error_rates": {
+          "A": 0.0556,
+          "B": 0.0556,
+          "C": 0.0
+        },
+        "most_common_error_cause": "anaphora_or_reference_resolution",
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0556
+        }
+      },
+      {
+        "group": "21-21",
+        "count": 17,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "22-22",
+        "count": 15,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "15-15",
+        "count": 14,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "10-10",
+        "count": 5,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "19-20",
+        "count": 1,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "5-6",
+        "count": 1,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      },
+      {
+        "group": "8-9",
+        "count": 1,
+        "chunk_set_agreement_rate": 1.0,
+        "average_pairwise_jaccard": 1.0,
+        "best_mapping": "A_and_B_and_C",
+        "error_rates": {
+          "A": 0.0,
+          "B": 0.0,
+          "C": 0.0
+        },
+        "most_common_error_cause": null,
+        "average_chunks": {
+          "A": 1.0,
+          "B": 1.0,
+          "C": 1.0
+        }
+      }
+    ]
+  },
+  "chunk_property_analysis": {
+    "length_bin": [
+      {
+        "value": "long_800_plus",
+        "A_selection_count": 112,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 112,
+        "B_error_rate": 0.0,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 112,
+        "C_error_rate": 0.0179,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "medium_300_799",
+        "A_selection_count": 321,
+        "A_error_rate": 0.0374,
+        "A_selection_minus_recommended": -1,
+        "B_selection_count": 321,
+        "B_error_rate": 0.0374,
+        "B_selection_minus_recommended": -1,
+        "C_selection_count": 326,
+        "C_error_rate": 0.0184,
+        "C_selection_minus_recommended": 4
+      },
+      {
+        "value": "short_<300",
+        "A_selection_count": 167,
+        "A_error_rate": 0.1198,
+        "A_selection_minus_recommended": -31,
+        "B_selection_count": 167,
+        "B_error_rate": 0.1617,
+        "B_selection_minus_recommended": -31,
+        "C_selection_count": 198,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      }
+    ],
+    "page_span": [
+      {
+        "value": "multi_page",
+        "A_selection_count": 80,
+        "A_error_rate": 0.0125,
+        "A_selection_minus_recommended": -1,
+        "B_selection_count": 80,
+        "B_error_rate": 0.0125,
+        "B_selection_minus_recommended": -1,
+        "C_selection_count": 81,
+        "C_error_rate": 0.0123,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "single_page",
+        "A_selection_count": 520,
+        "A_error_rate": 0.0596,
+        "A_selection_minus_recommended": -31,
+        "B_selection_count": 520,
+        "B_error_rate": 0.0731,
+        "B_selection_minus_recommended": -31,
+        "C_selection_count": 555,
+        "C_error_rate": 0.0126,
+        "C_selection_minus_recommended": 4
+      }
+    ],
+    "source_layer": [
+      {
+        "value": "exemplary_study_plan",
+        "A_selection_count": 68,
+        "A_error_rate": 0.4412,
+        "A_selection_minus_recommended": -30,
+        "B_selection_count": 68,
+        "B_error_rate": 0.4412,
+        "B_selection_minus_recommended": -30,
+        "C_selection_count": 98,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "front_matter",
+        "A_selection_count": 0,
+        "A_error_rate": null,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 0,
+        "B_error_rate": null,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 0,
+        "C_error_rate": null,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "general_regulation",
+        "A_selection_count": 464,
+        "A_error_rate": 0.0043,
+        "A_selection_minus_recommended": -2,
+        "B_selection_count": 464,
+        "B_error_rate": 0.0043,
+        "B_selection_minus_recommended": -2,
+        "C_selection_count": 470,
+        "C_error_rate": 0.017,
+        "C_selection_minus_recommended": 4
+      },
+      {
+        "value": "program_specific_appendix",
+        "A_selection_count": 68,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 68,
+        "B_error_rate": 0.1029,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 68,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      }
+    ],
+    "content_type": [
+      {
+        "value": "abbreviation_legend",
+        "A_selection_count": 5,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": -30,
+        "B_selection_count": 5,
+        "B_error_rate": 0.0,
+        "B_selection_minus_recommended": -30,
+        "C_selection_count": 35,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "appendix_field",
+        "A_selection_count": 16,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 16,
+        "B_error_rate": 0.0,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 16,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "curriculum_area_overview",
+        "A_selection_count": 0,
+        "A_error_rate": null,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 0,
+        "B_error_rate": null,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 0,
+        "C_error_rate": null,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "document_identity",
+        "A_selection_count": 0,
+        "A_error_rate": null,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 0,
+        "B_error_rate": null,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 0,
+        "C_error_rate": null,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "legal_preamble",
+        "A_selection_count": 0,
+        "A_error_rate": null,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 0,
+        "B_error_rate": null,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 0,
+        "C_error_rate": null,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "module_overview",
+        "A_selection_count": 48,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 48,
+        "B_error_rate": 0.1458,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 48,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "plan_status_note",
+        "A_selection_count": 4,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 4,
+        "B_error_rate": 0.0,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 4,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "practical_training_description",
+        "A_selection_count": 4,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 4,
+        "B_error_rate": 0.0,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 4,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "profile_area_allocation",
+        "A_selection_count": 0,
+        "A_error_rate": null,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 0,
+        "B_error_rate": null,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 0,
+        "C_error_rate": null,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "regulation_list",
+        "A_selection_count": 51,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 51,
+        "B_error_rate": 0.0,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 51,
+        "C_error_rate": 0.0392,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "regulation_paragraph",
+        "A_selection_count": 39,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 39,
+        "B_error_rate": 0.0,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 39,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "regulation_subsection",
+        "A_selection_count": 374,
+        "A_error_rate": 0.0053,
+        "A_selection_minus_recommended": -2,
+        "B_selection_count": 374,
+        "B_error_rate": 0.0053,
+        "B_selection_minus_recommended": -2,
+        "C_selection_count": 380,
+        "C_error_rate": 0.0158,
+        "C_selection_minus_recommended": 4
+      },
+      {
+        "value": "semester_module_block",
+        "A_selection_count": 23,
+        "A_error_rate": 0.7826,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 23,
+        "B_error_rate": 0.7826,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 23,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "semester_summary",
+        "A_selection_count": 36,
+        "A_error_rate": 0.3333,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 36,
+        "B_error_rate": 0.3333,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 36,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      }
+    ],
+    "has_list": [
+      {
+        "value": "False",
+        "A_selection_count": 491,
+        "A_error_rate": 0.0041,
+        "A_selection_minus_recommended": -2,
+        "B_selection_count": 491,
+        "B_error_rate": 0.0183,
+        "B_selection_minus_recommended": -2,
+        "C_selection_count": 497,
+        "C_error_rate": 0.0121,
+        "C_selection_minus_recommended": 4
+      },
+      {
+        "value": "True",
+        "A_selection_count": 109,
+        "A_error_rate": 0.2752,
+        "A_selection_minus_recommended": -30,
+        "B_selection_count": 109,
+        "B_error_rate": 0.2752,
+        "B_selection_minus_recommended": -30,
+        "C_selection_count": 139,
+        "C_error_rate": 0.0144,
+        "C_selection_minus_recommended": 0
+      }
+    ],
+    "has_reference": [
+      {
+        "value": "False",
+        "A_selection_count": 135,
+        "A_error_rate": 0.2222,
+        "A_selection_minus_recommended": -30,
+        "B_selection_count": 135,
+        "B_error_rate": 0.2741,
+        "B_selection_minus_recommended": -30,
+        "C_selection_count": 165,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "True",
+        "A_selection_count": 465,
+        "A_error_rate": 0.0043,
+        "A_selection_minus_recommended": -2,
+        "B_selection_count": 465,
+        "B_error_rate": 0.0043,
+        "B_selection_minus_recommended": -2,
+        "C_selection_count": 471,
+        "C_error_rate": 0.017,
+        "C_selection_minus_recommended": 4
+      }
+    ],
+    "near_duplicate": [
+      {
+        "value": "False",
+        "A_selection_count": 526,
+        "A_error_rate": 0.038,
+        "A_selection_minus_recommended": -32,
+        "B_selection_count": 526,
+        "B_error_rate": 0.0437,
+        "B_selection_minus_recommended": -32,
+        "C_selection_count": 562,
+        "C_error_rate": 0.0142,
+        "C_selection_minus_recommended": 4
+      },
+      {
+        "value": "True",
+        "A_selection_count": 74,
+        "A_error_rate": 0.1622,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 74,
+        "B_error_rate": 0.2162,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 74,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      }
+    ],
+    "numeric_density": [
+      {
+        "value": "not_numeric_dense",
+        "A_selection_count": 377,
+        "A_error_rate": 0.0053,
+        "A_selection_minus_recommended": -31,
+        "B_selection_count": 377,
+        "B_error_rate": 0.0212,
+        "B_selection_minus_recommended": -31,
+        "C_selection_count": 408,
+        "C_error_rate": 0.0074,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "numeric_dense",
+        "A_selection_count": 223,
+        "A_error_rate": 0.1345,
+        "A_selection_minus_recommended": -1,
+        "B_selection_count": 223,
+        "B_error_rate": 0.139,
+        "B_selection_minus_recommended": -1,
+        "C_selection_count": 228,
+        "C_error_rate": 0.0219,
+        "C_selection_minus_recommended": 4
+      }
+    ],
+    "key_value_style": [
+      {
+        "value": "False",
+        "A_selection_count": 4,
+        "A_error_rate": 0.0,
+        "A_selection_minus_recommended": 0,
+        "B_selection_count": 4,
+        "B_error_rate": 0.0,
+        "B_selection_minus_recommended": 0,
+        "C_selection_count": 4,
+        "C_error_rate": 0.0,
+        "C_selection_minus_recommended": 0
+      },
+      {
+        "value": "True",
+        "A_selection_count": 596,
+        "A_error_rate": 0.0537,
+        "A_selection_minus_recommended": -32,
+        "B_selection_count": 596,
+        "B_error_rate": 0.0654,
+        "B_selection_minus_recommended": -32,
+        "C_selection_count": 632,
+        "C_error_rate": 0.0127,
+        "C_selection_minus_recommended": 4
+      }
+    ]
+  },
+  "outliers": {
+    "disjoint_mappings": [],
+    "lowest_three_way_similarity": [
+      {
+        "question_id": "Q0036",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0064",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0067",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0113",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0245",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0327",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0542",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0546",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0548",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0552",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0554",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0558",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0560",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0564",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0566",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0570",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0572",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0576",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0577",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0578",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0580",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0581",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0583",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0586",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0587",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0588",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0589",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0591",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0592",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0593",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0594",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0595",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0596",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0597",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0598",
+        "average_pairwise_jaccard": 0.6667
+      },
+      {
+        "question_id": "Q0599",
+        "average_pairwise_jaccard": 0.6667
+      }
+    ],
+    "largest_chunk_count_differences": [
+      {
+        "question_id": "Q0036",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0064",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0067",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0113",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0245",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0327",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0542",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0546",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0548",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0552",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0554",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0558",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0560",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0564",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0566",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0570",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0572",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0576",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0577",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0578",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0580",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0581",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0583",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0586",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0587",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0588",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0589",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0591",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0592",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0593",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0594",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0595",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0596",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0597",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0598",
+        "spread": 1
+      },
+      {
+        "question_id": "Q0599",
+        "spread": 1
+      }
+    ],
+    "largest_confidence_differences": [
+      {
+        "question_id": "Q0500",
+        "spread": 0.14
+      },
+      {
+        "question_id": "Q0506",
+        "spread": 0.14
+      },
+      {
+        "question_id": "Q0509",
+        "spread": 0.14
+      },
+      {
+        "question_id": "Q0512",
+        "spread": 0.14
+      },
+      {
+        "question_id": "Q0518",
+        "spread": 0.14
+      },
+      {
+        "question_id": "Q0524",
+        "spread": 0.14
+      },
+      {
+        "question_id": "Q0530",
+        "spread": 0.14
+      },
+      {
+        "question_id": "Q0036",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0064",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0067",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0113",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0245",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0327",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0542",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0546",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0548",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0552",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0554",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0558",
+        "spread": 0.05
+      },
+      {
+        "question_id": "Q0560",
+        "spread": 0.05
+      }
+    ],
+    "status_conflicts": [
+      "Q0036",
+      "Q0064",
+      "Q0067",
+      "Q0113",
+      "Q0245",
+      "Q0327",
+      "Q0542",
+      "Q0546",
+      "Q0548",
+      "Q0552",
+      "Q0554",
+      "Q0558",
+      "Q0560",
+      "Q0564",
+      "Q0566",
+      "Q0570",
+      "Q0572",
+      "Q0576",
+      "Q0577",
+      "Q0578",
+      "Q0580",
+      "Q0581",
+      "Q0583",
+      "Q0586",
+      "Q0587",
+      "Q0588",
+      "Q0589",
+      "Q0591",
+      "Q0592",
+      "Q0593",
+      "Q0594",
+      "Q0595",
+      "Q0596",
+      "Q0597",
+      "Q0598",
+      "Q0599"
+    ],
+    "invalid_chunk_id_questions": [],
+    "none_fully_correct": [],
+    "clear_single_mapping_best": [
+      "Q0245",
+      "Q0327",
+      "Q0542",
+      "Q0546",
+      "Q0548",
+      "Q0552",
+      "Q0554",
+      "Q0558",
+      "Q0560",
+      "Q0564",
+      "Q0566",
+      "Q0570",
+      "Q0572",
+      "Q0576",
+      "Q0577",
+      "Q0578",
+      "Q0580",
+      "Q0581",
+      "Q0583",
+      "Q0586",
+      "Q0587",
+      "Q0588",
+      "Q0589",
+      "Q0591",
+      "Q0592",
+      "Q0593",
+      "Q0594",
+      "Q0595",
+      "Q0596",
+      "Q0597",
+      "Q0598",
+      "Q0599"
+    ],
+    "prioritized_manual_review": [
+      "Q0245",
+      "Q0327",
+      "Q0542",
+      "Q0546",
+      "Q0548",
+      "Q0552",
+      "Q0554",
+      "Q0558",
+      "Q0560",
+      "Q0564",
+      "Q0566",
+      "Q0570",
+      "Q0572",
+      "Q0576",
+      "Q0577",
+      "Q0578",
+      "Q0580",
+      "Q0581",
+      "Q0583",
+      "Q0586",
+      "Q0587",
+      "Q0588",
+      "Q0589",
+      "Q0591",
+      "Q0592"
+    ]
+  },
+  "ratings": {
+    "A": {
+      "rating": "strong",
+      "rationale": "Sehr konsistente und sparsame Auswahl; 568/600 exakte Treffer gegen den evaluativ korrigierten Konsens. Schwäche: 32 fehlende Kontextchunks bei Abkürzungen und Paragraphenverweisen."
+    },
+    "B": {
+      "rating": "usable_with_review",
+      "rationale": "Chunk-Auswahl identisch zu A und damit grundsätzlich stark. Schwächer durch sieben falsch als direkt klassifizierte Negativbefunde und durch praktisch durchgehend 0,98–0,99 Konfidenz, auch bei unvollständigen Fällen."
+    },
+    "C": {
+      "rating": "best_overall",
+      "rationale": "596/600 exakte Treffer gegen den korrigierten Konsens und 32 eindeutige Einzelfallsiege. Vier LP-Definitionschunks sind unnötig, ansonsten ist die konservative Kontextauflösung am zuverlässigsten."
+    }
+  },
+  "overall_best_mapping": "C",
+  "consensus_recommendation": "Korrigiertes Konsens-Mapping bevorzugen; es übernimmt C in 32 Kontextfällen und A in allen übrigen Fällen.",
+  "generated_files": {
+    "mapping_comparison_summary.json": "/mnt/data/mapping_evaluation/mapping_comparison_summary.json",
+    "mapping_comparison_per_question.csv": "/mnt/data/mapping_evaluation/mapping_comparison_per_question.csv",
+    "mapping_differences_detailed.jsonl": "/mnt/data/mapping_evaluation/mapping_differences_detailed.jsonl",
+    "recommended_consensus_mapping.jsonl": "/mnt/data/mapping_evaluation/recommended_consensus_mapping.jsonl",
+    "mapping_validation_issues.csv": "/mnt/data/mapping_evaluation/mapping_validation_issues.csv",
+    "mapping_comparison_report.md": "/mnt/data/mapping_evaluation/mapping_comparison_report.md",
+    "charts": [
+      "/mnt/data/mapping_evaluation/charts/chunk_selection_overlap_patterns.png",
+      "/mnt/data/mapping_evaluation/charts/chunks_per_question_distribution.png",
+      "/mnt/data/mapping_evaluation/charts/confidence_vs_quality.png",
+      "/mnt/data/mapping_evaluation/charts/difference_causes.png",
+      "/mnt/data/mapping_evaluation/charts/error_rate_by_question_family.png",
+      "/mnt/data/mapping_evaluation/charts/exact_agreement_rates.png",
+      "/mnt/data/mapping_evaluation/charts/pairwise_jaccard_heatmap.png",
+      "/mnt/data/mapping_evaluation/charts/status_distribution.png",
+      "/mnt/data/mapping_evaluation/charts/wins_per_mapping.png"
+    ]
+  }
+}
