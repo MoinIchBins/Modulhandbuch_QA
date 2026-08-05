@@ -1,11 +1,12 @@
-
 ## TODO
 
 ### P0 — DataSet
 
-- [ ] change questions to only answer PO
-- [ ] segment PO into chunks 
+- [x] change questions to only answer PO
+- [x] segment PO into chunks   
 - [ ] create question to chunk mapping
+
+
 
 ### P1 — Evaluate Data
 
@@ -13,6 +14,8 @@
 - [ ] add hard negatives and unanswerable questions
 - [ ] Add chunk order, token count, content hash, and schema version.
 - [ ] Add relevance grades and primary/supporting evidence distinctions.
+
+
 
 ### P2 — Required for maintainability and reproducibility
 
@@ -68,3 +71,4 @@ Fix canonical schema
 → evaluate retrieval
 → add structured/narrative answer layer
 ```
+
