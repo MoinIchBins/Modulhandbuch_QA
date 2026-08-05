@@ -4,7 +4,7 @@
 
 - [x] change questions to only answer PO
 - [x] segment PO into chunks   
-- [ ] create question to chunk mapping
+- [x] create question to chunk mapping
 
 
 
