@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSONL Chunk Browser</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div>
+        <h1>Chunk Browser</h1>
+        <p class="subtitle">Review retrieval chunks and copy exact chunk IDs.</p>
+      </div>
+      <div id="load-status" class="load-status" role="status">Loading chunks.jsonl…</div>
+    </div>
+  </header>
+
+  <div class="toolbar-wrap">
+    <nav class="toolbar" aria-label="Chunk browser controls">
+      <div class="search-group">
+        <label for="search-input">Search chunks</label>
+        <div class="search-row">
+          <input
+            id="search-input"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Search ID or chunk text"
+            aria-describedby="search-help"
+          >
+          <button id="clear-search" type="button">Clear</button>
+        </div>
+        <span id="search-help" class="visually-hidden">Search is case-insensitive and updates as you type.</span>
+      </div>
+
+      <div class="navigation-group" aria-label="Visible chunk navigation">
+        <button id="previous-chunk" type="button">Previous</button>
+        <button id="next-chunk" type="button">Next</button>
+      </div>
+
+      <div class="selection-group">
+        <span class="selection-label">Selected chunk</span>
+        <output id="selected-chunk-id" class="selected-id" aria-live="polite">None</output>
+        <button id="copy-selected" type="button" disabled>Copy selected ID</button>
+      </div>
+
+      <div class="count-group" aria-live="polite">
+        <span id="match-count">0 chunks</span>
+      </div>
+    </nav>
+  </div>
+
+  <main class="page-shell">
+    <section id="notice-area" class="notice-area" aria-label="Load and data notices" hidden>
+      <div id="warning-message" class="notice warning" role="status" hidden></div>
+      <details id="error-summary" class="notice error-summary" hidden>
+        <summary>Dataset issues</summary>
+        <div id="error-summary-content"></div>
+      </details>
+    </section>
+
+    <section aria-labelledby="chunks-heading">
+      <h2 id="chunks-heading" class="visually-hidden">Retrieval chunks</h2>
+      <div
+        id="chunk-list"
+        class="chunk-list"
+        role="listbox"
+        aria-label="Retrieval chunks"
+        aria-multiselectable="false"
+      ></div>
+      <p id="empty-state" class="empty-state" hidden>No chunks match the current search.</p>
+    </section>
+
+    <details id="diagnostics" class="diagnostics" hidden>
+      <summary>Developer diagnostics</summary>
+      <pre id="diagnostics-output"></pre>
+    </details>
+  </main>
+
+  <div id="live-region" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
