@@ -1,6 +1,5 @@
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 class TextEmbedder:
     """Embed questions and chunks using one of three embedding methods."""
@@ -46,13 +45,21 @@ class TextEmbedder:
         self.vectorizer = None
 
         if self.method == "TF_IDF":
+            from sklearn.feature_extraction.text import TfidfVectorizer
             self.vectorizer = TfidfVectorizer(
                 lowercase=True,
                 ngram_range=(1, 3),
             )
             self.vectorizer.fit(chunk_texts)
-
         else:
+            # this makes the import not necessary for TF-IDF as the package is quite big
+            try:
+                from sentence_transformers import SentenceTransformer
+            except ModuleNotFoundError as error:
+                raise ModuleNotFoundError(
+                    "Neural embeddings require the package sentence-transformers."
+                ) from error
+
             self.model_name_or_path = (
                 model_name_or_path or self.default_models[self.method]
             )
