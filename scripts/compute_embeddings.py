@@ -76,7 +76,7 @@ chunk_ids = [
 ]
 
 chunk_texts = [
-    str(row["text"])
+    str(row["chunk_text"])
     for row in chunk_rows
 ]
 

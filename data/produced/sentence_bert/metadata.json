@@ -1,0 +1,16 @@
+{
+  "embedding_method": "SENTENCE_BERT",
+  "model_name": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "questions_file": "data/processed/qSet_PO.jsonl",
+  "chunks_file": "data/processed/PO_25_CL_chunks.jsonl",
+  "number_of_questions": 600,
+  "number_of_chunks": 201,
+  "question_embeddings_shape": [
+    600,
+    384
+  ],
+  "chunk_embeddings_shape": [
+    201,
+    384
+  ]
+}
