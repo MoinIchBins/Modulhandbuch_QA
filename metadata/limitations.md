@@ -61,3 +61,5 @@
    - No chunk exceeds 220 words or the hard 350-word/500-token limit  
    - Minor normalization, naming-variant, template-similarity, and source-discrepancy issues remain
 
+#### Limitation:
+Evaluation and coverage metrics are specific to this dataset and do **not** generalize to unseen documents. The mapping and statistics are likely to be reliable for documents highly similar to those included here (e.g., other versions or variants of the same source), but their validity for substantially different data is not guaranteed.
