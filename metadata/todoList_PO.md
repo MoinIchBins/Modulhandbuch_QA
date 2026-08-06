@@ -2,9 +2,12 @@
 
 ### P1 — ops
 
-- [ ] add models for textEmbedder (locally or api)
-- [ ] make class for similarity measures
-- [ ] make class for selector
+- [x] add models for textEmbedder (locally or api)
+  - [x] tf-idf baseline
+  - [x] sentence bert
+  - [x] retrieval-trained bi-encoder
+- [x] make class for similarity measures
+- [x] make class for selector
 - [ ] make framework that
   - [ ] splits data
   - [ ] runs through train with various parameters
@@ -16,6 +19,8 @@
 
 - [ ] add hard negatives and unanswerable questions
 - [ ] Add relevance grades and primary/supporting evidence distinctions.
+
+
 
 ### P2 —  maintainability and reproducibility
 
