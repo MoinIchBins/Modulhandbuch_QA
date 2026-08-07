@@ -68,7 +68,7 @@ import pandas as pd
 # Active settings: dev_top_k_threshold_v5
 # ------------------------------------------------------------
 RESULTS_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_relative_margin_v1"
+    "data/produced_v2/selector_experiments/dev_relative_margin_v2"
 )
 
 OUTPUT_DIR = RESULTS_DIR / "comparison"
@@ -107,9 +107,8 @@ BEST_CONFIG_ASCENDING = [
     True,
 ]
 
-# Combined representation plot is not useful yet because
-# both k=1 and k=2 are being compared.
-PLOT_ALL_REPRESENTATIONS = False
+# Combined representation plot?
+PLOT_ALL_REPRESENTATIONS = True
 
 COMBINED_PLOT_METRIC = "overall_f1"
 COMBINED_X_MODE = "raw"         # raw or normalized

@@ -182,6 +182,16 @@ new thresholds: take neighbours of current best and do 21 points between
             N_MARGINS,
         )
     ]
+    The region for tf-idf was increased two times due to no maximum being clear. the overall shape is quite flat and the same discrete maximum gets reached multiple times, but is way lower than previous best, so further analysis is not being done.
+
+    Relative Margin — Minimal Findings
+    Representation	Best margin	Top-k	Overall F1
+    E5	0.0025	1	0.6312
+    TF-IDF	0.235	1	0.5702
+    Sentence-BERT	0.005	1	0.3866
+    Findings: E5 clearly performs best under relative_margin, followed by TF-IDF and Sentence-BERT, preserving the established representation ranking E5 > TF-IDF > Sentence-BERT.
+    For all three representations, top-1 is the preferred configuration. E5 reaches the strongest relative-margin result at 0.6312 F1, but this remains below the current development benchmark of 0.6474 from E5 + top-1 + threshold.
+    TF-IDF shows a broad, flat margin landscape with the same maximum occurring at several margins, so further refinement is not worthwhile. Overall, relative margin does not outperform absolute thresholding in the current setup.
 
 7. Selector Performance Overview
 ## Selector Performance Overview
@@ -191,3 +201,4 @@ Across all selector types, **E5 consistently achieved the strongest performance*
 Pure **threshold selection** performed worse overall, mainly because it had to balance retrieval and abstention without limiting the number of selected chunks. Its best overall F1 scores were approximately **0.494** for E5, **0.487** for TF-IDF, and **0.358** for Sentence-BERT.
 
 The combined **top-k + threshold** selector performed best overall. With (k=1) and representation-specific thresholds, E5 reached **0.647 F1**, TF-IDF **0.567**, and Sentence-BERT **0.399**. The improvement over pure top-1 selection shows that adding a threshold can improve performance by allowing the system to abstain on low-confidence questions while retaining the strong ranking behavior of top-1 retrieval.
+

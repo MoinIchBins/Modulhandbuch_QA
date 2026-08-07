@@ -18,7 +18,7 @@
   - [x] top k
   - [x] threshold
   - [x] top k absolute threshold
-  - [ ] top k relative threshold
+  - [x] top k relative threshold
 
 ### P1 — optional data
 

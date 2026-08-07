@@ -57,16 +57,14 @@ REPRESENTATIONS = {
 
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_relative_margin_v1"
+    "data/produced_v2/selector_experiments/dev_relative_margin_temp"
 )
 
-TOP_K_VALUES = [1, 2]
-N_MARGINS = 21
+TOP_K_VALUES = [1]
+N_MARGINS = 17
 
 MARGIN_REGIONS = {
-    "e5": (0.0, 0.025),
-    "tfidf": (0.15, 0.20),
-    "sentence_bert": (0.0, 0.025),
+    "tfidf": (0.0, 0.4),
 }
 
 EXPERIMENTS = [
