@@ -1,0 +1,2849 @@
+.
+├── README.md
+├── data
+│   ├── non_current
+│   │   ├── old
+│   │   │   ├── README.md
+│   │   │   ├── analysis_output
+│   │   │   │   ├── chunk_diagnostics.csv
+│   │   │   │   ├── chunk_length_statistics.csv
+│   │   │   │   ├── chunk_type_distribution.csv
+│   │   │   │   ├── ects_distribution.csv
+│   │   │   │   ├── metadata_completeness.csv
+│   │   │   │   ├── module_diagnostics.csv
+│   │   │   │   ├── module_section_coverage.csv
+│   │   │   │   ├── modules_per_module_group.csv
+│   │   │   │   ├── modules_per_program.csv
+│   │   │   │   ├── modules_per_semester.csv
+│   │   │   │   ├── plots
+│   │   │   │   │   ├── chunk_length_by_section_type_boxplot.png
+│   │   │   │   │   ├── chunk_token_length_histogram.png
+│   │   │   │   │   ├── chunk_word_length_histogram.png
+│   │   │   │   │   ├── chunks_per_module.png
+│   │   │   │   │   ├── chunks_per_section_type.png
+│   │   │   │   │   ├── ects_distribution.png
+│   │   │   │   │   ├── ects_vs_module_words.png
+│   │   │   │   │   ├── metadata_missingness.png
+│   │   │   │   │   ├── module_words_vs_chunks.png
+│   │   │   │   │   ├── modules_per_module_group.png
+│   │   │   │   │   ├── modules_per_semester.png
+│   │   │   │   │   ├── retrieval_priority_distribution.png
+│   │   │   │   │   ├── table_confidence_distribution.png
+│   │   │   │   │   └── table_rows_distribution.png
+│   │   │   │   ├── rag_dataset_analysis_report.md
+│   │   │   │   ├── rag_readiness_summary.csv
+│   │   │   │   ├── retrieval_priority_distribution.csv
+│   │   │   │   ├── section_type_distribution.csv
+│   │   │   │   ├── summary_overview.csv
+│   │   │   │   ├── table_confidence_distribution.csv
+│   │   │   │   ├── table_diagnostics.csv
+│   │   │   │   ├── token_bucket_distribution.csv
+│   │   │   │   └── top_keywords.csv
+│   │   │   ├── analyze_dataset.py
+│   │   │   ├── assessment_QA_pairs.txt
+│   │   │   ├── document_metadata.json
+│   │   │   ├── modules.json
+│   │   │   ├── quality_control_report.json
+│   │   │   ├── question_answer_mapping.json
+│   │   │   ├── questions_without_answers.json
+│   │   │   ├── retrieval_chunks.jsonl
+│   │   │   ├── tables.json
+│   │   │   └── todoList_MH.md
+│   │   ├── raw
+│   │   │   ├── Beispiel_Studienverlauf.pdf
+│   │   │   ├── Modulhandbuch.pdf
+│   │   │   ├── PO_25_CL.pdf
+│   │   │   ├── metadata.txt
+│   │   │   ├── module_aliases.json
+│   │   │   └── questions.json
+│   │   └── split_before_non_answerable
+│   │       ├── development_question_ids.json
+│   │       ├── gold_with_split.jsonl
+│   │       ├── split_groups.json
+│   │       ├── test_question_ids.json
+│   │       └── validation_question_ids.json
+│   ├── processed
+│   │   ├── PO_25_CL_chunks.jsonl
+│   │   ├── qSet_PO.jsonl
+│   │   ├── qamappings
+│   │   │   ├── full_mapping_evaluation
+│   │   │   │   ├── charts
+│   │   │   │   │   ├── chunk_selection_overlap_patterns.png
+│   │   │   │   │   ├── chunks_per_question_distribution.png
+│   │   │   │   │   ├── confidence_vs_quality.png
+│   │   │   │   │   ├── difference_causes.png
+│   │   │   │   │   ├── error_rate_by_question_family.png
+│   │   │   │   │   ├── exact_agreement_rates.png
+│   │   │   │   │   ├── pairwise_jaccard_heatmap.png
+│   │   │   │   │   ├── status_distribution.png
+│   │   │   │   │   └── wins_per_mapping.png
+│   │   │   │   ├── mapping_comparison_per_question.csv
+│   │   │   │   ├── mapping_comparison_report.md
+│   │   │   │   ├── mapping_comparison_summary.json
+│   │   │   │   ├── mapping_differences_detailed.jsonl
+│   │   │   │   ├── mapping_validation_issues.csv
+│   │   │   │   └── recommended_consensus_mapping.jsonl
+│   │   │   ├── qa_mapping_merged.jsonl
+│   │   │   ├── qa_mapping_non_answerable.jsonl
+│   │   │   ├── qa_mapping_test.jsonl
+│   │   │   ├── qa_mappings_v1-1.jsonl
+│   │   │   ├── qa_mappings_v1.jsonl
+│   │   │   ├── qa_mappings_v2.jsonl
+│   │   │   └── readme.md
+│   │   └── readme.md
+│   ├── produced_v1
+│   │   ├── embeddings
+│   │   │   ├── retrieval_bi_encoder
+│   │   │   │   ├── chunk_embeddings.npy
+│   │   │   │   ├── chunk_ids.json
+│   │   │   │   ├── metadata.json
+│   │   │   │   ├── question_embeddings.npy
+│   │   │   │   └── question_ids.json
+│   │   │   ├── sentence_bert
+│   │   │   │   ├── chunk_embeddings.npy
+│   │   │   │   ├── chunk_ids.json
+│   │   │   │   ├── metadata.json
+│   │   │   │   ├── question_embeddings.npy
+│   │   │   │   └── question_ids.json
+│   │   │   └── tf_idf
+│   │   │       ├── chunk_embeddings.npy
+│   │   │       ├── chunk_ids.json
+│   │   │       ├── metadata.json
+│   │   │       ├── question_embeddings.npy
+│   │   │       ├── question_ids.json
+│   │   │       └── tfidf_vectorizer.joblib
+│   │   └── similarity_matrices
+│   │       ├── retrieval_bi_encoder
+│   │       │   ├── chunk_ids.json
+│   │       │   ├── cosine_similarity_matrix.npy
+│   │       │   ├── dot_similarity_matrix.npy
+│   │       │   ├── euclidean_similarity_matrix.npy
+│   │       │   ├── metadata.json
+│   │       │   └── question_ids.json
+│   │       ├── sentence_bert
+│   │       │   ├── chunk_ids.json
+│   │       │   ├── cosine_similarity_matrix.npy
+│   │       │   ├── dot_similarity_matrix.npy
+│   │       │   ├── euclidean_similarity_matrix.npy
+│   │       │   ├── metadata.json
+│   │       │   └── question_ids.json
+│   │       └── tf_idf
+│   │           ├── chunk_ids.json
+│   │           ├── cosine_similarity_matrix.npy
+│   │           ├── dot_similarity_matrix.npy
+│   │           ├── euclidean_similarity_matrix.npy
+│   │           ├── metadata.json
+│   │           └── question_ids.json
+│   ├── produced_v2
+│   │   ├── embeddings
+│   │   │   ├── retrieval_bi_encoder
+│   │   │   │   ├── chunk_embeddings.npy
+│   │   │   │   ├── chunk_ids.json
+│   │   │   │   ├── metadata.json
+│   │   │   │   ├── question_embeddings.npy
+│   │   │   │   └── question_ids.json
+│   │   │   ├── sentence_bert
+│   │   │   │   ├── chunk_embeddings.npy
+│   │   │   │   ├── chunk_ids.json
+│   │   │   │   ├── metadata.json
+│   │   │   │   ├── question_embeddings.npy
+│   │   │   │   └── question_ids.json
+│   │   │   └── tf_idf
+│   │   │       ├── chunk_embeddings.npy
+│   │   │       ├── chunk_ids.json
+│   │   │       ├── metadata.json
+│   │   │       ├── question_embeddings.npy
+│   │   │       ├── question_ids.json
+│   │   │       └── tfidf_vectorizer.joblib
+│   │   ├── frozen
+│   │   │   ├── PO_25_CL_chunks.jsonl
+│   │   │   ├── qSet_PO.jsonl
+│   │   │   ├── qa_mapping_merged.jsonl
+│   │   │   └── split
+│   │   │       ├── development_question_ids.json
+│   │   │       ├── gold_with_split.jsonl
+│   │   │       ├── split_groups.json
+│   │   │       ├── test_question_ids.json
+│   │   │       └── validation_question_ids.json
+│   │   ├── selector_experiments
+│   │   │   ├── dev_consolidated
+│   │   │   │   ├── best_configs.csv
+│   │   │   │   ├── dev_f1_overview.png
+│   │   │   │   ├── dev_full_ranking.png
+│   │   │   │   ├── dev_winners.png
+│   │   │   │   ├── overall_ranking.csv
+│   │   │   │   └── selector_winners.csv
+│   │   │   ├── dev_relative_margin_v1
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_relative_margin_metrics.png
+│   │   │   │   │   ├── relative_margin_best_configs.csv
+│   │   │   │   │   ├── relative_margin_best_f1_comparison.png
+│   │   │   │   │   ├── relative_margin_comparison.csv
+│   │   │   │   │   ├── sentence_bert_relative_margin_metrics.png
+│   │   │   │   │   └── tfidf_relative_margin_metrics.png
+│   │   │   │   ├── e5_relative_margin_1_0.00125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.00125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0025_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0025_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.00375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.00375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.005_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.005_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.00625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.00625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0075_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0075_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.00875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.00875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.015_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.015_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0175_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0175_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.02125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.02125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0225_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0225_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.02375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.02375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.025_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.025_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.02_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.02_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.00125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.00125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.0025_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.0025_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.00375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.00375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.005_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.005_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.00625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.00625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.0075_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.0075_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.00875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.00875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.01125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.01125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.0125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.0125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.01375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.01375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.015_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.015_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.01625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.01625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.0175_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.0175_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.01875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.01875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.01_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.01_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.02125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.02125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.0225_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.0225_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.02375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.02375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.025_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.025_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.02_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.02_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_2_0.0_evaluation.json
+│   │   │   │   ├── e5_relative_margin_2_0.0_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0025_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.005_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.005_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0075_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0075_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.015_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.015_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0175_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0175_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0225_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0225_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.025_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.00125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.00125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0025_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.00375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.00375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.005_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.005_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.00625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.00625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0075_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0075_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.00875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.00875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.015_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.015_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0175_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0175_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.01_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.02125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.02125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0225_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0225_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.02375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.02375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.025_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.02_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.02_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_2_0.0_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1525_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1525_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.155_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.155_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1575_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1575_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.15_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.15_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1625_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1625_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.165_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.165_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1675_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1675_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.16_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.16_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.17250000000000001_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.17250000000000001_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.175_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.175_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1775_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1775_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.17_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.17_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1825_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1825_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.185_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.185_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1875_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1875_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.18_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.18_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1925_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1925_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.195_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.195_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1975_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1975_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.19_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.19_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.2_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.2_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1525_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1525_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.155_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.155_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1575_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1575_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.15_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.15_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1625_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1625_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.165_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.165_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1675_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1675_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.16_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.16_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.17250000000000001_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.17250000000000001_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.175_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.175_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1775_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1775_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.17_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.17_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1825_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1825_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.185_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.185_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1875_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1875_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.18_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.18_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1925_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1925_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.195_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.195_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.1975_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.1975_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.19_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_2_0.19_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_2_0.2_evaluation.json
+│   │   │   │   └── tfidf_relative_margin_2_0.2_predictions.jsonl
+│   │   │   ├── dev_relative_margin_v2
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_relative_margin_metrics.png
+│   │   │   │   │   ├── relative_margin_best_configs.csv
+│   │   │   │   │   ├── relative_margin_best_f1_comparison.png
+│   │   │   │   │   ├── relative_margin_comparison.csv
+│   │   │   │   │   ├── relative_margin_overall_f1_all_representations.png
+│   │   │   │   │   ├── sentence_bert_relative_margin_metrics.png
+│   │   │   │   │   └── tfidf_relative_margin_metrics.png
+│   │   │   │   ├── e5_relative_margin_1_0.00125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.00125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0025_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0025_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.00375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.00375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.005_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.005_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.00625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.00625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0075_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0075_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.00875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.00875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.015_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.015_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0175_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0175_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.01_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.01_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.02125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.02125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0225_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0225_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.02375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.02375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.025_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.025_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.02625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.02625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0275_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0275_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.02875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.02875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.02_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.02_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.03125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.03125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0325_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0325_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.03375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.03375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.035_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.035_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.03625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.03625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0375_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0375_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.03875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.03875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.03_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.03_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.04125_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.04125_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0425_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0425_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.043750000000000004_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.043750000000000004_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.045_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.045_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.04625_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.04625_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0475_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0475_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.04875_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.04875_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.04_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.04_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.05_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.05_predictions.jsonl
+│   │   │   │   ├── e5_relative_margin_1_0.0_evaluation.json
+│   │   │   │   ├── e5_relative_margin_1_0.0_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0025_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.005_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.005_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0075_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0075_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.00875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.015_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.015_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0175_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0175_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.01_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0225_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0225_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.025_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0275_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0275_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.02_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0325_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0325_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.035_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.035_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0375_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.03_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.04125_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.04125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0425_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0425_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.043750000000000004_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.043750000000000004_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.045_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.045_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.04625_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.04625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0475_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.04875_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.04875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.04_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.04_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.05_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.05_predictions.jsonl
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0_evaluation.json
+│   │   │   │   ├── sentence_bert_relative_margin_1_0.0_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.025_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.025_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.05_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.05_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.07500000000000001_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.07500000000000001_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.075_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.075_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.08499999999999999_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.08499999999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.08_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.08_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.095_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.095_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.09_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.09_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.0_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.0_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.105_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.105_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.11499999999999999_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.11499999999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.11_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.11_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.125_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.125_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1275_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1275_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.12_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.12_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1325_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1325_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.135_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.135_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1375_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1375_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.13_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.13_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.14250000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.14250000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.14500000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.14500000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.145_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.145_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1475_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1475_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.14_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.14_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.15000000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.15000000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1525_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1525_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.155_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.155_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1575_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1575_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.15_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.15_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1625_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1625_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.16499999999999998_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.16499999999999998_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.165_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.165_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1675_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1675_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.16999999999999998_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.16999999999999998_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.16_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.16_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1725_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1725_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.17500000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.17500000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.175_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.175_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1775_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1775_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1825_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1825_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.185_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.185_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1875_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1875_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.18_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.18_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1925_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1925_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.195_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.195_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1975_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1975_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.19_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.19_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.1_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.1_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.2025_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.2025_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.20500000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.20500000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.20750000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.20750000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.21000000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.21000000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.21250000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.21250000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.21500000000000002_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.21500000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.215_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.215_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.2175_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.2175_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.21999999999999997_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.21999999999999997_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.2225_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.2225_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.22499999999999998_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.22499999999999998_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.225_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.225_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.22999999999999998_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.22999999999999998_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.22_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.22_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.235_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.235_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.245_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.245_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.24_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.24_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.255_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.255_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.25_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.25_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.265_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.265_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.26_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.26_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.275_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.275_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.27_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.27_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.2_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.2_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.30000000000000004_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.30000000000000004_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.325_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.325_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.35000000000000003_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.35000000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.375_evaluation.json
+│   │   │   │   ├── tfidf_relative_margin_1_0.375_predictions.jsonl
+│   │   │   │   ├── tfidf_relative_margin_1_0.4_evaluation.json
+│   │   │   │   └── tfidf_relative_margin_1_0.4_predictions.jsonl
+│   │   │   ├── dev_threshold
+│   │   │   │   └── comparison
+│   │   │   ├── dev_threshold_v1
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_threshold_metrics.png
+│   │   │   │   │   ├── sentence_bert_threshold_metrics.png
+│   │   │   │   │   ├── tfidf_threshold_metrics.png
+│   │   │   │   │   ├── threshold_best_configs.csv
+│   │   │   │   │   ├── threshold_comparison.csv
+│   │   │   │   │   └── threshold_f1_all_representations.png
+│   │   │   │   ├── e5_threshold_0.8331_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8331_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8397749999999999_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8397749999999999_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8464499999999999_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8464499999999999_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8531249999999999_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8531249999999999_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8597999999999999_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8597999999999999_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.866475_evaluation.json
+│   │   │   │   ├── e5_threshold_0.866475_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.87315_evaluation.json
+│   │   │   │   ├── e5_threshold_0.87315_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.879825_evaluation.json
+│   │   │   │   ├── e5_threshold_0.879825_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8865_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8865_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.474_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.474_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.5096875_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.5096875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.5453749999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.5453749999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.5810624999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.5810624999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.6167499999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.6167499999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.6524375_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.6524375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.688125_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.688125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.7238125_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.7238125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.7595_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.7595_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_threshold_0.0591_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.0591_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.1162375_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.1162375_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.173375_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.173375_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.2305125_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.2305125_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.28765_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.28765_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.34478749999999997_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.34478749999999997_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.401925_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.401925_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.4590625_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.4590625_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.5162_evaluation.json
+│   │   │   │   └── tfidf_threshold_0.5162_predictions.jsonl
+│   │   │   ├── dev_threshold_v2
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_threshold_metrics.png
+│   │   │   │   │   ├── sentence_bert_threshold_metrics.png
+│   │   │   │   │   ├── tfidf_threshold_metrics.png
+│   │   │   │   │   ├── threshold_best_configs.csv
+│   │   │   │   │   ├── threshold_comparison.csv
+│   │   │   │   │   └── threshold_f1_all_representations.png
+│   │   │   │   ├── e5_threshold_0.8598_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8598_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8604675_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8604675_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.861135_evaluation.json
+│   │   │   │   ├── e5_threshold_0.861135_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8618025_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8618025_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.86247_evaluation.json
+│   │   │   │   ├── e5_threshold_0.86247_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8631375_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8631375_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.863805_evaluation.json
+│   │   │   │   ├── e5_threshold_0.863805_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8644725_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8644725_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.86514_evaluation.json
+│   │   │   │   ├── e5_threshold_0.86514_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8658075_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8658075_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.866475_evaluation.json
+│   │   │   │   ├── e5_threshold_0.866475_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8671425_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8671425_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.86781_evaluation.json
+│   │   │   │   ├── e5_threshold_0.86781_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8684775_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8684775_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.869145_evaluation.json
+│   │   │   │   ├── e5_threshold_0.869145_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8698125_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8698125_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.87048_evaluation.json
+│   │   │   │   ├── e5_threshold_0.87048_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8711475_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8711475_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.871815_evaluation.json
+│   │   │   │   ├── e5_threshold_0.871815_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.8724824999999999_evaluation.json
+│   │   │   │   ├── e5_threshold_0.8724824999999999_predictions.jsonl
+│   │   │   │   ├── e5_threshold_0.87315_evaluation.json
+│   │   │   │   ├── e5_threshold_0.87315_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.6524375_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.6524375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.65600625_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.65600625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.659575_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.659575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.66314375_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.66314375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.6667125_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.6667125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.6702812499999999_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.6702812499999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.67385_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.67385_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.67741875_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.67741875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.6809875_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.6809875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.68455625_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.68455625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.688125_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.688125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.69169375_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.69169375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.6952625_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.6952625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.69883125_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.69883125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.7024_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.7024_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.70596875_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.70596875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.7095374999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.7095374999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.7131062499999999_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.7131062499999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.716675_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.716675_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.72024375_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.72024375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_threshold_0.7238125_evaluation.json
+│   │   │   │   ├── sentence_bert_threshold_0.7238125_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_threshold_0.0591_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.0591_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.06481375_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.06481375_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.07052749999999999_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.07052749999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.07624125_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.07624125_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.081955_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.081955_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.08766875_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.08766875_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.09338250000000001_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.09338250000000001_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.09909625_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.09909625_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.10481_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.10481_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.11052375_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.11052375_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.1162375_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.1162375_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.12195125_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.12195125_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.127665_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.127665_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.13337875_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.13337875_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.1390925_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.1390925_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.14480625_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.14480625_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.15052_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.15052_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.15623375_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.15623375_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.16194750000000002_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.16194750000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.16766124999999998_evaluation.json
+│   │   │   │   ├── tfidf_threshold_0.16766124999999998_predictions.jsonl
+│   │   │   │   ├── tfidf_threshold_0.173375_evaluation.json
+│   │   │   │   └── tfidf_threshold_0.173375_predictions.jsonl
+│   │   │   ├── dev_top_k_threshold_v1
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_top_k_threshold_metrics.png
+│   │   │   │   │   ├── sentence_bert_top_k_threshold_metrics.png
+│   │   │   │   │   ├── tfidf_top_k_threshold_metrics.png
+│   │   │   │   │   ├── top_k_threshold_best_configs.csv
+│   │   │   │   │   ├── top_k_threshold_best_f1_comparison.png
+│   │   │   │   │   └── top_k_threshold_comparison.csv
+│   │   │   │   ├── e5_top_k_threshold_1_0.8164_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8164_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8198814285714285_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8198814285714285_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8233628571428572_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8233628571428572_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8268442857142857_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8268442857142857_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8303257142857143_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8303257142857143_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8338071428571429_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8338071428571429_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8372885714285715_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8372885714285715_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.84077_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.84077_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8442514285714285_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8442514285714285_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8477328571428572_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8477328571428572_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8512142857142857_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8512142857142857_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8546957142857143_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8546957142857143_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8581771428571429_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8581771428571429_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8616585714285715_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8616585714285715_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.86514_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.86514_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.86547375_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.86547375_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8658075000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8658075000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.86614125_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.86614125_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.866475_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.866475_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.86680875_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.86680875_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8671424999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8671424999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.86747625_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.86747625_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.86781_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.86781_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.86514_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.86514_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.86547375_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.86547375_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8658075000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8658075000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.86614125_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.86614125_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.866475_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.866475_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.86680875_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.86680875_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8671424999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8671424999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.86747625_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.86747625_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.86781_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.86781_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.86514_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.86514_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.86547375_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.86547375_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8658075000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8658075000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.86614125_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.86614125_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.866475_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.866475_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.86680875_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.86680875_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8671424999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8671424999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.86747625_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.86747625_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.86781_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.86781_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7024_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7024_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.704184375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.704184375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.70596875_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.70596875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.707753125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.707753125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7095374999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7095374999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.711321875_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.711321875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7131062499999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7131062499999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.714890625_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.714890625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.716675_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.716675_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7024_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7024_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.704184375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.704184375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.70596875_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.70596875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.707753125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.707753125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7095374999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7095374999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.711321875_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.711321875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7131062499999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7131062499999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.714890625_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.714890625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.716675_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.716675_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7024_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7024_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.704184375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.704184375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.70596875_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.70596875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.707753125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.707753125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7095374999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7095374999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.711321875_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.711321875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7131062499999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7131062499999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.714890625_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.714890625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.716675_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.716675_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1162375_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1162375_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.119094375_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.119094375_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.12195125_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.12195125_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.12480812499999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.12480812499999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.127665_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.127665_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.130521875_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.130521875_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.13337875_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.13337875_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.136235625_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.136235625_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1390925_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1390925_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.1162375_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.1162375_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.119094375_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.119094375_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.12195125_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.12195125_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.12480812499999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.12480812499999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.127665_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.127665_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.130521875_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.130521875_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.13337875_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.13337875_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.136235625_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.136235625_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.1390925_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.1390925_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.1162375_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.1162375_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.119094375_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.119094375_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.12195125_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.12195125_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.12480812499999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.12480812499999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.127665_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.127665_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.130521875_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.130521875_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.13337875_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.13337875_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.136235625_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.136235625_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.1390925_evaluation.json
+│   │   │   │   └── tfidf_top_k_threshold_3_0.1390925_predictions.jsonl
+│   │   │   ├── dev_top_k_threshold_v2
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_top_k_threshold_metrics.png
+│   │   │   │   │   ├── sentence_bert_top_k_threshold_metrics.png
+│   │   │   │   │   ├── tfidf_top_k_threshold_metrics.png
+│   │   │   │   │   ├── top_k_threshold_best_configs.csv
+│   │   │   │   │   ├── top_k_threshold_best_f1_comparison.png
+│   │   │   │   │   └── top_k_threshold_comparison.csv
+│   │   │   │   ├── e5_top_k_threshold_1_0.805_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.805_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8150000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8150000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.81_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.81_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8200000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8200000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8250000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8250000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8300000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8300000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8350000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8350000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8400000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8400000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8450000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8450000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8500000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8500000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.855_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.855_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.865_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.865_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.86_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.86_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.875_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.875_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.87_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.87_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.885_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.885_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.88_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.88_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.895_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.895_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.89_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.89_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.9_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.9_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.805_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.805_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8150000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8150000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.81_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.81_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8200000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8200000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8250000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8250000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8300000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8300000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8350000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8350000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8400000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8400000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8450000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8450000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8500000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8500000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.855_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.855_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.865_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.865_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.86_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.86_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.875_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.875_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.87_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.87_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.885_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.885_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.88_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.88_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.895_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.895_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.89_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.89_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.9_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.9_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.805_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.805_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8150000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8150000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.81_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.81_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8200000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8200000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8250000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8250000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8300000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8300000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8350000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8350000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8400000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8400000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8450000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8450000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8500000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8500000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.855_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.855_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.865_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.865_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.86_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.86_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.875_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.875_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.87_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.87_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.885_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.885_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.88_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.88_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.895_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.895_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.89_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.89_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.9_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.9_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.45_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.45_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.4675_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.4675_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.485_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.485_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5025000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5025000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.52_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.52_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.555_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.555_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5725_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5725_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5900000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5900000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6075_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6075_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.625_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6425000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6425000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.66_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.66_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6775_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6775_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6950000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6950000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.73_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.73_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7475_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7650000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7650000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.8_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.8_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.45_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.45_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.4675_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.4675_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.485_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.485_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5025000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5025000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.52_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.52_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.555_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.555_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5725_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5725_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5900000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5900000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6075_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6075_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.625_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6425000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6425000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.66_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.66_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6775_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6775_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6950000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6950000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.73_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.73_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7475_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7650000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7650000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.8_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.8_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.45_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.45_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.4675_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.4675_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.485_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.485_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5025000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5025000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.52_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.52_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.555_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.555_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5725_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5725_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5900000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5900000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6075_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6075_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.625_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6425000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6425000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.66_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.66_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6775_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6775_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6950000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6950000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.73_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.73_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7475_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7650000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7650000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.8_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.8_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.04_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.04_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0655_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0655_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.091_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.091_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.11650000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.11650000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.14200000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.14200000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1675_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1675_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.19300000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.19300000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.21850000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.21850000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.24400000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.24400000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.2695_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.2695_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.295_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.295_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3205_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3205_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.34600000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.34600000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3715_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3715_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.397_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.397_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.4225_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.4225_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.448_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.448_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.47350000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.47350000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.499_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.499_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.5245000000000001_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.5245000000000001_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.55_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.55_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.04_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.04_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.0655_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.0655_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.091_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.091_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.11650000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.11650000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.14200000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.14200000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.1675_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.1675_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.19300000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.19300000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.21850000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.21850000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.24400000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.24400000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.2695_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.2695_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.295_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.295_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3205_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3205_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.34600000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.34600000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3715_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3715_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.397_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.397_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.4225_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.4225_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.448_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.448_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.47350000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.47350000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.499_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.499_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.5245000000000001_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.5245000000000001_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.55_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.55_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.04_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.04_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.0655_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.0655_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.091_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.091_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.11650000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.11650000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.14200000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.14200000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.1675_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.1675_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.19300000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.19300000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.21850000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.21850000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.24400000000000002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.24400000000000002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.2695_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.2695_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.295_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.295_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.3205_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.3205_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.34600000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.34600000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.3715_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.3715_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.397_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.397_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.4225_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.4225_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.448_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.448_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.47350000000000003_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.47350000000000003_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.499_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.499_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.5245000000000001_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.5245000000000001_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.55_evaluation.json
+│   │   │   │   └── tfidf_top_k_threshold_3_0.55_predictions.jsonl
+│   │   │   ├── dev_top_k_threshold_v3
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_top_k_threshold_metrics.png
+│   │   │   │   │   ├── sentence_bert_top_k_threshold_metrics.png
+│   │   │   │   │   ├── tfidf_top_k_threshold_metrics.png
+│   │   │   │   │   ├── top_k_threshold_best_configs.csv
+│   │   │   │   │   ├── top_k_threshold_best_f1_comparison.png
+│   │   │   │   │   └── top_k_threshold_comparison.csv
+│   │   │   │   ├── e5_top_k_threshold_1_0.8164130449295044_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8164130449295044_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8190669193863869_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8190669193863869_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8217207938432693_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8217207938432693_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8243746683001518_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8243746683001518_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8270285427570343_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8270285427570343_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8296824172139168_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8296824172139168_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8323362916707993_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8323362916707993_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8349901661276817_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8349901661276817_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8376440405845642_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8376440405845642_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8402979150414467_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8402979150414467_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8429517894983292_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8429517894983292_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8456056639552116_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8456056639552116_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8482595384120941_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8482595384120941_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8509134128689766_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8509134128689766_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8535672873258591_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8535672873258591_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8562211617827415_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8562211617827415_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.858875036239624_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.858875036239624_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8615289106965065_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8615289106965065_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.864182785153389_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.864182785153389_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8668366596102715_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8668366596102715_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8694905340671539_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8694905340671539_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8132341742515564_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8132341742515564_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8160469922423363_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8160469922423363_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8188598102331162_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8188598102331162_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8216726282238961_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8216726282238961_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8244854462146759_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8244854462146759_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8272982642054558_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8272982642054558_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8301110821962356_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8301110821962356_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8329239001870156_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8329239001870156_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8357367181777954_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8357367181777954_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8385495361685753_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8385495361685753_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8413623541593551_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8413623541593551_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.844175172150135_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.844175172150135_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.846987990140915_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.846987990140915_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8498008081316948_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8498008081316948_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8526136261224747_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8526136261224747_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8554264441132545_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8554264441132545_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8582392621040345_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8582392621040345_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8610520800948143_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8610520800948143_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8638648980855942_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8638648980855942_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.866677716076374_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.866677716076374_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8694905340671539_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8694905340671539_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.803444641828537_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.803444641828537_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8067469364404679_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8067469364404679_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8100492310523987_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8100492310523987_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8133515256643296_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8133515256643296_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8166538202762604_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8166538202762604_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8199561148881913_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8199561148881913_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8232584095001221_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8232584095001221_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.826560704112053_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.826560704112053_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8298629987239838_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8298629987239838_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8331652933359146_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8331652933359146_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8364675879478455_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8364675879478455_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8397698825597764_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8397698825597764_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8430721771717071_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8430721771717071_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.846374471783638_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.846374471783638_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8496767663955689_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8496767663955689_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8529790610074997_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8529790610074997_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8562813556194305_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8562813556194305_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8595836502313614_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8595836502313614_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8628859448432923_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8628859448432923_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.866188239455223_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.866188239455223_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8694905340671539_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8694905340671539_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.570455914735794_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.570455914735794_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5777937313914299_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5777937313914299_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5851315480470657_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5851315480470657_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5924693647027015_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5924693647027015_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5998071813583374_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5998071813583374_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6071449980139733_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6071449980139733_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6144828146696091_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6144828146696091_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6218206313252449_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6218206313252449_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6291584479808807_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6291584479808807_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6364962646365165_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6364962646365165_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6438340812921524_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6438340812921524_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6511718979477883_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6511718979477883_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6585097146034241_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6585097146034241_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6658475312590599_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6658475312590599_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6731853479146958_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6731853479146958_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6805231645703316_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6805231645703316_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6878609812259674_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6878609812259674_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6951987978816032_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6951987978816032_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7025366145372391_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7025366145372391_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.709874431192875_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.709874431192875_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7172122478485108_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7172122478485108_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5034193634986878_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5034193634986878_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.514109007716179_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.514109007716179_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.52479865193367_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.52479865193367_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5354882961511612_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5354882961511612_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5461779403686524_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5461779403686524_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5568675845861435_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5568675845861435_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5675572288036347_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5675572288036347_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5782468730211259_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5782468730211259_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.588936517238617_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.588936517238617_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5996261614561081_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5996261614561081_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6103158056735993_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6103158056735993_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6210054498910904_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6210054498910904_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6316950941085816_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6316950941085816_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6423847383260728_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6423847383260728_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6530743825435639_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6530743825435639_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6637640267610551_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6637640267610551_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6744536709785462_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6744536709785462_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6851433151960373_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6851433151960373_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6958329594135285_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6958329594135285_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7065226036310197_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7065226036310197_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7172122478485108_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7172122478485108_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.47563356757164_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.47563356757164_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.4877125015854835_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.4877125015854835_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.4997914355993271_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.4997914355993271_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5118703696131706_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5118703696131706_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5239493036270142_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5239493036270142_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5360282376408577_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5360282376408577_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5481071716547012_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5481071716547012_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5601861056685448_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5601861056685448_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5722650396823883_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5722650396823883_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5843439736962318_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5843439736962318_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5964229077100753_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5964229077100753_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.608501841723919_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.608501841723919_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6205807757377625_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6205807757377625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.632659709751606_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.632659709751606_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6447386437654495_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6447386437654495_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6568175777792931_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6568175777792931_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6688965117931367_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6688965117931367_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6809754458069802_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6809754458069802_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6930543798208237_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6930543798208237_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7051333138346673_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7051333138346673_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7172122478485108_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7172122478485108_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.09443139223183179_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.09443139223183179_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.11552139249578024_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.11552139249578024_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.13661139275972867_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.13661139275972867_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1577013930236771_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1577013930236771_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.17879139328762556_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.17879139328762556_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.199881393551574_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.199881393551574_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.22097139381552244_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.22097139381552244_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.24206139407947086_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.24206139407947086_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.26315139434341933_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.26315139434341933_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.28424139460736775_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.28424139460736775_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3053313948713162_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3053313948713162_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.32642139513526464_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.32642139513526464_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.34751139539921305_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.34751139539921305_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3686013956631615_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3686013956631615_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.38969139592710994_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.38969139592710994_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.4107813961910584_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.4107813961910584_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.43187139645500683_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.43187139645500683_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.45296139671895524_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.45296139671895524_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.4740513969829037_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.4740513969829037_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.49514139724685213_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.49514139724685213_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.5162313975108006_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.5162313975108006_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.07511165287156439_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.07511165287156439_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.0971676401035262_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.0971676401035262_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.11922362733548801_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.11922362733548801_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.1412796145674498_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.1412796145674498_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.16333560179941164_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.16333560179941164_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.18539158903137343_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.18539158903137343_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.20744757626333526_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.20744757626333526_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.22950356349529705_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.22950356349529705_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.2515595507272589_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.2515595507272589_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.27361553795922067_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.27361553795922067_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.2956715251911825_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.2956715251911825_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3177275124231443_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3177275124231443_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3397834996551061_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3397834996551061_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3618394868870679_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3618394868870679_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.38389547411902974_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.38389547411902974_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.4059514613509916_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.4059514613509916_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.42800744858295336_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.42800744858295336_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.45006343581491515_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.45006343581491515_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.472119423046877_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.472119423046877_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.4941754102788388_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.4941754102788388_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.5162313975108006_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.5162313975108006_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.05487531349184246_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.05487531349184246_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.07794311769279036_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.07794311769279036_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.10101092189373828_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.10101092189373828_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.12407872609468618_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.12407872609468618_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.1471465302956341_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.1471465302956341_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.170214334496582_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.170214334496582_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.19328213869752991_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.19328213869752991_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.21634994289847784_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.21634994289847784_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.23941774709942573_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.23941774709942573_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.2624855513003736_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.2624855513003736_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.28555335550132155_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.28555335550132155_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.30862115970226944_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.30862115970226944_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.33168896390321734_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.33168896390321734_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.35475676810416523_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.35475676810416523_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.3778245723051132_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.3778245723051132_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.4008923765060611_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.4008923765060611_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.42396018070700897_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.42396018070700897_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.44702798490795687_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.44702798490795687_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.47009578910890476_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.47009578910890476_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.4931635933098527_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.4931635933098527_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.5162313975108006_evaluation.json
+│   │   │   │   └── tfidf_top_k_threshold_3_0.5162313975108006_predictions.jsonl
+│   │   │   ├── dev_top_k_threshold_v4
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_top_k_threshold_metrics.png
+│   │   │   │   │   ├── sentence_bert_top_k_threshold_metrics.png
+│   │   │   │   │   ├── tfidf_top_k_threshold_metrics.png
+│   │   │   │   │   ├── top_k_threshold_best_configs.csv
+│   │   │   │   │   ├── top_k_threshold_best_f1_comparison.png
+│   │   │   │   │   └── top_k_threshold_comparison.csv
+│   │   │   │   ├── e5_top_k_threshold_1_0.711_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.711_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.722_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.722_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.733_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.733_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.744_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.744_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.755_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.755_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.766_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.766_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.777_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.777_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.788_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.788_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.799_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.799_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.7_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.7_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.81_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.81_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.821_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.821_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8320000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8320000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.843_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.843_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.854_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.854_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.865_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.865_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.876_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.876_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.887_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.887_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.898_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.898_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.909_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.909_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.92_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.92_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.711_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.711_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.722_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.722_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.733_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.733_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.744_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.744_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.755_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.755_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.766_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.766_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.777_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.777_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.788_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.788_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.799_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.799_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.7_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.7_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.81_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.81_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.821_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.821_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.8320000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.8320000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.843_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.843_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.854_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.854_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.865_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.865_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.876_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.876_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.887_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.887_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.898_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.898_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.909_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.909_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_2_0.92_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_2_0.92_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.711_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.711_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.722_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.722_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.733_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.733_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.744_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.744_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.755_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.755_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.766_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.766_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.777_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.777_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.788_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.788_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.799_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.799_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.7_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.7_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.81_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.81_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.821_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.821_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.8320000000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.8320000000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.843_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.843_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.854_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.854_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.865_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.865_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.876_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.876_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.887_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.887_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.898_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.898_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.909_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.909_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_3_0.92_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_3_0.92_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.3275_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.3275_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.355_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.355_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.3825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.3825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.3_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.3_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.41000000000000003_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.41000000000000003_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.4375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.4375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.465_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.465_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.49250000000000005_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.49250000000000005_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.52_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.52_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5475_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.5475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.575_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6025_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6300000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6300000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6575_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.685_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.685_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.74_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.74_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7675000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.7675000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.795_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.795_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.8225_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.8225_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.85_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.85_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.3275_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.3275_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.355_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.355_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.3825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.3825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.3_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.3_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.41000000000000003_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.41000000000000003_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.4375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.4375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.465_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.465_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.49250000000000005_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.49250000000000005_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.52_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.52_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5475_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.5475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.575_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6025_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6300000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6300000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6575_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.6575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.685_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.685_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.74_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.74_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7675000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.7675000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.795_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.795_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.8225_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.8225_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.85_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_2_0.85_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.3275_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.3275_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.355_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.355_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.3825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.3825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.3_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.3_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.41000000000000003_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.41000000000000003_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.4375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.4375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.465_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.465_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.49250000000000005_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.49250000000000005_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.52_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.52_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5475_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.5475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.575_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6025_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6300000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6300000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6575_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.6575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.685_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.685_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.74_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.74_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7675000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.7675000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.795_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.795_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.8225_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.8225_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.85_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_3_0.85_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.03_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.03_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.06_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.06_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.09_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.09_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.12_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.12_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.15_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.15_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.18_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.18_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.21_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.21_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.24_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.24_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.27_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.27_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.32999999999999996_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.32999999999999996_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.36_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.36_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.39_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.39_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.3_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.42_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.42_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.44999999999999996_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.44999999999999996_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.48_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.48_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.51_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.51_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.54_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.54_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.57_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.57_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.6_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.6_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.03_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.03_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.06_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.06_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.09_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.09_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.0_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.0_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.12_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.12_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.15_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.15_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.18_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.18_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.21_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.21_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.24_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.24_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.27_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.27_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.32999999999999996_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.32999999999999996_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.36_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.36_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.39_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.39_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.3_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.42_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.42_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.44999999999999996_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.44999999999999996_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.48_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.48_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.51_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.51_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.54_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.54_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.57_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.57_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.6_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_2_0.6_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.03_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.03_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.06_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.06_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.09_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.09_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.0_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.0_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.12_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.12_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.15_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.15_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.18_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.18_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.21_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.21_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.24_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.24_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.27_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.27_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.32999999999999996_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.32999999999999996_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.36_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.36_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.39_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.39_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.3_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.3_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.42_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.42_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.44999999999999996_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.44999999999999996_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.48_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.48_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.51_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.51_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.54_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.54_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.57_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.57_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_3_0.6_evaluation.json
+│   │   │   │   └── tfidf_top_k_threshold_3_0.6_predictions.jsonl
+│   │   │   ├── dev_top_k_threshold_v5
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_top_k_threshold_metrics.png
+│   │   │   │   │   ├── sentence_bert_top_k_threshold_metrics.png
+│   │   │   │   │   ├── tfidf_top_k_threshold_metrics.png
+│   │   │   │   │   ├── top_k_threshold_best_configs.csv
+│   │   │   │   │   ├── top_k_threshold_best_f1_comparison.png
+│   │   │   │   │   ├── top_k_threshold_comparison.csv
+│   │   │   │   │   └── top_k_threshold_overall_f1_all_representations.png
+│   │   │   │   ├── e5_top_k_threshold_1_0.821_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.821_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8220999999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8220999999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8231999999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8231999999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8242999999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8242999999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8253999999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8253999999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8265_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8265_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8276_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8276_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8287_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8287_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8298_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8298_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8309_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8309_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.832_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.832_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8331_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8331_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8341999999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8341999999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8352999999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8352999999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8363999999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8363999999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8374999999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8374999999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8386_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8386_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8397_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8397_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8408_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8408_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8419_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8419_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.843_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.843_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.63275_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.63275_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6355_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6355_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.63825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.63825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.63_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.63_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.641_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.641_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.64375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.64375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6465000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6465000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.64925_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.64925_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.652_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.652_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.65475_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.65475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6575_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.66025_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.66025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.663_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.663_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6657500000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6657500000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6685000000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6685000000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.674_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.674_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6767500000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6767500000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6795_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6795_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.68225_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.68225_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.685_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.685_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.063_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.063_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.066_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.066_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.069_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.069_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.06_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.06_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.072_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.072_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.075_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.075_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.078_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.078_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.081_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.081_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.08399999999999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.08399999999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.087_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.087_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.093_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.093_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.096_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.096_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.099_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.099_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.09_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.09_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.10200000000000001_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.10200000000000001_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.105_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.105_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.108_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.108_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.111_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.111_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.11399999999999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.11399999999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.11699999999999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.11699999999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.12_evaluation.json
+│   │   │   │   └── tfidf_top_k_threshold_1_0.12_predictions.jsonl
+│   │   │   ├── dev_top_k_threshold_v6
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_top_k_threshold_metrics.png
+│   │   │   │   │   ├── sentence_bert_top_k_threshold_metrics.png
+│   │   │   │   │   ├── tfidf_top_k_threshold_metrics.png
+│   │   │   │   │   ├── top_k_threshold_best_configs.csv
+│   │   │   │   │   ├── top_k_threshold_best_f1_comparison.png
+│   │   │   │   │   ├── top_k_threshold_comparison.csv
+│   │   │   │   │   └── top_k_threshold_overall_f1_all_representations.png
+│   │   │   │   ├── e5_top_k_threshold_1_0.8386_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8386_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8387100000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8387100000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.83882_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.83882_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.83893_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.83893_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.83904_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.83904_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8391500000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8391500000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.83926_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.83926_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.83937_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.83937_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.83948_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.83948_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8395900000000001_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8395900000000001_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8397_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8397_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.83981_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.83981_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.83992_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.83992_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.84003_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.84003_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.84014_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.84014_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8402499999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8402499999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.84036_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.84036_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.84047_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.84047_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.84058_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.84058_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8406899999999999_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8406899999999999_predictions.jsonl
+│   │   │   │   ├── e5_top_k_threshold_1_0.8408_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_1_0.8408_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.641275_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.641275_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6415500000000001_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6415500000000001_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.641825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.641825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.641_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.641_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6421_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6421_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.642375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.642375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6426499999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6426499999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.642925_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.642925_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6432_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6432_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.643475_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.643475_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.64375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.64375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.644025_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.644025_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6443_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6443_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.644575_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.644575_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6448499999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6448499999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.645125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.645125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6454_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6454_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.645675_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.645675_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.64595_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.64595_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6462249999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6462249999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6465_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6465_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67125_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67125_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.671525_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.671525_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6718_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6718_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.672075_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.672075_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67235_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67235_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.672625_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.672625_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6729_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6729_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.673175_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.673175_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67345_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67345_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.673725_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.673725_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6739999999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6739999999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.674275_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.674275_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67455_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67455_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.674825_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.674825_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6751_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6751_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.675375_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.675375_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67565_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67565_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.675925_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.675925_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6761999999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6761999999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6764749999999999_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.6764749999999999_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67675_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_threshold_1_0.67675_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0963_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0963_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0966_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0966_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0969_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0969_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.096_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.096_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0972_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0972_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0975_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0975_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0978_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0978_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.09809999999999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.09809999999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0984_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0984_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0987_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0987_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0993_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0993_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0996_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0996_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.0999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.099_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.099_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1002_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1002_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.10049999999999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.10049999999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1008_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1008_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1011_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1011_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.10139999999999999_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.10139999999999999_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1017_evaluation.json
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.1017_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_threshold_1_0.102_evaluation.json
+│   │   │   │   └── tfidf_top_k_threshold_1_0.102_predictions.jsonl
+│   │   │   ├── dev_top_k_threshold_v7
+│   │   │   │   └── comparison
+│   │   │   ├── dev_top_k_v1
+│   │   │   │   ├── comparison
+│   │   │   │   │   ├── e5_top_k_metrics.png
+│   │   │   │   │   ├── sentence_bert_top_k_metrics.png
+│   │   │   │   │   ├── tfidf_top_k_metrics.png
+│   │   │   │   │   ├── top_k_best_configs.csv
+│   │   │   │   │   ├── top_k_comparison.csv
+│   │   │   │   │   └── top_k_f1_all_representations.png
+│   │   │   │   ├── comparisonv2
+│   │   │   │   ├── e5_top_k_1_evaluation.json
+│   │   │   │   ├── e5_top_k_1_predictions.jsonl
+│   │   │   │   ├── e5_top_k_2_evaluation.json
+│   │   │   │   ├── e5_top_k_2_predictions.jsonl
+│   │   │   │   ├── e5_top_k_3_evaluation.json
+│   │   │   │   ├── e5_top_k_3_predictions.jsonl
+│   │   │   │   ├── e5_top_k_4_evaluation.json
+│   │   │   │   ├── e5_top_k_4_predictions.jsonl
+│   │   │   │   ├── e5_top_k_5_evaluation.json
+│   │   │   │   ├── e5_top_k_5_predictions.jsonl
+│   │   │   │   ├── e5_top_k_6_evaluation.json
+│   │   │   │   ├── e5_top_k_6_predictions.jsonl
+│   │   │   │   ├── e5_top_k_7_evaluation.json
+│   │   │   │   ├── e5_top_k_7_predictions.jsonl
+│   │   │   │   ├── e5_top_k_8_evaluation.json
+│   │   │   │   ├── e5_top_k_8_predictions.jsonl
+│   │   │   │   ├── e5_top_k_9_evaluation.json
+│   │   │   │   ├── e5_top_k_9_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_1_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_1_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_2_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_2_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_3_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_3_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_4_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_4_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_5_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_5_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_6_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_6_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_7_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_7_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_8_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_8_predictions.jsonl
+│   │   │   │   ├── sentence_bert_top_k_9_evaluation.json
+│   │   │   │   ├── sentence_bert_top_k_9_predictions.jsonl
+│   │   │   │   ├── summary.jsonl
+│   │   │   │   ├── tfidf_top_k_1_evaluation.json
+│   │   │   │   ├── tfidf_top_k_1_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_2_evaluation.json
+│   │   │   │   ├── tfidf_top_k_2_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_3_evaluation.json
+│   │   │   │   ├── tfidf_top_k_3_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_4_evaluation.json
+│   │   │   │   ├── tfidf_top_k_4_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_5_evaluation.json
+│   │   │   │   ├── tfidf_top_k_5_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_6_evaluation.json
+│   │   │   │   ├── tfidf_top_k_6_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_7_evaluation.json
+│   │   │   │   ├── tfidf_top_k_7_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_8_evaluation.json
+│   │   │   │   ├── tfidf_top_k_8_predictions.jsonl
+│   │   │   │   ├── tfidf_top_k_9_evaluation.json
+│   │   │   │   └── tfidf_top_k_9_predictions.jsonl
+│   │   │   ├── threshold_analysis
+│   │   │   │   ├── all_threshold_scores.csv
+│   │   │   │   ├── e5_threshold_distributions.png
+│   │   │   │   ├── e5_threshold_scores.csv
+│   │   │   │   ├── sentence_bert_threshold_distributions.png
+│   │   │   │   ├── sentence_bert_threshold_scores.csv
+│   │   │   │   ├── tfidf_threshold_distributions.png
+│   │   │   │   ├── tfidf_threshold_scores.csv
+│   │   │   │   └── threshold_summary.csv
+│   │   │   └── validation_finalists
+│   │   │       ├── e5_relative_margin_top_k_1_margin_0.0025_evaluation.json
+│   │   │       ├── e5_relative_margin_top_k_1_margin_0.0025_predictions.jsonl
+│   │   │       ├── e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+│   │   │       ├── e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl
+│   │   │       ├── e5_top_k_top_k_1_evaluation.json
+│   │   │       ├── e5_top_k_top_k_1_predictions.jsonl
+│   │   │       ├── summary.jsonl
+│   │   │       ├── tfidf_relative_margin_top_k_1_margin_0.235_evaluation.json
+│   │   │       ├── tfidf_relative_margin_top_k_1_margin_0.235_predictions.jsonl
+│   │   │       ├── tfidf_top_k_threshold_top_k_1_threshold_0.0999_evaluation.json
+│   │   │       ├── tfidf_top_k_threshold_top_k_1_threshold_0.0999_predictions.jsonl
+│   │   │       ├── validation_ranking.csv
+│   │   │       └── validation_ranking.png
+│   │   ├── similarity_analysis
+│   │   │   ├── overview.csv
+│   │   │   ├── overview.json
+│   │   │   ├── overview_all_gold_at_k.png
+│   │   │   ├── overview_best_score_medians.png
+│   │   │   ├── overview_complete_gold_margin.png
+│   │   │   ├── overview_hit_at_k.png
+│   │   │   ├── overview_mrr.png
+│   │   │   ├── overview_recall_at_k.png
+│   │   │   ├── retrieval_bi_encoder
+│   │   │   │   ├── all_gold_by_gold_set_size.png
+│   │   │   │   ├── analysis.json
+│   │   │   │   ├── best_gold_vs_best_non_gold_scores.png
+│   │   │   │   ├── best_score_distribution.png
+│   │   │   │   ├── complete_gold_margin_distribution.png
+│   │   │   │   ├── per_chunk.csv
+│   │   │   │   ├── per_question.csv
+│   │   │   │   ├── ranking_metrics_at_k.png
+│   │   │   │   ├── recall_by_gold_set_size.png
+│   │   │   │   ├── top_ranked_chunk_frequency.png
+│   │   │   │   └── worst_gold_rank_distribution.png
+│   │   │   ├── sentence_bert
+│   │   │   │   ├── all_gold_by_gold_set_size.png
+│   │   │   │   ├── analysis.json
+│   │   │   │   ├── best_gold_vs_best_non_gold_scores.png
+│   │   │   │   ├── best_score_distribution.png
+│   │   │   │   ├── complete_gold_margin_distribution.png
+│   │   │   │   ├── per_chunk.csv
+│   │   │   │   ├── per_question.csv
+│   │   │   │   ├── ranking_metrics_at_k.png
+│   │   │   │   ├── recall_by_gold_set_size.png
+│   │   │   │   ├── top_ranked_chunk_frequency.png
+│   │   │   │   └── worst_gold_rank_distribution.png
+│   │   │   └── tfidf_cosine
+│   │   │       ├── all_gold_by_gold_set_size.png
+│   │   │       ├── analysis.json
+│   │   │       ├── best_gold_vs_best_non_gold_scores.png
+│   │   │       ├── best_score_distribution.png
+│   │   │       ├── complete_gold_margin_distribution.png
+│   │   │       ├── per_chunk.csv
+│   │   │       ├── per_question.csv
+│   │   │       ├── ranking_metrics_at_k.png
+│   │   │       ├── recall_by_gold_set_size.png
+│   │   │       ├── top_ranked_chunk_frequency.png
+│   │   │       └── worst_gold_rank_distribution.png
+│   │   └── similarity_matrices
+│   │       ├── retrieval_bi_encoder
+│   │       │   ├── chunk_ids.json
+│   │       │   ├── cosine_similarity_matrix.npy
+│   │       │   ├── dot_similarity_matrix.npy
+│   │       │   ├── euclidean_similarity_matrix.npy
+│   │       │   ├── metadata.json
+│   │       │   └── question_ids.json
+│   │       ├── sentence_bert
+│   │       │   ├── chunk_ids.json
+│   │       │   ├── cosine_similarity_matrix.npy
+│   │       │   ├── dot_similarity_matrix.npy
+│   │       │   ├── euclidean_similarity_matrix.npy
+│   │       │   ├── metadata.json
+│   │       │   └── question_ids.json
+│   │       └── tf_idf
+│   │           ├── chunk_ids.json
+│   │           ├── cosine_similarity_matrix.npy
+│   │           ├── dot_similarity_matrix.npy
+│   │           ├── euclidean_similarity_matrix.npy
+│   │           ├── metadata.json
+│   │           └── question_ids.json
+│   ├── split
+│   │   ├── development_question_ids.json
+│   │   ├── gold_with_split.jsonl
+│   │   ├── split_groups.json
+│   │   ├── test_question_ids.json
+│   │   └── validation_question_ids.json
+│   └── visualization
+│       ├── analyze_selector_experiments.py
+│       ├── chunk_browser
+│       │   ├── README.md
+│       │   ├── app.js
+│       │   ├── chunks.jsonl
+│       │   ├── index.html
+│       │   └── styles.css
+│       ├── visualize_evaluation_optional.py
+│       └── visualize_validation_results.py
+├── filestructure.txt
+├── metadata
+│   ├── decisions.md
+│   ├── limitations.md
+│   ├── promptsForChunking.txt
+│   ├── promptsForQuestions.txt
+│   ├── report
+│   │   ├── first_try_at_top_k_threshold.txt
+│   │   ├── notes.txt
+│   │   ├── retrieval_model_comparison_report.md
+│   │   ├── threshold_region_method.md
+│   │   └── top_k_threshold_method.md
+│   └── todoList_PO.md
+├── requirements.txt
+└── scripts
+    ├── __pycache__
+    │   ├── chunk_selector.cpython-311.pyc
+    │   ├── mapping_evaluator.cpython-311.pyc
+    │   ├── similarity_calculator.cpython-311.pyc
+    │   ├── text_embedder.cpython-311.pyc
+    │   └── text_embedder.cpython-312.pyc
+    ├── analyze_gold.py
+    ├── analyze_selector_experiments.py
+    ├── analyze_similarity_matrices.py
+    ├── analyze_threshold_regions.py
+    ├── chunk_selector.py
+    ├── compute_embeddings.py
+    ├── compute_similarity_matrices.py
+    ├── data_splitter.py
+    ├── dev_summary_script.py
+    ├── embeddings_similarity_integrity_check.py
+    ├── example_evaluation.py
+    ├── mapping_evaluator.py
+    ├── run_selector_experiments.py
+    ├── run_validation_finalists.py
+    ├── similarity_calculator.py
+    └── text_embedder.py
+
+74 directories, 2773 files

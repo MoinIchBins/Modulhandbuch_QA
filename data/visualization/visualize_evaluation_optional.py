@@ -68,7 +68,7 @@ import pandas as pd
 # Active settings: dev_top_k_threshold_v5
 # ------------------------------------------------------------
 RESULTS_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_relative_margin_v2"
+    "data/produced_v2/selector_experiments/validation_finalists"
 )
 
 OUTPUT_DIR = RESULTS_DIR / "comparison"

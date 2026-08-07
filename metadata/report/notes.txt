@@ -202,3 +202,45 @@ Pure **threshold selection** performed worse overall, mainly because it had to b
 
 The combined **top-k + threshold** selector performed best overall. With (k=1) and representation-specific thresholds, E5 reached **0.647 F1**, TF-IDF **0.567**, and Sentence-BERT **0.399**. The improvement over pure top-1 selection shows that adding a threshold can improve performance by allowing the system to abstain on low-confidence questions while retaining the strong ranking behavior of top-1 retrieval.
 
+8. frozen finalists
+FINALISTS = [
+    (
+        "e5",
+        "top_k_threshold",
+        {
+            "top_k": 1,
+            "threshold": 0.83959,
+        },
+    ),
+    (
+        "e5",
+        "relative_margin",
+        {
+            "top_k": 1,
+            "margin": 0.0025,
+        },
+    ),
+    (
+        "e5",
+        "top_k",
+        {
+            "top_k": 1,
+        },
+    ),
+    (
+        "tfidf",
+        "relative_margin",
+        {
+            "top_k": 1,
+            "margin": 0.235,
+        },
+    ),
+    (
+        "tfidf",
+        "top_k_threshold",
+        {
+            "top_k": 1,
+            "threshold": 0.0999,
+        },
+    ),
+]
