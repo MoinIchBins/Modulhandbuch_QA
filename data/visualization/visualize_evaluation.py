@@ -5,11 +5,61 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
+# ----------------------------
+# Configuration
+# ----------------------------
+
 RESULTS_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_top_k_v1"
+    "data/produced_v2/selector_experiments/dev_threshold_v1"
 )
 
 OUTPUT_DIR = RESULTS_DIR / "comparison"
+
+METHOD = "threshold"
+X_PARAMETER = "threshold"
+
+# Metrics available:
+# overall_f1
+# overall_precision
+# overall_recall
+# exact_match
+# micro_f1
+# answerable_f1
+# answerable_precision
+# answerable_recall
+# zero_gold_abstention_rate
+# empty_selection_rate
+# average_selected_chunks
+
+TABLE_METRICS = [
+    "overall_f1",
+    "answerable_precision",
+    "answerable_recall",
+    "answerable_f1",
+    "zero_gold_abstention_rate",
+    "empty_selection_rate",
+    "average_selected_chunks",
+]
+
+PLOT_METRICS = [
+    "overall_f1",
+    "zero_gold_abstention_rate",
+    "answerable_recall",
+]
+
+# Metric used to choose the best configuration
+BEST_CONFIG_METRIC = "overall_f1"
+
+
+# ----------------------------
+# Helpers
+# ----------------------------
+
+def mean_metric(rows, metric):
+    if not rows:
+        return None
+
+    return sum(row[metric] for row in rows) / len(rows)
 
 
 def load_evaluations():
@@ -21,11 +71,14 @@ def load_evaluations():
 
         experiment = result["experiment"]
 
-        if experiment["method"] != "top_k":
+        if experiment["method"] != METHOD:
             continue
 
-        per_question = result["per_question"]
+        if X_PARAMETER not in experiment:
+            continue
+
         summary = result["summary"]
+        per_question = result["per_question"]
 
         answerable = [
             row
@@ -33,28 +86,17 @@ def load_evaluations():
             if len(row["gold_chunk_ids"]) > 0
         ]
 
-        one_chunk = [
-            row
-            for row in answerable
-            if len(row["gold_chunk_ids"]) == 1
-        ]
-
-        two_chunk = [
-            row
-            for row in answerable
-            if len(row["gold_chunk_ids"]) == 2
-        ]
-
         rows.append(
             {
                 "representation": experiment["representation"],
-                "top_k": experiment["top_k"],
+                X_PARAMETER: experiment[X_PARAMETER],
 
-                # Complete selector performance
                 "overall_f1": summary["mean_question_f1"],
+                "overall_precision": summary["mean_question_precision"],
+                "overall_recall": summary["mean_question_recall"],
+                "exact_match": summary["exact_match_rate"],
                 "micro_f1": summary["micro_f1"],
 
-                # Retrieval quality on answerable questions
                 "answerable_precision": mean_metric(
                     answerable, "precision"
                 ),
@@ -65,164 +107,136 @@ def load_evaluations():
                     answerable, "f1"
                 ),
 
-                # Performance by required gold-set size
-                "one_chunk_f1": mean_metric(
-                    one_chunk, "f1"
-                ),
-                "two_chunk_f1": mean_metric(
-                    two_chunk, "f1"
-                ),
-                "two_chunk_recall": mean_metric(
-                    two_chunk, "recall"
-                ),
+                "zero_gold_abstention_rate": summary[
+                    "zero_gold_abstention_rate"
+                ],
+                "empty_selection_rate": summary[
+                    "empty_selection_rate"
+                ],
+                "average_selected_chunks": summary[
+                    "average_selected_chunks"
+                ],
             }
         )
 
     return pd.DataFrame(rows)
 
 
-def mean_metric(rows, metric):
-    if not rows:
-        return None
+def save_full_table(df):
+    columns = [
+        "representation",
+        X_PARAMETER,
+        *TABLE_METRICS,
+    ]
 
-    return sum(row[metric] for row in rows) / len(rows)
-
-
-def save_table(df):
-    table = df.sort_values(
-        ["representation", "top_k"]
+    table = (
+        df[columns]
+        .sort_values(["representation", X_PARAMETER])
     )
 
     table.to_csv(
-        OUTPUT_DIR / "top_k_comparison.csv",
+        OUTPUT_DIR / f"{METHOD}_comparison.csv",
         index=False,
     )
 
-    print("\nTop-k comparison\n")
+    print(f"\n{METHOD} comparison\n")
+    print(table.round(4).to_string(index=False))
 
-    print(
-        table[
-            [
-                "representation",
-                "top_k",
-                "overall_f1",
-                "answerable_precision",
-                "answerable_recall",
-                "answerable_f1",
-                "one_chunk_f1",
-                "two_chunk_f1",
-            ]
-        ].round(4).to_string(index=False)
+
+def save_best_configs(df):
+    best_rows = []
+
+    for representation, group in df.groupby("representation"):
+        best = group.loc[group[BEST_CONFIG_METRIC].idxmax()]
+        best_rows.append(best)
+
+    best_df = pd.DataFrame(best_rows)
+
+    columns = [
+        "representation",
+        X_PARAMETER,
+        *TABLE_METRICS,
+    ]
+
+    best_df = (
+        best_df[columns]
+        .sort_values("representation")
+        .reset_index(drop=True)
     )
 
+    best_df.to_csv(
+        OUTPUT_DIR / f"{METHOD}_best_configs.csv",
+        index=False,
+    )
 
-def plot_f1_by_k(df):
+    print("\nBest configuration per representation")
+    print(f"(selected by {BEST_CONFIG_METRIC})\n")
+    print(best_df.round(4).to_string(index=False))
+
+
+def plot_metrics_by_representation(df):
+    if not PLOT_METRICS:
+        return
+
+    for representation, group in df.groupby("representation"):
+        group = group.sort_values(X_PARAMETER)
+
+        fig, ax = plt.subplots(figsize=(8, 5))
+
+        for metric in PLOT_METRICS:
+            ax.plot(
+                group[X_PARAMETER],
+                group[metric],
+                marker="o",
+                label=metric,
+            )
+
+        ax.set_xlabel(X_PARAMETER.replace("_", " ").title())
+        ax.set_ylabel("Score")
+        ax.set_title(
+            f"{representation}: {METHOD.replace('_', ' ')} comparison"
+        )
+        ax.legend()
+        ax.grid(alpha=0.25)
+
+        fig.tight_layout()
+
+        fig.savefig(
+            OUTPUT_DIR / f"{representation}_{METHOD}_metrics.png",
+            dpi=300,
+        )
+
+        plt.close(fig)
+
+def plot_f1_comparison(df):
     fig, ax = plt.subplots(figsize=(8, 5))
 
     for representation, group in df.groupby("representation"):
-        group = group.sort_values("top_k")
+        group = group.sort_values(X_PARAMETER)
 
         ax.plot(
-            group["top_k"],
-            group["answerable_f1"],
+            group[X_PARAMETER],
+            group["overall_f1"],
             marker="o",
             label=representation,
         )
 
-    ax.set_xlabel("Top-k")
+    ax.set_xlabel(X_PARAMETER.replace("_", " ").title())
     ax.set_ylabel("Mean F1")
-    ax.set_title("Answerable-question F1 by top-k")
-    ax.set_xticks(sorted(df["top_k"].unique()))
+    ax.set_title(
+        f"F1 comparison across representations"
+    )
     ax.legend()
     ax.grid(alpha=0.25)
 
     fig.tight_layout()
 
     fig.savefig(
-        OUTPUT_DIR / "f1_by_top_k.png",
+        OUTPUT_DIR / f"{METHOD}_f1_all_representations.png",
         dpi=300,
     )
 
     plt.close(fig)
-
-
-def plot_best_k_by_gold_size(df):
-    best_rows = (
-        df.sort_values("answerable_f1", ascending=False)
-        .groupby("representation", as_index=False)
-        .first()
-    )
-
-    plot_data = best_rows[
-        [
-            "representation",
-            "top_k",
-            "one_chunk_f1",
-            "two_chunk_f1",
-        ]
-    ].copy()
-
-    labels = [
-        f"{row.representation}\nk={row.top_k}"
-        for row in plot_data.itertuples()
-    ]
-
-    x = range(len(plot_data))
-    width = 0.35
-
-    fig, ax = plt.subplots(figsize=(8, 5))
-
-    ax.bar(
-        [value - width / 2 for value in x],
-        plot_data["one_chunk_f1"],
-        width=width,
-        label="1 required chunk",
-    )
-
-    ax.bar(
-        [value + width / 2 for value in x],
-        plot_data["two_chunk_f1"],
-        width=width,
-        label="2 required chunks",
-    )
-
-    ax.set_xticks(list(x))
-    ax.set_xticklabels(labels)
-
-    ax.set_ylabel("Mean F1")
-    ax.set_title(
-        "Best top-k result by gold-set size"
-    )
-
-    ax.legend()
-    ax.grid(axis="y", alpha=0.25)
-
-    fig.tight_layout()
-
-    fig.savefig(
-        OUTPUT_DIR / "best_k_by_gold_size.png",
-        dpi=300,
-    )
-
-    plt.close(fig)
-
-
-def print_best_configs(df):
-    print("\nBest top-k per representation\n")
-
-    for representation, group in df.groupby("representation"):
-        best = group.loc[
-            group["answerable_f1"].idxmax()
-        ]
-
-        print(
-            f"{representation:15} "
-            f"k={int(best['top_k'])}  "
-            f"F1={best['answerable_f1']:.4f}  "
-            f"precision={best['answerable_precision']:.4f}  "
-            f"recall={best['answerable_recall']:.4f}"
-        )
-
 
 def main():
     OUTPUT_DIR.mkdir(
@@ -234,18 +248,32 @@ def main():
 
     if df.empty:
         raise ValueError(
-            f"No top-k evaluation files found in {RESULTS_DIR}"
+            f"No '{METHOD}' evaluation files found in {RESULTS_DIR}"
         )
 
-    save_table(df)
-    print_best_configs(df)
-
-    plot_f1_by_k(df)
-    plot_best_k_by_gold_size(df)
-
-    print(
-        f"\nResults saved to: {OUTPUT_DIR}"
+    requested_metrics = (
+        TABLE_METRICS
+        + PLOT_METRICS
+        + [BEST_CONFIG_METRIC]
     )
+
+    missing_metrics = [
+        metric
+        for metric in set(requested_metrics)
+        if metric not in df.columns
+    ]
+
+    if missing_metrics:
+        raise ValueError(
+            f"Unknown metrics: {missing_metrics}"
+        )
+
+    save_full_table(df)
+    save_best_configs(df)
+    plot_metrics_by_representation(df)
+    plot_f1_comparison(df)
+
+    print(f"\nResults saved to: {OUTPUT_DIR}")
 
 
 if __name__ == "__main__":
