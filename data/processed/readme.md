@@ -1,8 +1,8 @@
 
-| File               | Contains                                                                                                                                         | Description / Role                                                                                   | Main                                                            |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `qSet_PO.jsonl`    | File with 600 questions in jsonl format, created with chatgpt 5.6 sol with 2.5 hours of thinktime, checked and adapted manually in about 3 hours | provides the questions for the QA dataset                                                            | unique identifier: question_id, source identifier: source_pages |
-| PO_25_chunks.jsonl | File with 201 chunks including metadata created from PO_25_CL.pdf (raw data) using deterministic rules (s.u.)                                    | provides the chunks for the QA dataset. inconsistent glyphs in PO25CL-GEN-C01-P04-A03 were replaceds | unique identifier: chunk_id                                     |
+| File               | Contains                                                                                                                                                                                                                      | Description / Role                                                                                   | Main                                                            |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `qSet_PO.jsonl`    | File with 720 questions in jsonl format, first 600 created with chatgpt 5.6 sol with 2.5 hours of thinktime, checked and adapted manually in about 3 hour, last 120 created with with 1 hour of thinktime, all non-answerable | provides the questions for the QA dataset                                                            | unique identifier: question_id, source identifier: source_pages |
+| PO_25_chunks.jsonl | File with 201 chunks including metadata created from PO_25_CL.pdf (raw data) using deterministic rules (s.u.)                                                                                                                 | provides the chunks for the QA dataset. inconsistent glyphs in PO25CL-GEN-C01-P04-A03 were replaceds | unique identifier: chunk_id                                     |
 
 
 
@@ -16,13 +16,19 @@ This document specifies the rules for the deterministic chunking algorithm used 
 - Process the document in its visual reading order.
 - Normalize page numbers, repeated headers/footers, and hyphenation at line breaks.
 
+
+
 ### 2. Structural Segmentation
 
 - Divide the document into: Title page, Table of contents, General section, Program-specific appendix, and Exemplar course plan.
 
+
+
 ### 3. Inclusion/Exclusion
 
 - Exclude the table of contents from active retrieval chunks; only store it as a structural index.
+
+
 
 ### 4. General Section Chunking
 
@@ -32,11 +38,15 @@ This document specifies the rules for the deterministic chunking algorithm used 
 - Short paragraphs with pre-defined anaphoric trigger phrases are merged with the immediately preceding paragraph within the same section.
 - Never join content across different paragraphs into one chunk.
 
+
+
 ### 5. Program-Specific Appendix
 
 - Treat each standard key-value line as its own chunk.
 - For the table row "Art und Inhalt der Module und der Prüfungen", create exactly one chunk per visible module row.
 - Assign the “Praktikum” table row at the top of page 24 to the program-specific appendix.
+
+
 
 ### 6. Exemplar Course Plan
 
@@ -47,6 +57,8 @@ This document specifies the rules for the deterministic chunking algorithm used 
 - Merge module blocks that continue across page boundaries.
 - Where modules have [1/2] and [2/2] blocks in different semesters, store separately but link under a common base name.
 - Store specialization (Profilbildungsbereich) rows as separate, semester-linked chunks.
+
+
 
 ### 7. Chunk Size Constraints
 
@@ -59,11 +71,15 @@ This document specifies the rules for the deterministic chunking algorithm used 
   - Lastly, split at complete sentences.
 - Never split in the middle of a sentence, list item, table row, or module block.
 
+
+
 ### 8. Overlap and Repetition Rules
 
 - Do not use general text overlap.
 - If a list must be split, repeat the introductory sentence at the beginning of the next part.
 - If a running text paragraph must be split, repeat the first full sentence of the split-off part as a marked context line.
+
+
 
 ### 9. Metadata and Context
 
@@ -71,10 +87,14 @@ This document specifies the rules for the deterministic chunking algorithm used 
 - Add paragraph and table context headers to the beginning of `chunk_text` for standardization.
 - Store document title and page numbers primarily as metadata.
 
+
+
 ### 10. Identification and Ordering
 
 - Assign a deterministic, position-based chunk ID to each chunk.
 - Maintain a global, sequential `source_order` for all chunks.
+
+
 
 ### 11. Redundancy and Layering
 

@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 gold_file = Path("data/processed/qamappings/qa_mapping_merged.jsonl")
-output_dir = Path("data/split")
+output_dir = Path("data/trash")
 
 split_ratios = {
     "development": 0.60,

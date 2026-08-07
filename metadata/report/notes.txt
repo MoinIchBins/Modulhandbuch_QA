@@ -1,7 +1,7 @@
 1. Architecture: see goodnotes document, 
 reasons for the specific architecture: necessity, no options, basic rag pipeline
 
-2. Data: see readme.md in processed and processed/qamappings
+2. Data: see readme.md in processed and processed/qamappings and metadata/decisions
 added 120 non-answerable questions that could be mistaken for answerable by user
 
 3. models: see goodnotes document and produced_v2/embeddings/embeddor/metadata.json
@@ -26,3 +26,23 @@ data/produced_v2/selector_experiments/dev_top_k_v1:
         for top_k in range(1, 10)
     ]
 
+found threshold regions, see metadata/report/threshold_region_method.md
+E5: 0.8331–0.8865
+TF-IDF: 0.0591–0.5162
+Sentence-Bert: 0.4740–0.7595
+
+data/produced_v2/selector_experiments/dev_threshold
+    THRESHOLD_REGIONS = {
+        "e5": (0.8331, 0.8865),
+        "tfidf": (0.0591, 0.5162),
+        "sentence_bert": (0.4740, 0.7595),
+    }
+    EXPERIMENTS = [
+        {
+            "representation": representation,
+            "method": "threshold",
+            "threshold": float(threshold),
+        }
+        for representation, (lower, upper) in THRESHOLD_REGIONS.items()
+        for threshold in np.linspace(lower, upper, 9)
+    ]
