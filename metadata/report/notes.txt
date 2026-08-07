@@ -14,4 +14,15 @@ cosine similarity as main measure, dot product and euclidean distance as backup 
 E5 won, TF-IDF is second place, larger gap to Sentence-BERT
 from now on: test all on E5, some on TF-IDF, none on Sentence-BERT
 
-6. selector: see goodnotes document, tbd
+6. selector: see goodnotes document, testing experience
+data/produced_v2/selector_experiments/dev_top_k_v1:
+    first_experiment = [
+        {
+            "representation": representation,
+            "method": "top_k",
+            "top_k": top_k,
+        }
+        for representation in ("e5", "tfidf", "sentence_bert")
+        for top_k in range(1, 10)
+    ]
+
