@@ -7,7 +7,7 @@ from chunk_selector import ChunkSelector
 from mapping_evaluator import QAMappingEvaluator
 
 
-# Change these paths to match your project.
+# Change these paths to match
 GOLD_PATH = Path("data/produced_v2/frozen/qa_mapping_merged.jsonl")
 DEVELOPMENT_IDS_PATH = Path("data/produced_v2/frozen/split/development_question_ids.json")
 
@@ -26,40 +26,150 @@ REPRESENTATIONS = {
         "matrix": Path("data/produced_v2/similarity_matrices/sentence_bert/cosine_similarity_matrix.npy"),
         "question_ids": Path("data/produced_v2/similarity_matrices/sentence_bert/question_ids.json"),
         "chunk_ids": Path("data/produced_v2/similarity_matrices/sentence_bert/chunk_ids.json"),
-    }
+    },
 }
 
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_top_k_threshold_v2"
+    "data/produced_v2/selector_experiments/dev_top_k_threshold_v3"
 )
 
 
 TOP_K_VALUES = [1, 2, 3]
-
-THRESHOLD_REGIONS = {
-    "e5": (0.80, 0.90),
-    "tfidf": (0.04, 0.55),
-    "sentence_bert": (0.45, 0.80),
-}
-
-EXPERIMENTS = [
-    {
-        "representation": representation,
-        "method": "top_k_threshold",
-        "top_k": top_k,
-        "threshold": float(threshold),
-    }
-    for representation, (lower, upper) in THRESHOLD_REGIONS.items()
-    for top_k in TOP_K_VALUES
-    for threshold in np.linspace(lower, upper, 21)
-]
+N_THRESHOLDS = 21
 
 
 def load_json(path):
     with path.open("r", encoding="utf-8") as file:
         return json.load(file)
 
+
+def load_zero_gold_development_ids():
+    development_ids = set(load_json(DEVELOPMENT_IDS_PATH))
+    zero_gold_ids = []
+
+    with GOLD_PATH.open("r", encoding="utf-8") as file:
+        for line in file:
+            row = json.loads(line)
+
+            if (
+                row["question_id"] in development_ids
+                and not row["all_required_chunk_ids"]
+            ):
+                zero_gold_ids.append(row["question_id"])
+
+    return zero_gold_ids
+
+
+def build_threshold_regions():
+    """
+    For each representation and top-k value:
+
+        Z_r = score distribution at rank r for zero-gold dev questions
+
+        lower = P10(Z_k)
+        upper = P90(Z_1)
+
+    For k=1, threshold mainly controls abstention.
+    For k>1, it also controls whether lower-ranked chunks are retained.
+    """
+    zero_gold_ids = load_zero_gold_development_ids()
+    regions = {}
+
+    for representation, files in REPRESENTATIONS.items():
+        question_ids = load_json(files["question_ids"])
+
+        row_by_question_id = {
+            question_id: row
+            for row, question_id in enumerate(question_ids)
+        }
+
+        row_indices = [
+            row_by_question_id[question_id]
+            for question_id in zero_gold_ids
+        ]
+
+        matrix = np.load(files["matrix"], mmap_mode="r")
+        zero_gold_scores = np.asarray(matrix[row_indices])
+
+        # Get only the three highest scores per question, in descending order.
+        top_scores = np.sort(
+            zero_gold_scores,
+            axis=1,
+        )[:, -3:][:, ::-1]
+
+        upper = float(
+            np.quantile(top_scores[:, 0], 0.90)
+        )
+
+        for top_k in TOP_K_VALUES:
+            lower = float(
+                np.quantile(
+                    top_scores[:, top_k - 1],
+                    0.10,
+                )
+            )
+
+            regions[(representation, top_k)] = (
+                lower,
+                upper,
+            )
+
+    return regions
+
+
+# ------------------------------------------------------------
+# Experiment configuration
+# ------------------------------------------------------------
+#
+# BACKWARD COMPATIBILITY:
+#
+# You can paste any previous explicit EXPERIMENTS list here and it will
+# be used unchanged.
+#
+# Example:
+#
+# EXPERIMENTS = [
+#     {
+#         "representation": "e5",
+#         "method": "top_k",
+#         "top_k": 1,
+#     },
+# ]
+#
+# Leave EXPERIMENTS = None to use the new automatically derived,
+# rank-specific top-k + threshold search.
+
+EXPERIMENTS = None
+
+
+def build_rank_specific_experiments():
+    threshold_regions = build_threshold_regions()
+
+    print("\nTop-k + threshold search regions")
+
+    for (representation, top_k), (lower, upper) in threshold_regions.items():
+        print(
+            f"{representation:15} "
+            f"k={top_k}  "
+            f"{lower:.6f} -> {upper:.6f}"
+        )
+
+    return [
+        {
+            "representation": representation,
+            "method": "top_k_threshold",
+            "top_k": top_k,
+            "threshold": float(threshold),
+        }
+        for representation in REPRESENTATIONS
+        for top_k in TOP_K_VALUES
+        for threshold in np.linspace(
+            threshold_regions[(representation, top_k)][0],
+            threshold_regions[(representation, top_k)][1],
+            N_THRESHOLDS,
+        )
+    ]
 
 def save_jsonl(path, records):
     with path.open("w", encoding="utf-8") as file:
@@ -83,6 +193,12 @@ def experiment_name(config):
 def main():
     development_ids = load_json(DEVELOPMENT_IDS_PATH)
 
+    experiments = (
+        EXPERIMENTS
+        if EXPERIMENTS is not None
+        else build_rank_specific_experiments()
+    )
+
     OUTPUT_DIR.mkdir(parents=True, exist_ok=False)
 
     evaluator = QAMappingEvaluator(GOLD_PATH)
@@ -91,7 +207,7 @@ def main():
     for representation, files in REPRESENTATIONS.items():
         configs = [
             config
-            for config in EXPERIMENTS
+            for config in experiments
             if config["representation"] == representation
         ]
 

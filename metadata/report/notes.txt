@@ -98,4 +98,11 @@ new thresholds: take neighbours of current best and do 21 points between
 
 6.4 experiment
     method: see metadata/report/top_k_threshold_method.md
-    
+    ## Rank-Specific Threshold Search
+    For each **representation × k** combination, a separate threshold interval is calculated from zero-gold development questions.
+
+    Let (s_k(q)) be the score of the (k)-th ranked chunk. The search interval is
+    [ L_k=P_{10}(s_k), \qquad U_k=P_{90}(s_1) ]
+    [ \tau \in [L_k,U_k] ]
+
+    This makes the threshold range specific to both the representation and the number of allowed chunks. The lower bound allows the (k)-th candidate to enter, while the upper bound covers strong abstention. Each interval is tested at 21 evenly spaced thresholds.
