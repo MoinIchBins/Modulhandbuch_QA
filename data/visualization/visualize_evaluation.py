@@ -69,7 +69,7 @@ import pandas as pd
 # ------------------------------------------------------------
 
 RESULTS_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_top_k_threshold_v3"
+    "data/produced_v2/selector_experiments/dev_top_k_threshold_v5"
 )
 
 OUTPUT_DIR = RESULTS_DIR / "comparison"

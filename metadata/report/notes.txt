@@ -98,11 +98,53 @@ new thresholds: take neighbours of current best and do 21 points between
 
 6.4 experiment
     method: see metadata/report/top_k_threshold_method.md
-    ## Rank-Specific Threshold Search
-    For each **representation × k** combination, a separate threshold interval is calculated from zero-gold development questions.
+    TOP_K_VALUES = [1, 2, 3]
+    N_THRESHOLDS = 21
 
-    Let (s_k(q)) be the score of the (k)-th ranked chunk. The search interval is
-    [ L_k=P_{10}(s_k), \qquad U_k=P_{90}(s_1) ]
-    [ \tau \in [L_k,U_k] ]
+    THRESHOLD_REGIONS = {
+        "e5": (0.70, 0.92),
+        "tfidf": (0.00, 0.60),
+        "sentence_bert": (0.30, 0.85),
+    }
 
-    This makes the threshold range specific to both the representation and the number of allowed chunks. The lower bound allows the (k)-th candidate to enter, while the upper bound covers strong abstention. Each interval is tested at 21 evenly spaced thresholds.
+    EXPERIMENTS = [
+        {
+            "representation": representation,
+            "method": "top_k_threshold",
+            "top_k": top_k,
+            "threshold": float(threshold),
+        }
+        for representation, (lower, upper) in THRESHOLD_REGIONS.items()
+        for top_k in TOP_K_VALUES
+        for threshold in np.linspace(
+            lower,
+            upper,
+            N_THRESHOLDS,
+        )
+    ]
+
+    Results show that top-1 is always better than top-2 or top-3, so we narrow the search to the neighbours of the maximum in only top-1
+
+    TOP_K = 1
+    N_THRESHOLDS = 21
+
+    THRESHOLD_REGIONS = {
+        "e5": (0.821, 0.843),
+        "tfidf": (0.06, 0.12),
+        "sentence_bert": (0.63, 0.685),
+    }
+
+    EXPERIMENTS = [
+        {
+            "representation": representation,
+            "method": "top_k_threshold",
+            "top_k": TOP_K,
+            "threshold": float(threshold),
+        }
+        for representation, (lower, upper) in THRESHOLD_REGIONS.items()
+        for threshold in np.linspace(
+            lower,
+            upper,
+            N_THRESHOLDS,
+        )
+    ]
