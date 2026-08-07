@@ -9,6 +9,7 @@ class ChunkSelector:
         method: str,
         top_k: int | None = None,
         threshold: float | None = None, # for softmax_cumulative between 0 and 1, else greater than 0
+        margin: float | None = None, # relative gap required between rank k and rank k + 1
         higher_is_better: bool = True, # this was added in case euclidean distance was implemented later on, in which case lower would be better
         temperature: float = 0.05, # greater than 0
     ):
@@ -16,6 +17,7 @@ class ChunkSelector:
             "top_k",
             "threshold",
             "top_k_threshold",
+            "relative_margin",
             "softmax_cumulative",
         }
 
@@ -25,13 +27,28 @@ class ChunkSelector:
                 f"Choose from {supported_methods}."
             )
 
-        if method in {"top_k", "top_k_threshold"} and top_k is None:
+        if method in {
+            "top_k",
+            "top_k_threshold",
+            "relative_margin",
+        } and top_k is None:
             raise ValueError(
                 f"A top_k is required for method '{method}'."
             )
 
         if top_k is not None and top_k < 1:
             raise ValueError("top_k must be at least 1.")
+
+        if method == "relative_margin":
+            if margin is None:
+                raise ValueError(
+                    "A margin is required for method 'relative_margin'."
+                )
+
+            if margin < 0:
+                raise ValueError(
+                    "margin must be greater than or equal to 0."
+                )
 
         if method in {
             "threshold",
@@ -57,6 +74,7 @@ class ChunkSelector:
         self.method = method
         self.top_k = top_k
         self.threshold = threshold
+        self.margin = margin
         self.higher_is_better = higher_is_better
         self.temperature = temperature
 
@@ -127,6 +145,12 @@ class ChunkSelector:
                 ranked_indices,
             )
 
+        if self.method == "relative_margin":
+            return self._select_relative_margin(
+                scores,
+                ranked_indices,
+            )
+
         passing_indices = [
             index
             for index in ranked_indices
@@ -140,6 +164,44 @@ class ChunkSelector:
             return passing_indices[:self.top_k]
 
         raise RuntimeError("Unsupported selector method.")
+
+    def _select_relative_margin(
+        self,
+        scores: np.ndarray,
+        ranked_indices: list[int],
+    ) -> list[int]:
+        """
+        Return the top-k chunks only if rank k is clearly
+        separated from rank k + 1.
+        """
+
+        if self.top_k >= len(ranked_indices):
+            raise ValueError(
+                "relative_margin requires at least one chunk "
+                "outside the selected top_k."
+            )
+
+        selected_index = ranked_indices[self.top_k - 1]
+        next_index = ranked_indices[self.top_k]
+
+        selected_score = float(scores[selected_index])
+        next_score = float(scores[next_index])
+
+        denominator = max(abs(selected_score), 1e-12)
+
+        if self.higher_is_better:
+            relative_margin = (
+                selected_score - next_score
+            ) / denominator
+        else:
+            relative_margin = (
+                next_score - selected_score
+            ) / denominator
+
+        if relative_margin >= self.margin:
+            return ranked_indices[:self.top_k]
+
+        return []
 
     def _select_softmax_cumulative(
         self,

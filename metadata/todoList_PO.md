@@ -10,10 +10,15 @@
 - [x] make class for selector
 - [x] compute embeddings
 - [x] compute similarity matrices
-- [ ] split data
-- [ ] make framework that
-  - [ ] runs through selection with various parameters
-  - [ ] cumulates and saves final scores in dataframe
+- [x] split data
+- [x] make framework that
+  - [x] runs through selection with various parameters
+  - [x] cumulates and saves final scores in dataframe
+- [ ] do selector testing
+  - [x] top k
+  - [x] threshold
+  - [x] top k absolute threshold
+  - [ ] top k relative threshold
 
 ### P1 — optional data
 

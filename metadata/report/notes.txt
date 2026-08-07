@@ -148,3 +148,46 @@ new thresholds: take neighbours of current best and do 21 points between
             N_THRESHOLDS,
         )
     ]
+    The combined top-k/threshold selector was first evaluated on the development set using a broad search over (k \in {1,2,3}) and representation-specific threshold ranges. Since (k=1) achieved the best overall F1 for all representations, subsequent tuning fixed (k=1) and refined only the threshold. E5 and TF-IDF showed one clear local optimum, while Sentence-BERT exhibited two comparable local maxima that were refined separately. Hyperparameter selection was based on overall question-level F1, with exact match, precision, and fewer selected chunks used as tie-breakers.
+
+    The refined top-1 threshold search confirmed E5 as the strongest configuration, reaching an overall F1 of **0.647** at a threshold of **0.8398**. TF-IDF ranked second with **0.567 F1** at **0.0999**, while Sentence-BERT remained clearly weaker with **0.399 F1** at **0.6751**.
+
+    E5 also achieved the best balance between answerable-question performance and abstention, with an answerable F1 of **0.686** and a zero-gold abstention rate of **0.459**. TF-IDF retained relatively strong answerable performance (**0.651 F1**) but abstained on only **16.2%** of zero-gold questions. Sentence-BERT abstained most frequently (**70.3%**) but at the cost of substantially lower answerable performance (**0.336 F1**).
+
+    Overall, the refined results preserve the ranking **E5 > TF-IDF > Sentence-BERT** and indicate that E5 provides the best trade-off between successful retrieval and rejection of unanswerable questions.
+
+6.5 top-k relative margin
+    The relative-margin selector improved performance over plain top-1 retrieval for all three representations, but only modestly. E5 achieved the strongest result with an overall F1 of **0.631** at a margin of **0.0025**, while TF-IDF reached **0.570** at **0.1775** and Sentence-BERT **0.387** at **0.005**. Compared with the top-k + threshold selector, relative margin was slightly weaker for E5 and Sentence-BERT, while TF-IDF performed marginally better. Overall, the results suggest that relative score separation is a useful confidence signal, especially for TF-IDF, but absolute thresholding remains the stronger choice for E5.
+    TOP_K_VALUES = [1, 2]
+    N_MARGINS = 21
+
+    MARGIN_REGIONS = {
+        "e5": (0.0, 0.025),
+        "tfidf": (0.15, 0.20),
+        "sentence_bert": (0.0, 0.025),
+    }
+
+    EXPERIMENTS = [
+        {
+            "representation": representation,
+            "method": "relative_margin",
+            "top_k": top_k,
+            "margin": float(margin),
+        }
+        for representation, (lower, upper) in MARGIN_REGIONS.items()
+        for top_k in TOP_K_VALUES
+        for margin in np.linspace(
+            lower,
+            upper,
+            N_MARGINS,
+        )
+    ]
+
+7. Selector Performance Overview
+## Selector Performance Overview
+
+Across all selector types, **E5 consistently achieved the strongest performance**, followed by TF-IDF and Sentence-BERT. Pure **top-k selection** performed best with (k=1), reaching an overall F1 of **0.617** for E5, **0.551** for TF-IDF, and **0.374** for Sentence-BERT.
+
+Pure **threshold selection** performed worse overall, mainly because it had to balance retrieval and abstention without limiting the number of selected chunks. Its best overall F1 scores were approximately **0.494** for E5, **0.487** for TF-IDF, and **0.358** for Sentence-BERT.
+
+The combined **top-k + threshold** selector performed best overall. With (k=1) and representation-specific thresholds, E5 reached **0.647 F1**, TF-IDF **0.567**, and Sentence-BERT **0.399**. The improvement over pure top-1 selection shows that adding a threshold can improve performance by allowing the system to abstain on low-confidence questions while retaining the strong ranking behavior of top-1 retrieval.

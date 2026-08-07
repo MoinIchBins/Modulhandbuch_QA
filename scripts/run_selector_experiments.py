@@ -57,33 +57,35 @@ REPRESENTATIONS = {
 
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_top_k_threshold_v5"
+    "data/produced_v2/selector_experiments/dev_relative_margin_v1"
 )
 
+TOP_K_VALUES = [1, 2]
+N_MARGINS = 21
 
-TOP_K = 1
-N_THRESHOLDS = 21
-
-THRESHOLD_REGIONS = {
-    "e5": (0.821, 0.843),
-    "tfidf": (0.06, 0.12),
-    "sentence_bert": (0.63, 0.685),
+MARGIN_REGIONS = {
+    "e5": (0.0, 0.025),
+    "tfidf": (0.15, 0.20),
+    "sentence_bert": (0.0, 0.025),
 }
 
 EXPERIMENTS = [
     {
         "representation": representation,
-        "method": "top_k_threshold",
-        "top_k": TOP_K,
-        "threshold": float(threshold),
+        "method": "relative_margin",
+        "top_k": top_k,
+        "margin": float(margin),
     }
-    for representation, (lower, upper) in THRESHOLD_REGIONS.items()
-    for threshold in np.linspace(
+    for representation, (lower, upper) in MARGIN_REGIONS.items()
+    for top_k in TOP_K_VALUES
+    for margin in np.linspace(
         lower,
         upper,
-        N_THRESHOLDS,
+        N_MARGINS,
     )
 ]
+
+
 
 
 def load_json(path):
@@ -107,6 +109,9 @@ def experiment_name(config):
 
     if config.get("threshold") is not None:
         parts.append(str(config["threshold"]))
+
+    if config.get("margin") is not None:
+        parts.append(str(config["margin"]))
 
     if config.get("temperature") is not None:
         parts.append(str(config["temperature"]))
@@ -202,10 +207,8 @@ def main():
                 method=config["method"],
                 top_k=config.get("top_k"),
                 threshold=config.get("threshold"),
-                temperature=config.get(
-                    "temperature",
-                    0.05,
-                ),
+                margin=config.get("margin"),
+                temperature=config.get("temperature", 0.05),
             )
 
             selections = selector.select(
