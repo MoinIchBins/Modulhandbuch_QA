@@ -106,7 +106,7 @@ def create_split(groups):
 
 
 def print_summary(groups, group_to_split):
-    print("\Question split summary")
+    print("\nQuestion split summary")
 
     total_questions = sum(len(ids) for ids in groups.values())
 
