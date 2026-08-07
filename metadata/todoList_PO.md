@@ -10,8 +10,8 @@
 - [x] make class for selector
 - [x] compute embeddings
 - [x] compute similarity matrices
+- [ ] split data
 - [ ] make framework that
-  - [ ] splits data
   - [ ] runs through selection with various parameters
   - [ ] cumulates and saves final scores in dataframe
 
@@ -19,8 +19,6 @@
 
 - [ ] add hard negatives and unanswerable questions
 - [ ] Add relevance grades and primary/supporting evidence distinctions.
-
-
 
 ### P2 —  maintainability and reproducibility
 
