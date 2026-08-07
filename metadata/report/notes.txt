@@ -244,3 +244,9 @@ FINALISTS = [
         },
     ),
 ]
+
+9. baselines
+added three baselines in produced_v2
+a. random chunk
+b. biggest group
+c. always say none

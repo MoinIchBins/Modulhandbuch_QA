@@ -135,6 +135,25 @@
 │   │           ├── metadata.json
 │   │           └── question_ids.json
 │   ├── produced_v2
+│   │   ├── baselines
+│   │   │   ├── README.md
+│   │   │   ├── baseline_definitions.json
+│   │   │   ├── compare_with_system.py
+│   │   │   ├── dev_reference
+│   │   │   │   └── most_frequent_answer.json
+│   │   │   ├── freeze_dev_reference.py
+│   │   │   ├── plot_baselines.py
+│   │   │   ├── run_baselines.py
+│   │   │   └── validation_v1
+│   │   │       ├── always_abstain_evaluation.json
+│   │   │       ├── always_abstain_predictions.jsonl
+│   │   │       ├── baseline_f1_comparison.png
+│   │   │       ├── most_frequent_dev_answer_evaluation.json
+│   │   │       ├── most_frequent_dev_answer_predictions.jsonl
+│   │   │       ├── random_top1_runs.jsonl
+│   │   │       ├── random_top1_summary.json
+│   │   │       ├── summary.csv
+│   │   │       └── summary.jsonl
 │   │   ├── embeddings
 │   │   │   ├── retrieval_bi_encoder
 │   │   │   │   ├── chunk_embeddings.npy
@@ -2846,4 +2865,4 @@
     ├── similarity_calculator.py
     └── text_embedder.py
 
-74 directories, 2773 files
+77 directories, 2789 files

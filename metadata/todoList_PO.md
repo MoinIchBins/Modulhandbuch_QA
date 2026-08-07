@@ -14,16 +14,19 @@
 - [x] make framework that
   - [x] runs through selection with various parameters
   - [x] cumulates and saves final scores in dataframe
-- [ ] do selector testing
+- [x] do selector testing
   - [x] top k
   - [x] threshold
   - [x] top k absolute threshold
   - [x] top k relative threshold
+- [x] baselines
 
 ### P1 — optional data
 
-- [ ] add hard negatives and unanswerable questions
-- [ ] Add relevance grades and primary/supporting evidence distinctions.
+- [x] add hard negatives and unanswerable questions
+- [x] Add relevance grades and primary/supporting evidence distinctions.
+
+
 
 ### P2 —  maintainability and reproducibility
 
