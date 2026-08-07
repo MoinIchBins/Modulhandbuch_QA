@@ -5,55 +5,125 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-# ----------------------------
+# ============================================================
 # Configuration
-# ----------------------------
+# ============================================================
+
+# ------------------------------------------------------------
+# Recommended settings: dev_top_k_v1
+# ------------------------------------------------------------
+#
+# RESULTS_DIR = Path(
+#     "data/produced_v2/selector_experiments/dev_top_k_v1"
+# )
+# METHOD = "top_k"
+# X_PARAMETER = "top_k"
+# GROUP_PARAMETER = None
+#
+# TABLE_METRICS = [
+#     "overall_f1",
+#     "answerable_precision",
+#     "answerable_recall",
+#     "answerable_f1",
+#     "micro_f1",
+# ]
+#
+# PLOT_METRICS = [
+#     "answerable_precision",
+#     "answerable_recall",
+#     "answerable_f1",
+# ]
+
+
+# ------------------------------------------------------------
+# Recommended settings: dev_threshold_v1
+# / dev_threshold_refined_v1
+# ------------------------------------------------------------
+#
+# RESULTS_DIR = Path(
+#     "data/produced_v2/selector_experiments/dev_threshold_v1"
+# )
+# METHOD = "threshold"
+# X_PARAMETER = "threshold"
+# GROUP_PARAMETER = None
+#
+# TABLE_METRICS = [
+#     "overall_f1",
+#     "answerable_precision",
+#     "answerable_recall",
+#     "answerable_f1",
+#     "zero_gold_abstention_rate",
+#     "empty_selection_rate",
+#     "average_selected_chunks",
+# ]
+#
+# PLOT_METRICS = [
+#     "overall_f1",
+#     "zero_gold_abstention_rate",
+#     "answerable_recall",
+# ]
+
+
+# ------------------------------------------------------------
+# Active settings: dev_top_k_threshold_v1
+# ------------------------------------------------------------
 
 RESULTS_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_threshold_v2"
+    "data/produced_v2/selector_experiments/dev_top_k_threshold_v2"
 )
 
 OUTPUT_DIR = RESULTS_DIR / "comparison"
 
-METHOD = "threshold"
+METHOD = "top_k_threshold"
 X_PARAMETER = "threshold"
-
-# Metrics available:
-# overall_f1
-# overall_precision
-# overall_recall
-# exact_match
-# micro_f1
-# answerable_f1
-# answerable_precision
-# answerable_recall
-# zero_gold_abstention_rate
-# empty_selection_rate
-# average_selected_chunks
+GROUP_PARAMETER = "top_k"
 
 TABLE_METRICS = [
     "overall_f1",
+    "overall_precision",
     "answerable_precision",
     "answerable_recall",
     "answerable_f1",
     "zero_gold_abstention_rate",
+    "exact_match",
     "empty_selection_rate",
     "average_selected_chunks",
 ]
 
+# Threshold on x-axis, one F1 line per top_k value.
 PLOT_METRICS = [
     "overall_f1",
-    "zero_gold_abstention_rate",
-    "answerable_recall",
 ]
 
-# Metric used to choose the best configuration
-BEST_CONFIG_METRIC = "overall_f1"
+
+# ------------------------------------------------------------
+# Best-config selection
+# ------------------------------------------------------------
+
+# Fixed selection rule:
+# 1. highest overall F1
+# 2. highest exact match
+# 3. highest overall precision
+# 4. fewer selected chunks
+
+BEST_CONFIG_SORT = [
+    "overall_f1",
+    "exact_match",
+    "overall_precision",
+    "average_selected_chunks",
+]
+
+BEST_CONFIG_ASCENDING = [
+    False,
+    False,
+    False,
+    True,
+]
 
 
-# ----------------------------
+# ============================================================
 # Helpers
-# ----------------------------
+# ============================================================
 
 def mean_metric(rows, metric):
     if not rows:
@@ -77,6 +147,9 @@ def load_evaluations():
         if X_PARAMETER not in experiment:
             continue
 
+        if GROUP_PARAMETER is not None and GROUP_PARAMETER not in experiment:
+            continue
+
         summary = result["summary"]
         per_question = result["per_question"]
 
@@ -86,52 +159,71 @@ def load_evaluations():
             if len(row["gold_chunk_ids"]) > 0
         ]
 
-        rows.append(
-            {
-                "representation": experiment["representation"],
-                X_PARAMETER: experiment[X_PARAMETER],
+        result_row = {
+            "representation": experiment["representation"],
+            X_PARAMETER: experiment[X_PARAMETER],
 
-                "overall_f1": summary["mean_question_f1"],
-                "overall_precision": summary["mean_question_precision"],
-                "overall_recall": summary["mean_question_recall"],
-                "exact_match": summary["exact_match_rate"],
-                "micro_f1": summary["micro_f1"],
+            "overall_f1": summary["mean_question_f1"],
+            "overall_precision": summary["mean_question_precision"],
+            "overall_recall": summary["mean_question_recall"],
+            "exact_match": summary["exact_match_rate"],
+            "micro_f1": summary["micro_f1"],
 
-                "answerable_precision": mean_metric(
-                    answerable, "precision"
-                ),
-                "answerable_recall": mean_metric(
-                    answerable, "recall"
-                ),
-                "answerable_f1": mean_metric(
-                    answerable, "f1"
-                ),
+            "answerable_precision": mean_metric(
+                answerable, "precision"
+            ),
+            "answerable_recall": mean_metric(
+                answerable, "recall"
+            ),
+            "answerable_f1": mean_metric(
+                answerable, "f1"
+            ),
 
-                "zero_gold_abstention_rate": summary[
-                    "zero_gold_abstention_rate"
-                ],
-                "empty_selection_rate": summary[
-                    "empty_selection_rate"
-                ],
-                "average_selected_chunks": summary[
-                    "average_selected_chunks"
-                ],
-            }
-        )
+            "zero_gold_abstention_rate": summary[
+                "zero_gold_abstention_rate"
+            ],
+            "empty_selection_rate": summary[
+                "empty_selection_rate"
+            ],
+            "average_selected_chunks": summary[
+                "average_selected_chunks"
+            ],
+        }
+
+        if GROUP_PARAMETER is not None:
+            result_row[GROUP_PARAMETER] = experiment[GROUP_PARAMETER]
+
+        rows.append(result_row)
 
     return pd.DataFrame(rows)
 
 
+def parameter_columns():
+    columns = ["representation", X_PARAMETER]
+
+    if GROUP_PARAMETER is not None:
+        columns.append(GROUP_PARAMETER)
+
+    return columns
+
+
 def save_full_table(df):
     columns = [
-        "representation",
-        X_PARAMETER,
+        *parameter_columns(),
         *TABLE_METRICS,
     ]
 
+    sort_columns = ["representation"]
+
+    if GROUP_PARAMETER is not None:
+        sort_columns.append(GROUP_PARAMETER)
+
+    sort_columns.append(X_PARAMETER)
+
     table = (
         df[columns]
-        .sort_values(["representation", X_PARAMETER])
+        .sort_values(sort_columns)
+        .reset_index(drop=True)
     )
 
     table.to_csv(
@@ -147,14 +239,21 @@ def save_best_configs(df):
     best_rows = []
 
     for representation, group in df.groupby("representation"):
-        best = group.loc[group[BEST_CONFIG_METRIC].idxmax()]
+        best = (
+            group
+            .sort_values(
+                BEST_CONFIG_SORT,
+                ascending=BEST_CONFIG_ASCENDING,
+            )
+            .iloc[0]
+        )
+
         best_rows.append(best)
 
     best_df = pd.DataFrame(best_rows)
 
     columns = [
-        "representation",
-        X_PARAMETER,
+        *parameter_columns(),
         *TABLE_METRICS,
     ]
 
@@ -170,31 +269,61 @@ def save_best_configs(df):
     )
 
     print("\nBest configuration per representation")
-    print(f"(selected by {BEST_CONFIG_METRIC})\n")
+    print(
+        "(overall F1 -> exact match -> precision "
+        "-> fewer selected chunks)\n"
+    )
     print(best_df.round(4).to_string(index=False))
+
+    return best_df
 
 
 def plot_metrics_by_representation(df):
     if not PLOT_METRICS:
         return
 
-    for representation, group in df.groupby("representation"):
-        group = group.sort_values(X_PARAMETER)
-
+    for representation, representation_df in df.groupby("representation"):
         fig, ax = plt.subplots(figsize=(8, 5))
 
-        for metric in PLOT_METRICS:
-            ax.plot(
-                group[X_PARAMETER],
-                group[metric],
-                marker="o",
-                label=metric,
-            )
+        if GROUP_PARAMETER is None:
+            group = representation_df.sort_values(X_PARAMETER)
 
-        ax.set_xlabel(X_PARAMETER.replace("_", " ").title())
+            for metric in PLOT_METRICS:
+                ax.plot(
+                    group[X_PARAMETER],
+                    group[metric],
+                    marker="o",
+                    label=metric,
+                )
+
+        else:
+            for group_value, group in representation_df.groupby(
+                GROUP_PARAMETER
+            ):
+                group = group.sort_values(X_PARAMETER)
+
+                for metric in PLOT_METRICS:
+                    if len(PLOT_METRICS) == 1:
+                        label = f"{GROUP_PARAMETER}={group_value}"
+                    else:
+                        label = (
+                            f"{GROUP_PARAMETER}={group_value} - {metric}"
+                        )
+
+                    ax.plot(
+                        group[X_PARAMETER],
+                        group[metric],
+                        marker="o",
+                        label=label,
+                    )
+
+        ax.set_xlabel(
+            X_PARAMETER.replace("_", " ").title()
+        )
         ax.set_ylabel("Score")
         ax.set_title(
-            f"{representation}: {METHOD.replace('_', ' ')} comparison"
+            f"{representation}: "
+            f"{METHOD.replace('_', ' ')} comparison"
         )
         ax.legend()
         ax.grid(alpha=0.25)
@@ -202,41 +331,38 @@ def plot_metrics_by_representation(df):
         fig.tight_layout()
 
         fig.savefig(
-            OUTPUT_DIR / f"{representation}_{METHOD}_metrics.png",
+            OUTPUT_DIR
+            / f"{representation}_{METHOD}_metrics.png",
             dpi=300,
         )
 
         plt.close(fig)
 
-def plot_f1_comparison(df):
-    fig, ax = plt.subplots(figsize=(8, 5))
 
-    for representation, group in df.groupby("representation"):
-        group = group.sort_values(X_PARAMETER)
+def plot_best_f1_comparison(best_df):
+    fig, ax = plt.subplots(figsize=(7, 5))
 
-        ax.plot(
-            group[X_PARAMETER],
-            group["overall_f1"],
-            marker="o",
-            label=representation,
-        )
+    ax.bar(
+        best_df["representation"],
+        best_df["overall_f1"],
+    )
 
-    ax.set_xlabel(X_PARAMETER.replace("_", " ").title())
+    ax.set_xlabel("Representation")
     ax.set_ylabel("Mean F1")
     ax.set_title(
-        f"F1 comparison across representations"
+        f"Best {METHOD.replace('_', ' ')} configuration by representation"
     )
-    ax.legend()
-    ax.grid(alpha=0.25)
+    ax.grid(axis="y", alpha=0.25)
 
     fig.tight_layout()
 
     fig.savefig(
-        OUTPUT_DIR / f"{METHOD}_f1_all_representations.png",
+        OUTPUT_DIR / f"{METHOD}_best_f1_comparison.png",
         dpi=300,
     )
 
     plt.close(fig)
+
 
 def main():
     OUTPUT_DIR.mkdir(
@@ -254,7 +380,7 @@ def main():
     requested_metrics = (
         TABLE_METRICS
         + PLOT_METRICS
-        + [BEST_CONFIG_METRIC]
+        + BEST_CONFIG_SORT
     )
 
     missing_metrics = [
@@ -269,9 +395,11 @@ def main():
         )
 
     save_full_table(df)
-    save_best_configs(df)
+
+    best_df = save_best_configs(df)
+
     plot_metrics_by_representation(df)
-    plot_f1_comparison(df)
+    plot_best_f1_comparison(best_df)
 
     print(f"\nResults saved to: {OUTPUT_DIR}")
 

@@ -31,23 +31,27 @@ REPRESENTATIONS = {
 
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_threshold_v2"
+    "data/produced_v2/selector_experiments/dev_top_k_threshold_v2"
 )
 
 
+TOP_K_VALUES = [1, 2, 3]
+
 THRESHOLD_REGIONS = {
-    "e5": (0.8598, 0.87315),
-    "tfidf": (0.0591, 0.173375),
-    "sentence_bert": (0.6524375, 0.7238125),
+    "e5": (0.80, 0.90),
+    "tfidf": (0.04, 0.55),
+    "sentence_bert": (0.45, 0.80),
 }
 
 EXPERIMENTS = [
     {
         "representation": representation,
-        "method": "threshold",
+        "method": "top_k_threshold",
+        "top_k": top_k,
         "threshold": float(threshold),
     }
     for representation, (lower, upper) in THRESHOLD_REGIONS.items()
+    for top_k in TOP_K_VALUES
     for threshold in np.linspace(lower, upper, 21)
 ]
 
