@@ -6,21 +6,21 @@ import numpy as np
 from similarity_calculator import SimilarityCalculator
 
 
-EMBEDDINGS_FOLDER = Path(
-    r"data/produced/embeddings"
+embeddings_folder = Path(
+    r"data/produced_v2/embeddings"
 )
 
-OUTPUT_FOLDER = Path(
-    r"data/produced/similarity_matrices"
+output_folder = Path(
+    r"data/produced_v2/similarity_matrices"
 )
 
-EMBEDDING_METHODS = [
+embedding_methods = [
     "TF_IDF",
     "SENTENCE_BERT",
     "RETRIEVAL_BI_ENCODER",
 ]
 
-SIMILARITY_METHODS = [
+similarity_methods = [
     "cosine",
     "dot",
     "euclidean",
@@ -43,16 +43,16 @@ def save_json(path: Path, data) -> None:
         )
 
 
-OUTPUT_FOLDER.mkdir(
+output_folder.mkdir(
     parents=True,
     exist_ok=True,
 )
 
-for embedding_method in EMBEDDING_METHODS:
+for embedding_method in embedding_methods:
     embedding_name = embedding_method.lower()
 
     embedding_folder = (
-        EMBEDDINGS_FOLDER / embedding_name
+        embeddings_folder / embedding_name
     )
 
     question_embeddings_file = (
@@ -101,7 +101,7 @@ for embedding_method in EMBEDDING_METHODS:
         )
 
     method_output_folder = (
-        OUTPUT_FOLDER / embedding_name
+        output_folder / embedding_name
     )
 
     method_output_folder.mkdir(
@@ -121,7 +121,7 @@ for embedding_method in EMBEDDING_METHODS:
 
     matrix_metadata = {}
 
-    for similarity_method in SIMILARITY_METHODS:
+    for similarity_method in similarity_methods:
         print(
             f"Computing {similarity_method} "
             f"similarity matrix..."

@@ -1,0 +1,31 @@
+{
+  "embedding_method": "RETRIEVAL_BI_ENCODER",
+  "number_of_questions": 720,
+  "number_of_chunks": 201,
+  "matrices": {
+    "cosine": {
+      "file": "cosine_similarity_matrix.npy",
+      "shape": [
+        720,
+        201
+      ],
+      "higher_is_better": true
+    },
+    "dot": {
+      "file": "dot_similarity_matrix.npy",
+      "shape": [
+        720,
+        201
+      ],
+      "higher_is_better": true
+    },
+    "euclidean": {
+      "file": "euclidean_similarity_matrix.npy",
+      "shape": [
+        720,
+        201
+      ],
+      "higher_is_better": false
+    }
+  }
+}

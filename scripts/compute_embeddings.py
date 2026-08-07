@@ -7,28 +7,28 @@ import numpy as np
 from text_embedder import TextEmbedder
 
 
-QUESTIONS_FILE = Path(
+questions_file = Path(
     r"data/processed/qSet_PO.jsonl"
 )
 
-CHUNKS_FILE = Path(
+chunks_file = Path(
     r"data/processed/PO_25_CL_chunks.jsonl"
 )
 
-OUTPUT_FOLDER = Path(
-    r"data/produced"
+output_folder = Path(
+    r"data/produced_v2/embeddings"
 )
 
-EMBEDDING_METHODS = [
+embedding_methods = [
     "TF_IDF",
     "SENTENCE_BERT",
     "RETRIEVAL_BI_ENCODER",
 ]
 
-BATCH_SIZE = 32
+batch_size = 32
 
 # Use None to use the default model defined in TextEmbedder.
-MODEL_NAMES = {
+model_names = {
     "TF_IDF": None,
     "SENTENCE_BERT": None,
     "RETRIEVAL_BI_ENCODER": None,
@@ -57,8 +57,8 @@ def save_json(path: Path, data) -> None:
 
 
 
-question_rows = load_jsonl(QUESTIONS_FILE)
-chunk_rows = load_jsonl(CHUNKS_FILE)
+question_rows = load_jsonl(questions_file)
+chunk_rows = load_jsonl(chunks_file)
 
 question_ids = [
     str(row["question_id"])
@@ -83,18 +83,18 @@ chunk_texts = [
 print(f"Loaded {len(question_ids)} questions.")
 print(f"Loaded {len(chunk_ids)} chunks.")
 
-OUTPUT_FOLDER.mkdir(
+output_folder.mkdir(
     parents=True,
     exist_ok=True,
 )
 
 
 
-for method in EMBEDDING_METHODS:
+for method in embedding_methods:
     print()
     print(f"Computing embeddings with {method}...")
 
-    method_folder = OUTPUT_FOLDER / method.lower()
+    method_folder = output_folder / method.lower()
 
     method_folder.mkdir(
         parents=True,
@@ -104,8 +104,8 @@ for method in EMBEDDING_METHODS:
     embedder = TextEmbedder(
         method=method,
         chunk_texts=chunk_texts,
-        model_name_or_path=MODEL_NAMES[method],
-        batch_size=BATCH_SIZE,
+        model_name_or_path=model_names[method],
+        batch_size=batch_size,
     )
 
     question_embeddings = embedder.embed_many(
@@ -151,8 +151,8 @@ for method in EMBEDDING_METHODS:
             "model_name_or_path",
             None,
         ),
-        "questions_file": str(QUESTIONS_FILE),
-        "chunks_file": str(CHUNKS_FILE),
+        "questions_file": str(questions_file),
+        "chunks_file": str(chunks_file),
         "number_of_questions": len(question_ids),
         "number_of_chunks": len(chunk_ids),
         "question_embeddings_shape": list(
