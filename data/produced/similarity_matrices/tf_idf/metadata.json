@@ -1,0 +1,31 @@
+{
+  "embedding_method": "TF_IDF",
+  "number_of_questions": 600,
+  "number_of_chunks": 201,
+  "matrices": {
+    "cosine": {
+      "file": "cosine_similarity_matrix.npy",
+      "shape": [
+        600,
+        201
+      ],
+      "higher_is_better": true
+    },
+    "dot": {
+      "file": "dot_similarity_matrix.npy",
+      "shape": [
+        600,
+        201
+      ],
+      "higher_is_better": true
+    },
+    "euclidean": {
+      "file": "euclidean_similarity_matrix.npy",
+      "shape": [
+        600,
+        201
+      ],
+      "higher_is_better": false
+    }
+  }
+}

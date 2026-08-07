@@ -8,11 +8,11 @@
   - [x] retrieval-trained bi-encoder
 - [x] make class for similarity measures
 - [x] make class for selector
+- [x] compute embeddings
+- [x] compute similarity matrices
 - [ ] make framework that
   - [ ] splits data
-  - [ ] runs through train with various parameters
-    - [ ] saves cached embeddings and similarities for performance
-    - [ ] saves similarities for documentation
+  - [ ] runs through selection with various parameters
   - [ ] cumulates and saves final scores in dataframe
 
 ### P1 — optional data

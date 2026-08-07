@@ -1,5 +1,4 @@
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 class TextEmbedder:
     """Embed questions and chunks using one of three embedding methods."""

@@ -6,16 +6,12 @@ import numpy as np
 from similarity_calculator import SimilarityCalculator
 
 
-# =============================================================================
-# SETTINGS — EDIT THESE
-# =============================================================================
-
 EMBEDDINGS_FOLDER = Path(
-    r"C:\path\to\your\artifacts\embeddings"
+    r"data/produced/embeddings"
 )
 
 OUTPUT_FOLDER = Path(
-    r"C:\path\to\your\artifacts\similarity_matrices"
+    r"data/produced/similarity_matrices"
 )
 
 EMBEDDING_METHODS = [
@@ -31,9 +27,6 @@ SIMILARITY_METHODS = [
 ]
 
 
-# =============================================================================
-# FUNCTIONS
-# =============================================================================
 
 def load_json(path: Path):
     with path.open("r", encoding="utf-8") as file:
@@ -49,10 +42,6 @@ def save_json(path: Path, data) -> None:
             indent=2,
         )
 
-
-# =============================================================================
-# COMPUTE SIMILARITY MATRICES
-# =============================================================================
 
 OUTPUT_FOLDER.mkdir(
     parents=True,
