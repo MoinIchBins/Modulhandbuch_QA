@@ -25,6 +25,16 @@ data/produced_v2/selector_experiments/dev_top_k_v1:
         for representation in ("e5", "tfidf", "sentence_bert")
         for top_k in range(1, 10)
     ]
+## Development Results: Top-k Selection
+
+For all three representations, **top-k = 1** produced the best development performance.
+
+* **E5** performed best overall, with an overall F1 of **0.617** and an answerable-question F1 of **0.744**.
+* **TF-IDF** ranked second, reaching an overall F1 of **0.551** and an answerable-question F1 of **0.665**.
+* **Sentence-BERT** performed substantially worse, with an overall F1 of **0.374** and an answerable-question F1 of **0.452**.
+
+The results indicate that retrieving only the highest-ranked chunk is already sufficient for most answerable questions. E5 provides the strongest ranking quality, while TF-IDF remains a competitive lexical baseline. Sentence-BERT is clearly weaker under the same top-k setting.
+
 
 found threshold regions, see metadata/report/threshold_region_method.md
 E5: 0.8331–0.8865
@@ -46,3 +56,41 @@ data/produced_v2/selector_experiments/dev_threshold
         for representation, (lower, upper) in THRESHOLD_REGIONS.items()
         for threshold in np.linspace(lower, upper, 9)
     ]
+
+## Development Results: Threshold Selection
+
+The coarse threshold search identified interior optima for all three representations, indicating that the predefined search regions were appropriate and did not require expansion.
+
+* **E5** achieved the highest overall F1 (**0.494**) at a threshold of **0.8665**. It also showed strong abstention behavior on zero-gold questions (**0.824**), but lower answerable-question F1 (**0.426**).
+* **TF-IDF** achieved a slightly lower overall F1 (**0.475**) at **0.1162**, but performed best on answerable questions, with an F1 of **0.537** and recall of **0.661**. Its main weakness was poor zero-gold abstention (**0.176**).
+* **Sentence-BERT** performed worst overall, with an F1 of **0.351** at **0.6881**. Although its zero-gold abstention rate was high (**0.797**), its answerable-question F1 remained low (**0.259**).
+
+These results suggest that E5 currently provides the best balance between retrieval quality and abstention, whereas TF-IDF is strongest when a relevant answer exists but struggles to reject unanswerable questions.
+All are worse than the previous highest performance of top-k for E5
+
+
+new thresholds: take neighbours of current best and do 21 points between
+    THRESHOLD_REGIONS = {
+        "e5": (0.8598, 0.87315),
+        "tfidf": (0.0591, 0.173375),
+        "sentence_bert": (0.6524375, 0.7238125),
+    }
+
+    EXPERIMENTS = [
+        {
+            "representation": representation,
+            "method": "threshold",
+            "threshold": float(threshold),
+        }
+        for representation, (lower, upper) in THRESHOLD_REGIONS.items()
+        for threshold in np.linspace(lower, upper, 21)
+    ]
+## Development Results: Refined Threshold Selection
+
+The refined search confirmed the coarse-search optima for all three representations.
+
+* **E5** remained best overall at threshold **0.8665**, with overall F1 **0.494** and zero-gold abstention **0.824**.
+* **TF-IDF** improved slightly to overall F1 **0.487** at threshold **0.1277**. Its answerable-question F1 remained strongest (**0.537**), but abstention was still weak (**0.243**).
+* **Sentence-BERT** improved marginally to overall F1 **0.358** at threshold **0.7095**, with high abstention (**0.892**) but low answerable-question F1 (**0.248**).
+
+The refined search therefore did not change the overall ranking: **E5 > TF-IDF > Sentence-BERT** for threshold-based selection.

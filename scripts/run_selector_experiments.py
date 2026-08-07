@@ -31,26 +31,14 @@ REPRESENTATIONS = {
 
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/dev_threshold"
+    "data/produced_v2/selector_experiments/dev_threshold_v2"
 )
 
 
-
-first_experiment = [
-    {
-        "representation": representation,
-        "method": "top_k",
-        "top_k": top_k,
-    }
-    for representation in ("e5", "tfidf", "sentence_bert")
-    for top_k in range(1, 10)
-]
-
-
 THRESHOLD_REGIONS = {
-    "e5": (0.8331, 0.8865),
-    "tfidf": (0.0591, 0.5162),
-    "sentence_bert": (0.4740, 0.7595),
+    "e5": (0.8598, 0.87315),
+    "tfidf": (0.0591, 0.173375),
+    "sentence_bert": (0.6524375, 0.7238125),
 }
 
 EXPERIMENTS = [
@@ -60,7 +48,7 @@ EXPERIMENTS = [
         "threshold": float(threshold),
     }
     for representation, (lower, upper) in THRESHOLD_REGIONS.items()
-    for threshold in np.linspace(lower, upper, 9)
+    for threshold in np.linspace(lower, upper, 21)
 ]
 
 
