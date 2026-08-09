@@ -6,6 +6,7 @@ added 120 non-answerable questions that could be mistaken for answerable by user
 
 3. models: see goodnotes document and produced_v2/embeddings/embeddor/metadata.json
 decided on TF-IDF as baseline (compared to ctr-f), one lightweight sentence-BERT as main research question model and one retrieval trained model for "whats possible"
+TF-IDF representations were obtained with scikit-learn's TfidfVectorizer, fitted on the retrieval chunks, using lowercased word uni-, bi-, and trigrams and the vectorizer's remaining recorded settings.
 
 4. similarity measures: see goodnotes document and produced_v2/similarity_matrices/embeddor/metadata.json
 cosine similarity as main measure, dot product and euclidean distance as backup only for comparing on best model with best selector, should not be too different from cosine similarity
@@ -254,7 +255,33 @@ On the held-out test set, the frozen **E5 + top-1 + threshold** configuration ac
 
 Manual error analysis revealed two important factors behind the lower test performance. First, several predictions that were penalized by exact chunk-set evaluation nevertheless contained sufficient evidence to answer the question, indicating that the gold mapping does not always capture all valid alternative evidence. Second, six test questions concerning the *Zugangsprüfung* belonged to the same unseen evidence group and were all retrieved incorrectly. Because questions sharing the same non-empty gold chunk set were intentionally kept within one split to prevent leakage, this cluster occurred only in the test set and contributed disproportionately to the performance drop.
 
+correct numbers: A post-hoc sensitivity analysis yields a mean question-level F1 of approximately 0.586 when nine manually judged valid-alternative predictions are treated as correct and the eight zero-F1 questions belonging to the unseen Zugangsprüfung evidence group are excluded.
+
 The strongest configuration decreased from **0.6474 F1 on development to 0.6111 on validation**, corresponding to a drop of **0.0363**. The original test F1 of **0.4907** over 144 questions corresponds to a total summed question-level F1 of (0.4907 \times 144 = 70.67). If the **9 manually identified alternative-valid evidence cases** are treated diagnostically as correct, this sum increases to (70.67 + 9 = 79.67). If the **6 Zugangsprüfung questions**, all of which contributed an F1 of 0, are additionally excluded, the adjusted diagnostic test F1 becomes (79.67 / (144-6) = 0.5773). The remaining validation-to-adjusted-test difference is therefore **0.6111 − 0.5773 = 0.0338**, which is slightly smaller than the **0.0363** decrease already observed from development to validation. This does not establish that the difference is statistically insignificant, but it suggests that much of the raw test drop from **0.6111 to 0.4907** can be attributed to identifiable properties of the evaluation data rather than a general collapse in retrieval performance.
+
+The official test result remains unchanged:
+F1 test =0.4907407 over 144 questions, so the summed question-level F1 is 0.4907407×144=70.6667.
+Using the currently provisional nine valid-alternative cases: 70.6667+9=79.6667.
+Then excluding all eight zero-F1 Zugangsprüfung questions: F1 diagnostic = (144−8)/79.6667 = 136/79.6667 =0.5858.
+The comparison then becomes:
+F1 dev =0.6474
+F1 validation =0.6111
+F1 diagnostic test =0.5858.
+So:
+0.6474−0.6111=0.0363
+for development → validation, while
+0.6111−0.5858=0.0253
+for validation → diagnostic test.
+The raw validation → official-test decrease is about 0.1204.
+
+also for distribution:
+| Split       | Questions | Zero-gold | Zero-gold % | Require 1 chunk | Require 2 chunks | Multi-gold % |
+| ----------- | --------: | --------: | ----------: | --------------: | ---------------: | -----------: |
+| Development |       432 |        74 |      17.13% |             340 |               18 |        4.17% |
+| Validation  |       144 |        24 |      16.67% |             116 |                4 |        2.78% |
+| Test        |       144 |        22 |      15.28% |             112 |               10 |        6.94% |
+| **Total**   |   **720** |   **120** |  **16.67%** |         **568** |           **32** |    **4.44%** |
+
 
 
 9. baselines

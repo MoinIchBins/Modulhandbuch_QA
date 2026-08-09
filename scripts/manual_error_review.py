@@ -12,19 +12,19 @@ from urllib.parse import quote
 # Paths
 # ---------------------------------------------------------------------
 
-CHUNK_BROWSER_DIR = Path("data/visualization/chunk_browser")
+CHUNK_BROWSER_DIR = Path("chunk_browser")
 
 CHUNKS_PATH = Path(
     "data/produced_v2/frozen/PO_25_CL_chunks.jsonl"
 )
 
 REVIEW_PATH = Path(
-    "data/produced_v2/selector_experiments/test_winner/"
+    "data/produced_v2/selector_experiments/test_final_v1/"
     "error_analysis/manual_review.csv"
 )
 
 OUTPUT_PATH = Path(
-    "data/produced_v2/selector_experiments/test_winner/"
+    "data/produced_v2/selector_experiments/test_final_v1/"
     "error_analysis/manual_review_evaluated.csv"
 )
 

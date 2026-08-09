@@ -1,5 +1,7 @@
 # Modulhandbuch_QA
 
+Python 3.11.15
+
 Project for Python II, QA-model comparison on Modulhandbuch
 
 In how far do different embeddings and preprocessing data and question influence the performance of a embedding based QA-Model.
@@ -12,6 +14,8 @@ QA-Model comparison on German corpus Modulhandbuch
 - Machine learning approach for indices in main corpus (likely bad due to big data) (Python II / Deep Learning)
 - Machine learning approach for text passages (Deep Learning)
 - Finish RAG with generating answer in full text
+
+
 
 ## Steps:
 
@@ -27,6 +31,8 @@ QA-Model comparison on German corpus Modulhandbuch
 - Create Testing functions (Accuracy, EM, F1) to compare
 - Visualize results
 
+
+
 ## Some Details
 
 - segment the source texts (100-400 words per chunk) 200-400QA pairs of differing question types
@@ -41,6 +47,8 @@ Was ist ein Wahlpflichtmodul?, Wann gilt eine Prüfung als endgültig nicht best
   - lemmatization and stemming 
   - Query extension through list of synonyms 
   - score auf title, section und text
+
+
 
 ## Forschungsfrage:
 

@@ -6,7 +6,7 @@ split_path = (
 )
 
 prediction_path = (
-    "data/produced_v2/selector_experiments/test_final_v1/"
+    "data/produced_v2/selector_experiments/test_winner/"
     "e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl"
 )
 
