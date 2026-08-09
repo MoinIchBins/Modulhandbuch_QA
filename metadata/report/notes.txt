@@ -245,6 +245,18 @@ FINALISTS = [
     ),
 ]
 
+8.1 finalist validation results
+On the validation set, the **E5 + top-1 + threshold** configuration performed best, reaching a mean question-level F1 of **0.611** and an exact-match rate of **0.597**. Plain E5 top-1 followed closely with **0.597 F1**, while the relative-margin variant achieved **0.590 F1**. The thresholded E5 system therefore provided the best overall balance between correct retrieval and abstention, correctly rejecting **41.7%** of zero-gold questions. TF-IDF remained competitive but clearly weaker, with its best finalist reaching **0.500 F1**. Overall, the validation results confirmed both the advantage of the E5 representation and the benefit of combining top-1 retrieval with an absolute similarity threshold.
+
+
+8.2 winner test result
+On the held-out test set, the frozen **E5 + top-1 + threshold** configuration achieved a mean question-level F1 of **0.491** and an exact-match rate of **0.486**, both clearly below its validation performance. Precision and recall were similarly balanced at approximately **0.493** and **0.490**, while the system abstained on **20.8%** of questions and correctly abstained on **40.9%** of zero-gold cases. The size of the drop from validation to test suggests that the aggregate metrics alone are insufficient to explain the system’s behavior. A detailed analysis of the missed cases is therefore necessary to determine whether the errors stem primarily from retrieval failures, abstention decisions, properties of the test split, or limitations of the gold evidence mappings.
+
+Manual error analysis revealed two important factors behind the lower test performance. First, several predictions that were penalized by exact chunk-set evaluation nevertheless contained sufficient evidence to answer the question, indicating that the gold mapping does not always capture all valid alternative evidence. Second, six test questions concerning the *Zugangsprüfung* belonged to the same unseen evidence group and were all retrieved incorrectly. Because questions sharing the same non-empty gold chunk set were intentionally kept within one split to prevent leakage, this cluster occurred only in the test set and contributed disproportionately to the performance drop.
+
+The strongest configuration decreased from **0.6474 F1 on development to 0.6111 on validation**, corresponding to a drop of **0.0363**. The original test F1 of **0.4907** over 144 questions corresponds to a total summed question-level F1 of (0.4907 \times 144 = 70.67). If the **9 manually identified alternative-valid evidence cases** are treated diagnostically as correct, this sum increases to (70.67 + 9 = 79.67). If the **6 Zugangsprüfung questions**, all of which contributed an F1 of 0, are additionally excluded, the adjusted diagnostic test F1 becomes (79.67 / (144-6) = 0.5773). The remaining validation-to-adjusted-test difference is therefore **0.6111 − 0.5773 = 0.0338**, which is slightly smaller than the **0.0363** decrease already observed from development to validation. This does not establish that the difference is statistically insignificant, but it suggests that much of the raw test drop from **0.6111 to 0.4907** can be attributed to identifiable properties of the evaluation data rather than a general collapse in retrieval performance.
+
+
 9. baselines
 added three baselines in produced_v2
 a. random chunk
