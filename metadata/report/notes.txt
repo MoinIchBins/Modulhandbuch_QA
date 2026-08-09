@@ -296,7 +296,8 @@ also for distribution:
 | Test        |       144 |        22 |      15.28% |             112 |               10 |        6.94% |
 | **Total**   |   **720** |   **120** |  **16.67%** |         **568** |           **32** |    **4.44%** |
 
-
+because the split keeps questions sharing the same gold evidence together, performance is partly determined by which evidence groups land in each held-out split. Test contains several comparatively large evidence groups on which the frozen system performs very poorly.
+see single gold only evaluations
 
 9. baselines
 added three baselines in produced_v2

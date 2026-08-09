@@ -9,16 +9,16 @@ from pathlib import Path
 
 GOLD_PATH = Path("data/produced_v2/frozen/split/gold_with_split.jsonl")
 PREDICTIONS_PATH = Path(
-    "data/produced_v2/selector_experiments/test_winner/"
+    "data/produced_v2/selector_experiments/validation_finalists/"
     "e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl"
 )
 CHUNKS_PATH = Path("data/produced_v2/frozen/PO_25_CL_chunks.jsonl")
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/test_winner/error_analysis"
+    "data/produced_v2/selector_experiments/validation_finalists/error_analysis_of_best"
 )
 
-SPLIT = "test"
+SPLIT = "validation"
 
 GOLD_FIELD = "all_required_chunk_ids"
 PREDICTION_FIELD = "chunk_ids"
