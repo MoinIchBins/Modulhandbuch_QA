@@ -3,6 +3,7 @@ reasons for the specific architecture: necessity, no options, basic rag pipeline
 
 2. Data: see readme.md in processed and processed/qamappings and metadata/decisions
 added 120 non-answerable questions that could be mistaken for answerable by user
+Questions sharing the same non-empty gold evidence set were assigned to the same split to reduce dependence between evaluation partitions. This constitutes a conservative splitting strategy, as the retrieval representations themselves were frozen and the complete chunk corpus remained available in all partitions. A consequence is increased split-level variance: large evidence groups are evaluated entirely within one partition, so differences in group difficulty can affect validation–test comparability.
 
 3. models: see goodnotes document and produced_v2/embeddings/embeddor/metadata.json
 decided on TF-IDF as baseline (compared to ctr-f), one lightweight sentence-BERT as main research question model and one retrieval trained model for "whats possible"
@@ -298,6 +299,14 @@ also for distribution:
 
 because the split keeps questions sharing the same gold evidence together, performance is partly determined by which evidence groups land in each held-out split. Test contains several comparatively large evidence groups on which the frozen system performs very poorly.
 see single gold only evaluations
+
+Single-gold comparison. Restricting the evaluation to questions with exactly one gold chunk raises validation F1 from 0.611 to 0.655 and test F1 from 0.491 to 0.545. The validation–test gap therefore decreases only from about 0.120 to 0.111 F1, a reduction of roughly 0.010 points. Thus, differences in zero-gold and multi-gold composition explain only a small part of the test drop.
+Difficult evidence groups. For descriptive analysis, a difficult group can be defined as an evidence group containing at least three questions for which the frozen system retrieves the correct gold chunk for less than half of the questions. The minimum group size avoids interpreting one or two individual errors as a systematic group-level problem, while the below-50% criterion means that failure is the dominant outcome within the group.
+
+Group composition. Under this definition, validation contains 5 difficult groups covering 30 of 116 single-gold questions (25.9%), whereas test contains 7 difficult groups covering 40 of 112 questions (35.7%). Performance inside these groups is low in both splits—about 23.3% correct in validation and 15.0% in test. The Zugangsprüfung group is therefore only one part of a broader concentration of difficult evidence groups in the test split.
+
+Interpretation of the remaining gap. Outside these difficult groups, performance is much closer: approximately 80.2% correct on validation versus 76.4% on test, a difference of only about 3.8 percentage points. This suggests that much of the larger aggregate validation–test difference is associated with the particular evidence groups assigned to each split. This is consistent with the leakage-aware splitting strategy: keeping questions with the same gold evidence together reduces leakage, but also increases split-to-split variation in evidence-group difficulty.
+
 
 9. baselines
 added three baselines in produced_v2

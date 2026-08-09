@@ -1,0 +1,175 @@
+% Naming convention: YYYY_FirstAuthorOrAuthors_ShortTitle.pdf
+% ASCII-only filenames, no spaces, concise and sortable by year.
+
+% BibTeX citation set for the literature PDFs in this folder.
+% One entry per PDF. Citekeys are kept short and descriptive.
+
+% 1972_SparckJones_TermSpecificityRetrieval.pdf
+@article{sparckjones1972statistical,
+  author  = {Sp{\"a}rck Jones, Karen},
+  title   = {A Statistical Interpretation of Term Specificity and Its Application in Retrieval},
+  journal = {Journal of Documentation},
+  volume  = {28},
+  number  = {1},
+  pages   = {11--21},
+  year    = {1972},
+  doi     = {10.1108/eb026526}
+}
+
+% 2024_BuettnerHabernal_GermanLegalQA.pdf
+@inproceedings{buttner-habernal-2024-answering,
+  title     = {Answering legal questions from laymen in {G}erman civil law system},
+  author    = {B{\"u}ttner, Marius and Habernal, Ivan},
+  booktitle = {Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  month     = mar,
+  year      = {2024},
+  address   = {St. Julian's, Malta},
+  publisher = {Association for Computational Linguistics},
+  pages     = {2015--2027},
+  doi       = {10.18653/v1/2024.eacl-long.122},
+  url       = {https://aclanthology.org/2024.eacl-long.122/}
+}
+
+% 2021_ThakurEtAl_BEIR.pdf
+@inproceedings{thakur2021beir,
+  title     = {{BEIR}: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models},
+  author    = {Thakur, Nandan and Reimers, Nils and R{\"u}ckl{\'e}, Andreas and Srivastava, Abhishek and Gurevych, Iryna},
+  booktitle = {Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track (Round 2)},
+  year      = {2021},
+  url       = {https://openreview.net/forum?id=wCu6T5xFjeJ}
+}
+
+% 2020_KarpukhinEtAl_DensePassageRetrieval.pdf
+@inproceedings{karpukhin-etal-2020-dense,
+  title     = {Dense Passage Retrieval for Open-Domain Question Answering},
+  author    = {Karpukhin, Vladimir and Oguz, Barlas and Min, Sewon and Lewis, Patrick and Wu, Ledell and Edunov, Sergey and Chen, Danqi and Yih, Wen-tau},
+  booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  month     = nov,
+  year      = {2020},
+  address   = {Online},
+  publisher = {Association for Computational Linguistics},
+  pages     = {6769--6781},
+  doi       = {10.18653/v1/2020.emnlp-main.550},
+  url       = {https://aclanthology.org/2020.emnlp-main.550/}
+}
+
+% 2022_WangEtAl_E5TextEmbeddings.pdf
+@article{wang2022text,
+  title   = {Text Embeddings by Weakly-Supervised Contrastive Pre-training},
+  author  = {Wang, Liang and Yang, Nan and Huang, Xiaolong and Jiao, Binxing and Yang, Linjun and Jiang, Daxin and Majumder, Rangan and Wei, Furu},
+  journal = {arXiv preprint arXiv:2212.03533},
+  year    = {2022},
+  doi     = {10.48550/arXiv.2212.03533},
+  url     = {https://arxiv.org/abs/2212.03533}
+}
+
+% 2021_WrzalikKrechel_GerDaLIR.pdf
+@inproceedings{wrzalik-krechel-2021-gerdalir,
+  title     = {{G}er{D}a{LIR}: A {G}erman Dataset for Legal Information Retrieval},
+  author    = {Wrzalik, Marco and Krechel, Dirk},
+  booktitle = {Proceedings of the Natural Legal Language Processing Workshop 2021},
+  month     = nov,
+  year      = {2021},
+  address   = {Punta Cana, Dominican Republic},
+  publisher = {Association for Computational Linguistics},
+  pages     = {123--128},
+  doi       = {10.18653/v1/2021.nllp-1.13},
+  url       = {https://aclanthology.org/2021.nllp-1.13/}
+}
+
+% 2023_MuennighoffEtAl_MTEB.pdf
+@inproceedings{muennighoff-etal-2023-mteb,
+  title     = {{MTEB}: Massive Text Embedding Benchmark},
+  author    = {Muennighoff, Niklas and Tazi, Nouamane and Magne, Loic and Reimers, Nils},
+  booktitle = {Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics},
+  month     = may,
+  year      = {2023},
+  address   = {Dubrovnik, Croatia},
+  publisher = {Association for Computational Linguistics},
+  pages     = {2014--2037},
+  doi       = {10.18653/v1/2023.eacl-main.148},
+  url       = {https://aclanthology.org/2023.eacl-main.148/}
+}
+
+% 2020_ReimersGurevych_MultilingualSentenceEmbeddings.pdf
+@inproceedings{reimers-gurevych-2020-making,
+  title     = {Making Monolingual Sentence Embeddings Multilingual using Knowledge Distillation},
+  author    = {Reimers, Nils and Gurevych, Iryna},
+  booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  month     = nov,
+  year      = {2020},
+  address   = {Online},
+  publisher = {Association for Computational Linguistics},
+  pages     = {4512--4525},
+  doi       = {10.18653/v1/2020.emnlp-main.365},
+  url       = {https://aclanthology.org/2020.emnlp-main.365/}
+}
+
+% 2019_ReimersGurevych_SentenceBERT.pdf
+@inproceedings{reimers-gurevych-2019-sentence,
+  title     = {Sentence-{BERT}: Sentence Embeddings using Siamese {BERT}-Networks},
+  author    = {Reimers, Nils and Gurevych, Iryna},
+  booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
+  month     = nov,
+  year      = {2019},
+  address   = {Hong Kong, China},
+  publisher = {Association for Computational Linguistics},
+  pages     = {3982--3992},
+  doi       = {10.18653/v1/D19-1410},
+  url       = {https://aclanthology.org/D19-1410/}
+}
+
+% 2019_GeifmanElYaniv_SelectiveNet.pdf
+@inproceedings{pmlr-v97-geifman19a,
+  title     = {{S}elective{N}et: A Deep Neural Network with an Integrated Reject Option},
+  author    = {Geifman, Yonatan and El-Yaniv, Ran},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning},
+  pages     = {2151--2159},
+  year      = {2019},
+  editor    = {Chaudhuri, Kamalika and Salakhutdinov, Ruslan},
+  volume    = {97},
+  series    = {Proceedings of Machine Learning Research},
+  month     = {09--15 Jun},
+  publisher = {PMLR},
+  url       = {https://proceedings.mlr.press/v97/geifman19a.html}
+}
+
+% 1975_SaltonWongYang_VectorSpaceModel.pdf
+@article{salton1975vector,
+  title     = {A Vector Space Model for Automatic Indexing},
+  author    = {Salton, Gerard and Wong, Anita and Yang, Chung-Shu},
+  journal   = {Communications of the ACM},
+  volume    = {18},
+  number    = {11},
+  pages     = {613--620},
+  year      = {1975},
+  publisher = {Association for Computing Machinery},
+  doi       = {10.1145/361219.361220},
+  url       = {https://doi.org/10.1145/361219.361220}
+}
+
+% 2024_WangEtAl_MultilingualE5.pdf
+@techreport{wang2024multilingual,
+  title       = {Multilingual {E5} Text Embeddings: A Technical Report},
+  author      = {Wang, Liang and Yang, Nan and Huang, Xiaolong and Yang, Linjun and Majumder, Rangan and Wei, Furu},
+  institution = {Microsoft Research},
+  number      = {MSR-TR-2024-45},
+  year        = {2024},
+  month       = feb,
+  doi         = {10.48550/arXiv.2402.05672},
+  url         = {https://arxiv.org/abs/2402.05672}
+}
+
+% 2018_RajpurkarJiaLiang_UnanswerableSQuAD.pdf
+@inproceedings{rajpurkar-etal-2018-know,
+  title     = {Know What You Don{'}t Know: Unanswerable Questions for {SQ}u{AD}},
+  author    = {Rajpurkar, Pranav and Jia, Robin and Liang, Percy},
+  booktitle = {Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+  month     = jul,
+  year      = {2018},
+  address   = {Melbourne, Australia},
+  publisher = {Association for Computational Linguistics},
+  pages     = {784--789},
+  doi       = {10.18653/v1/P18-2124},
+  url       = {https://aclanthology.org/P18-2124/}
+}
