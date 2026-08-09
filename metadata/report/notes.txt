@@ -97,6 +97,9 @@ new thresholds: take neighbours of current best and do 21 points between
 
     The refined search therefore did not change the overall ranking: **E5 > TF-IDF > Sentence-BERT** for threshold-based selection.
 
+    A broad top-k+threshold search showed that k=1 performed best. The threshold was subsequently refined around the development optimum. A final E5 search over 21 thresholds from 0.83860 to 0.84080 produced a performance plateau from 0.83959 to 0.84003, all yielding a mean question-level F1 of 0.6474. The frozen configuration used the lower boundary of this plateau, 0.83959.
+    Configurations were primarily ranked by mean question-level F1, followed by exact-match rate, mean question-level precision, and, in the case of further ties, a lower average number of selected chunks. The final E5 top-k + threshold refinement produced a performance plateau between thresholds 0.83959 and 0.84003 for which all ranking metrics were identical. The frozen configuration used the first evaluated threshold on this plateau, 0.83959.
+
 6.4 experiment
     method: see metadata/report/top_k_threshold_method.md
     TOP_K_VALUES = [1, 2, 3]
@@ -259,10 +262,21 @@ correct numbers: A post-hoc sensitivity analysis yields a mean question-level F1
 
 The strongest configuration decreased from **0.6474 F1 on development to 0.6111 on validation**, corresponding to a drop of **0.0363**. The original test F1 of **0.4907** over 144 questions corresponds to a total summed question-level F1 of (0.4907 \times 144 = 70.67). If the **9 manually identified alternative-valid evidence cases** are treated diagnostically as correct, this sum increases to (70.67 + 9 = 79.67). If the **6 Zugangsprüfung questions**, all of which contributed an F1 of 0, are additionally excluded, the adjusted diagnostic test F1 becomes (79.67 / (144-6) = 0.5773). The remaining validation-to-adjusted-test difference is therefore **0.6111 − 0.5773 = 0.0338**, which is slightly smaller than the **0.0363** decrease already observed from development to validation. This does not establish that the difference is statistically insignificant, but it suggests that much of the raw test drop from **0.6111 to 0.4907** can be attributed to identifiable properties of the evaluation data rather than a general collapse in retrieval performance.
 
-The official test result remains unchanged:
-F1 test =0.4907407 over 144 questions, so the summed question-level F1 is 0.4907407×144=70.6667.
-Using the currently provisional nine valid-alternative cases: 70.6667+9=79.6667.
-Then excluding all eight zero-F1 Zugangsprüfung questions: F1 diagnostic = (144−8)/79.6667 = 136/79.6667 =0.5858.
+Official test:
+F1=0.4907407
+which corresponds to a summed question-level F1 of:
+0.4907407×144=70.6667.
+Effect 1: valid alternative evidence only
+If the nine manually confirmed alternative-valid predictions are treated as correct:
+144/(70.6667+9) =0.5532
+So simply accounting for alternative valid evidence changes the diagnostic value from 0.491 → 0.553.
+Effect 2: additionally remove the unseen eight-question Zugangsprüfung cluster
+All eight of those questions have F1=0, so:
+(144−8)/(70.6667+9) = 136/79.6667 =0.5858.
+Thus the useful sequence for the analysis is:
+Official frozen test: 0.491
+→ alternative-evidence sensitivity: 0.553
+→ alternative evidence + exclusion of unseen Zugangsprüfung group: 0.586
 The comparison then becomes:
 F1 dev =0.6474
 F1 validation =0.6111
