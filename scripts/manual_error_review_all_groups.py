@@ -7,11 +7,6 @@ import webbrowser
 from pathlib import Path
 from urllib.parse import quote
 
-
-# ---------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------
-
 CHUNK_BROWSER_DIR = Path("data/visualization/chunk_browser")
 
 CHUNKS_PATH = Path(
@@ -41,8 +36,7 @@ OUTPUT_PATH = (
 )
 
 # Existing completed review of the 31 wrong-nonempty cases.
-# If present, these decisions are imported automatically so you do not
-# have to review those 31 questions again.
+# If present, these decisions are imported automatically
 PREVIOUS_MANUAL_REVIEW = (
     ERROR_ANALYSIS_DIR / "manual_review_evaluated_v3.csv"
 )
@@ -51,13 +45,6 @@ PORT = 8000
 BROWSER_URL = f"http://localhost:{PORT}/"
 
 
-# ---------------------------------------------------------------------
-# Review categories
-# ---------------------------------------------------------------------
-
-# These are intentionally broad enough to work across all four
-# error groups. The source_error_group column preserves which
-# automatic error bucket a question originally came from.
 CATEGORIES = {
     "1": "valid_alternative_evidence",
     "2": "gold_mapping_issue",
@@ -133,11 +120,6 @@ CATEGORY_CODES = {
     for code, label in CATEGORIES.items()
 }
 
-
-# ---------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------
-
 def load_csv(path):
     with path.open(encoding="utf-8", newline="") as file:
         return list(csv.DictReader(file))
@@ -166,33 +148,6 @@ def save_rows(rows):
         writer.writerows(rows)
 
     temp_path.replace(OUTPUT_PATH)
-
-
-def verify_saved(question_id, error_group, category_code, category_label):
-    saved_rows = load_csv(OUTPUT_PATH)
-
-    for row in saved_rows:
-        if (
-            row["question_id"] == question_id
-            and row["source_error_group"] == error_group
-        ):
-            if (
-                row.get("manual_category_code") == category_code
-                and row.get("manual_category") == category_label
-            ):
-                return
-
-            raise RuntimeError(
-                f"Save verification failed for {question_id}: "
-                f"expected {category_code} / {category_label}, "
-                f"found {row.get('manual_category_code')} / "
-                f"{row.get('manual_category')}"
-            )
-
-    raise RuntimeError(
-        f"Save verification failed: {question_id} / {error_group} "
-        "was not found in output."
-    )
 
 
 def print_categories(error_group=None):
@@ -262,8 +217,6 @@ def normalize_source_row(row, error_group):
     normalized["manual_category"] = ""
     normalized["manual_note"] = ""
 
-    # The error-analysis CSVs should use these names already, but this
-    # keeps the script usable if one of them uses singular/alternate names.
     if "gold_chunk_ids" not in normalized:
         normalized["gold_chunk_ids"] = (
             normalized.get("gold_chunks", "")
@@ -277,11 +230,6 @@ def normalize_source_row(row, error_group):
         )
 
     return normalized
-
-
-# ---------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------
 
 def main():
     if not CHUNKS_PATH.exists():
@@ -303,8 +251,6 @@ def main():
             "Missing review input file(s):\n  "
             + "\n  ".join(missing_files)
         )
-
-    # The browser expects chunks.jsonl in its own directory.
     shutil.copyfile(
         CHUNKS_PATH,
         CHUNK_BROWSER_DIR / "chunks.jsonl",
@@ -334,8 +280,6 @@ def main():
                 normalize_source_row(row, error_group)
             )
 
-    # Import the already completed v3 review for the 31 manual
-    # wrong-nonempty cases, if that file exists.
     if PREVIOUS_MANUAL_REVIEW.exists():
         previous_manual = {
             row["question_id"]: row
@@ -369,8 +313,6 @@ def main():
             f"from {PREVIOUS_MANUAL_REVIEW}."
         )
 
-    # Resume prior work from this combined output file.
-    # Combined-output decisions take precedence over imported v3 decisions.
     if OUTPUT_PATH.exists():
         previous = {
             (
@@ -442,12 +384,8 @@ def main():
 
             print()
 
-            # For ordinary wrong retrievals and zero-gold false positives,
-            # the prediction is the most useful first thing to inspect.
             if predicted_ids:
                 open_chunk(predicted_ids[0])
-            # For abstentions there is no prediction, so open the gold
-            # evidence immediately instead.
             elif gold_ids:
                 open_chunk(gold_ids[0])
 
@@ -500,17 +438,7 @@ def main():
 
                 save_rows(rows)
 
-                verify_saved(
-                    row["question_id"],
-                    error_group,
-                    choice,
-                    category_label,
-                )
-
-                print(
-                    f"Saved and verified: "
-                    f"{choice} {category_label}"
-                )
+                print(f"Saved: {choice} {category_label}")
                 break
 
     finally:

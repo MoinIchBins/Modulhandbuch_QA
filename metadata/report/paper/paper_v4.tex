@@ -1,0 +1,316 @@
+\documentclass[11pt]{article}
+
+% Aktuelles offizielles *ACL-Layout. acl.sty und acl_natbib.bst unverändert
+% im selben Projektverzeichnis belassen. Für diese nicht-anonyme Seminarabgabe
+% wird der offizielle Final-Modus verwendet.
+\usepackage{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+
+% Deutsche Bezeichnungen auch dort erzwingen, wo acl.sty englische Überschriften fest vorgibt.
+\usepackage{etoolbox}
+\makeatletter
+\AtBeginDocument{%
+  \renewcommand{\abstractname}{Zusammenfassung}%
+  \patchcmd{\thebibliography}
+    {\section*{References\@mkboth {References}{References}}}
+    {\section*{Literaturverzeichnis\@mkboth {Literaturverzeichnis}{Literaturverzeichnis}}}
+    {}{}%
+}
+\makeatother
+
+% ACL lädt geometry, xcolor, natbib, hyperref und den Stil acl_natbib bereits selbst.
+% Diese Pakete bzw. Stile hier nicht zusätzlich laden oder überschreiben.
+
+\title{Vergleich von Textrepräsentationen und Chunk-Selektion mit Enthaltung beim Belegstellen-Retrieval in deutschen Prüfungsordnungen}
+
+% TODO vor der Abgabe: Platzhalter durch die endgültigen Autorendaten ersetzen.
+\author{Seminarteilnehmer / Verfasser \\
+  Institut für Sprache und Information \\
+  Heinrich-Heine-Universität Düsseldorf \\
+  \texttt{TODO: Universitäts-E-Mail-Adresse}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Diese Arbeit untersucht das Retrieval von Belegstellen in einer hierarchisch strukturierten deutschen Prüfungsordnung. Neben beantwortbaren Fragen umfasst die Aufgabe eine explizite Enthaltungsentscheidung für Fragen, die sich aus dem Quelldokument nicht beantworten lassen. Der projektspezifische Datensatz enthält 720 Fragen, davon 120 absichtlich unbeantwortbare Zero-Gold-Fragen, und 201 Retrieval-Chunks. Verglichen werden die sparse TF-IDF-Repräsentation sowie zwei feste multilinguale dichte Repräsentationen, Sentence-BERT und multilingual E5. Darauf aufbauend werden vier Familien von Selektionsverfahren evaluiert: Top-$k$, absoluter Schwellenwert, Top-$k$ mit absolutem Schwellenwert und eine Auswahl über eine relative Wertemarge. Die Hyperparameter werden ausschließlich auf dem Entwicklungssplit bestimmt. Fünf Finalisten werden anschließend für die Validierung eingefroren; der dort ausgewählte Sieger wird genau einmal auf dem zurückgehaltenen Testsplit evaluiert. Die ausgewählte Konfiguration aus multilingualem E5 und Top-1 mit Schwellenwert ($\theta=0.83959$) erreicht einen mittleren fragenweisen F1-Wert der Chunkauswahl von $0.647$ auf dem Entwicklungs-, $0.611$ auf dem Validierungs- und $0.491$ auf dem Testsplit. Die vollständige Prüfung der 74 nicht exakt korrekten Testfälle unterscheidet 21 Abrufe ähnlicher, aber falscher Chunks, 18 schwellenwertbedingte Enthaltungen bei beantwortbaren Fragen, 13 falsch-positive Abrufe bei Zero-Gold-Fragen, 9 strukturelle Top-1-Limitationen, 9 Fälle valider alternativer Belegstellen und 4 Probleme der Frageformulierung oder Lexik. Eine im Entwicklungs- und Validierungssplit ungesehene Evidenzgruppe mit acht Testfragen führt in allen acht Fällen zu F1 $=0$. Damit wird sichtbar, wie streng die gegen Evidenzleckage abgesicherte Datenaufteilung die Generalisierung auf ungesehene Evidenzgruppen prüft.
+\end{abstract}
+
+
+\section{Einleitung}
+
+Prüfungsordnungen bündeln allgemeine Verfahrensregeln, fachspezifische Bestimmungen und tabellarische Studienverlaufsinformationen in einem hierarchisch aufgebauten Dokument. Für die Beantwortung einer konkreten Frage genügt es daher nicht, eine thematisch ähnliche Passage zu finden. Die ausgewählte Belegstelle muss die erfragte Regel tatsächlich enthalten und zugleich der richtigen Dokumentebene zugeordnet sein. Besonders anspruchsvoll sind Passagen, die dieselben Fachbegriffe verwenden, aber unterschiedliche Funktionen erfüllen, etwa allgemeine Vorgaben und deren fachspezifische Ausgestaltung. Kurze Tabellenzellen und Einträge aus Studienverlaufsplänen sind zudem häufig nur zusammen mit ihren Überschriften eindeutig interpretierbar.
+
+Diese Arbeit behandelt die Identifikation solcher Belegstellen als eigenständige Retrieval-Aufgabe. Das Vorhersageziel ist eine Menge von Chunk-IDs, die eine Frage minimal und vollständig belegt; die Formulierung einer natürlichsprachlichen Antwort wird nicht evaluiert. Diese Abgrenzung ermöglicht es, Fehler der Evidenzauswahl getrennt von Fehlern eines nachgelagerten Lesers oder Generators zu messen. Retrieval kann in wissensintensiven QA- und RAG-Systemen als explizite nicht-parametrische Wissenskomponente dienen \citep{lewis2020rag}; dichte Bi-Encoder-Verfahren setzen diese Trennung auch für offene Question-Answering-Aufgaben um \citep{karpukhin-etal-2020-dense}. Aus der Bereitstellung einer Belegstelle folgt jedoch weder, dass eine später generierte Antwort korrekt ist, noch dass Halluzinationen verhindert werden. Untersucht wird ausschließlich, ob die für eine Antwort benötigte Evidenz gefunden wird.
+
+Eine reine Rankingaufgabe bildet das Anwendungsszenario nur unvollständig ab. Plausibel formulierte Fragen können Sachverhalte voraussetzen, die in der Prüfungsordnung nicht geregelt sind. Ein System, das stets mindestens einen Chunk ausgibt, erzeugt in diesen Fällen zwangsläufig einen unbelegten Abruf. Die Aufgabe verlangt deshalb zusätzlich die explizite Vorhersage der leeren Menge $[\,]$. Die wissenschaftliche Relevanz solcher Entscheidungen ohne Antwort ist aus Question Answering mit gezielt unbeantwortbaren Fragen bekannt \citep{rajpurkar-etal-2018-know}. Im vorliegenden Retrieval-Setting wird diese Idee auf Evidenzmengen übertragen: Eine Enthaltung ist genau dann korrekt, wenn für die Frage kein Gold-Chunk existiert.
+
+Aus dieser Problemstellung ergeben sich drei Forschungsfragen:
+
+\begin{enumerate}
+    \item[\textbf{RQ1}] Wie unterscheiden sich sparse lexikalische und dichte semantische Repräsentationen hinsichtlich ihrer Fähigkeit, antwortstützende Chunks aus einer deutschen Prüfungsordnung abzurufen?
+    \item[\textbf{RQ2}] Wie beeinflussen unterschiedliche Strategien zur Chunk-Selektion und Enthaltung die Retrieval-Leistung und das Enthaltungsverhalten?
+    \item[\textbf{RQ3}] Wie gut generalisiert die ausgewählte Konfiguration auf den zurückgehaltenen Testsplit, und welche beobachteten Fehlermuster sowie Eigenschaften der Datenaufteilung und Evaluation stehen mit den verbleibenden Fehlern in Zusammenhang?
+\end{enumerate}
+
+Zur Beantwortung dieser Fragen werden TF-IDF, ein multilingualer Sentence-BERT-Checkpoint und multilingual E5 unter identischer Kosinusähnlichkeit verglichen. Vier Selektorfamilien trennen dabei die Qualität der Repräsentation von der Regel, nach der Chunks ausgegeben oder verworfen werden. Der Datensatz umfasst 720 Fragen und 201 Chunks aus der Prüfungsordnung 2026 für den Bachelorstudiengang Computerlinguistik. Fragen mit demselben nicht-leeren Gold-Evidenzset verbleiben beim Splitten in derselben Gruppe, damit sehr ähnliche Fragen zur gleichen Belegstelle nicht über Entwicklung, Validierung und Test verteilt werden. Die Arbeit liefert damit eine kontrollierte Fallstudie für ein einzelnes deutsches regulatorisches Dokument: Sie vergleicht drei Repräsentationen und vier Selektionsprinzipien, evaluiert eine explizite Enthaltungsoption und analysiert sämtliche nicht exakt korrekten Testvorhersagen. 
+
+
+\section{Motivation und verwandte Arbeiten}
+
+\subsection{Sparse und dichte Textrepräsentationen}
+
+Das klassische Vektorraummodell repräsentiert Dokumente und Anfragen als Vektoren, deren Ähnlichkeit sich unter anderem über den Kosinus bestimmen lässt \citep{salton1975vector}. TF-IDF gewichtet dabei Terme anhand ihres Auftretens in einem Text und ihrer Spezifität innerhalb der Dokumentkollektion \citep{sparckjones1972statistical}. Für eine Prüfungsordnung ist dieses Prinzip eine naheliegende Vergleichsbasis, weil Fragen und Belegstellen häufig dieselben Fachwörter, Modulbezeichnungen oder Regelungstermini verwenden. Ob diese lexikalische Struktur die gemessene Leistung tatsächlich verursacht, wird im Experiment allerdings nicht isoliert; sie kann nur als plausible Erklärung für die beobachteten TF-IDF-Ergebnisse dienen.
+
+Dichte Repräsentationen bilden Texte in kontinuierlichen Vektorräumen ab und können dadurch Ähnlichkeit auch dann erfassen, wenn Anfrage und Passage nicht dieselben Oberflächenformen verwenden. Sentence-BERT erzeugt mit Paar- beziehungsweise Tripel-Strukturen Satzrepräsentationen, die direkt über Kosinusähnlichkeit verglichen werden können \citep{reimers-gurevych-2019-sentence}. Für die multilinguale Variante dient ein englischsprachiges Sentence-BERT-Modell als Referenz: Anhand übersetzter Satzapare wird ein mehrsprachiges Modell so trainiert, dass inhaltlich gleiche Sätze unabhngig von ihrer Sprache ähnliche Vekoren erhalten \citep{reimers-gurevych-2020-making}. Im vorliegenden Vergleich steht Sentence-BERT für einen allgemeinen multilingualen Satz-Embedding-Checkpoint. E5 wurde dagegen vergleichend auf Textpaaren trainiert und explizit für Aufgaben mit einheitlichen Vektorrepräsentationen, darunter Retrieval, entwickelt \citep{wang2022text}. Die multilinguale E5-Familie überträgt dieses Trainingsprinzip auf viele Sprachen \citep{wang2024multilingual}. Dieser Unterschied im Trainingsziel motiviert den Vergleich, erklärt ein projektspezifisches Ergebnis aber nicht automatisch kausal.
+
+Breite Benchmarks zeigen zugleich, weshalb weder sparse noch dichte Verfahren unabhängig von Aufgabe und Korpus als grundsätzlich überlegen gelten sollten. BEIR evaluiert Zero-Shot-Retrieval über heterogene Datensätze hinweg und weist BM25 als robuste lexikalische Vergleichsbasis aus \citep{thakur2021beir}. MTEB erweitert die Perspektive auf unterschiedliche Embedding-Aufgaben, Datensätze und Sprachen; dort dominiert keine einzelne Repräsentationsmethode alle Aufgaben \citep{muennighoff-etal-2023-mteb}. Die vorliegende Studie ergänzt solche breiten Vergleiche nicht um einen weiteren allgemeinen Benchmark, sondern untersucht kontrolliert, wie drei festgelegte Repräsentationen in einem kleinen, terminologisch engen Korpus reagieren.
+
+\subsection{Enthaltung und juristischer Retrieval-Kontext}
+
+Selektive Vorhersage ergänzt ein Vorhersagesystem um die Möglichkeit, Fälle anhand eines Auswahlkriteriums zurückzuweisen. \citet{pmlr-v97-geifman19a} behandeln diese Ablehnungsoption als eigenes Lernproblem; in der vorliegenden Arbeit wird kein solches Modell trainiert, sondern eine einfache, auf Ähnlichkeitswerten beruhende Selektionsregel verwendet. Für Question Answering zeigt SQuAD~2.0, dass unbeantwortbare, aber oberflächlich plausible Fragen eine gesonderte Entscheidung erfordern \citep{rajpurkar-etal-2018-know}. Übertragen auf Belegstellen-Retrieval bedeutet dies, dass nicht nur die Rangfolge vorhandener Chunks zählt. Das System muss auch erkennen, wann kein Chunk als Evidenz ausgegeben werden sollte.
+
+Arbeiten zum deutschen juristischen Information Retrieval verdeutlichen, dass die Zuordnung von Anfragen zu Rechtsquellen als eigenständiges Evaluationsproblem untersucht wird. GerDaLIR verbindet Suchanfragen mit relevanten deutschen Gerichtsentscheidungen und stellt dafür lexikalische und neuronale Vergleichsverfahren gegenüber \citep{wrzalik-krechel-2021-gerdalir}. GerLayQA koppelt laienverständlich formulierte Rechtsfragen und anwaltliche Antworten an konkrete Gesetzesparagraphen \citep{buttner-habernal-2024-answering}. Für große juristische Dokumentbestände untersuchen \citet{reuter-etal-2025-towards} darüber hinaus, wie die Repräsentation strukturell ähnlicher Dokumente die Zuverlässigkeit des Retrievals in RAG-Systemen beeinflusst. Diese Aufgaben unterscheiden sich in Korpusgröße, Dokumenttyp und Zielvariable deutlich von der hier betrachteten Prüfungsordnung. Gemeinsam ist ihnen jedoch, dass die Qualität einer Antwortgrundlage separat über die Zuordnung zu einer dokumentierten Rechts- oder Regelungsquelle beurteilt werden kann. Die vorliegende Arbeit positioniert sich deshalb als eng begrenzte Fallstudie zu Evidenzselektion und Enthaltung, nicht als allgemeine Studie zum juristischen NLP.
+
+
+\section{Methodik}
+
+\subsection{Textrepräsentationen und Ähnlichkeit}
+
+Alle Repräsentationen bilden dieselben 720 Fragen und 201 Chunks ab. Für TF-IDF wird \texttt{TfidfVectorizer(lowercase=True, ngram\_range=(1,3))} verwendet. Das Vokabular wird ausschließlich auf den Chunk-Texten gelernt; anschließend werden die Fragen in denselben Merkmalsraum transformiert. Die Konfiguration berücksichtigt somit Uni-, Bi- und Trigramme und wandelt Zeichen in Kleinschreibung um. Eine Skalierung der Termfrequenz ist nicht aktiviert.
+
+Als allgemeine dichte Satzrepräsentation dient der Checkpoint \nolinkurl{sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2}. Die 384-dimensionalen Vektoren werden über die Schnittstelle von \texttt{SentenceTransformer} erzeugt; ein eigenes Pooling-Verfahren wird nicht ergänzt. Die retrieval-orientierte Alternative ist \texttt{intfloat/multilingual-e5-base} mit 768 Dimensionen. Entsprechend der vorgesehenen asymmetrischen Verwendung erhalten Fragen das Präfix \texttt{query:} und Chunks das Präfix \texttt{passage:}. Keines der beiden dichten Modelle wird auf dem Projektkorpus feinabgestimmt.
+
+Für jede Repräsentation wird zwischen jeder Frage $q$ und jedem Chunk $c$ die Kosinusähnlichkeit
+\begin{equation}
+s(q,c)=\frac{\mathbf{v}_q^\top\mathbf{v}_c}
+{\lVert\mathbf{v}_q\rVert_2\,\lVert\mathbf{v}_c\rVert_2}
+\end{equation}
+berechnet. Pro Repräsentation entsteht damit eine Matrix mit $720\times201$ Einträgen. Bei den neuronalen Encodern ist \texttt{normalize\_embeddings=False} gesetzt; die gespeicherten Vektoren werden also nicht vorab L2-normalisiert. Die Normierung erfolgt innerhalb der Kosinusberechnung.
+
+\subsection{Selektionsregeln}
+
+Die Ähnlichkeitsmatrix legt nur eine Rangfolge beziehungsweise Wertverteilung fest. Welche Chunks tatsächlich vorhergesagt werden, bestimmen vier Selektorfamilien. Reines Top-$k$ gibt für eine Frage die $k$ Chunks mit den höchsten Ähnlichkeitswerten zurück:
+\begin{equation}
+S_{\mathrm{top}\text{-}k}(q)=\operatorname{arg\,top}_{k}
+\{s(q,c)\mid c\in\mathcal{C}\}.
+\end{equation}
+Solange mindestens $k$ Kandidaten existieren, ist die Ausgabe nie leer. Der Selektor kann deshalb ohne zusätzliche Regel keine Auswahl verweigern.
+
+Ein absoluter Schwellenwert $\theta$ wählt dagegen alle Chunks aus, deren Ähnlichkeit den Grenzwert erreicht:
+\begin{equation}
+S_{\theta}(q)=\{c\in\mathcal{C}\mid s(q,c)\geq\theta\}.
+\end{equation}
+Diese Regel kann die leere Menge, einen Chunk oder mehrere Chunks ausgeben. Damit ermöglicht sie Enthaltung, begrenzt aber die Größe des Evidenzsets nicht.
+
+Der kombinierte Selektor ordnet zunächst alle Chunks mit $s(q,c)\geq\theta$ nach absteigender Ähnlichkeit und gibt davon höchstens die ersten $k$ zurück. Top-$k$ mit Schwellenwert verbindet somit eine absolute Mindestähnlichkeit mit einer festen Obergrenze für die Ausgabe. Für $k=1$ entsteht entweder genau eine Belegstelle oder $[\,]$.
+
+Die relative Marge bewertet statt des absoluten Niveaus die Trennung an der Entscheidungsgrenze. Mit $s_k$ als Ähnlichkeitswert auf Rang $k$ und $s_{k+1}$ als folgendem Wert gilt
+\begin{equation}
+m_k(q)=\frac{s_k-s_{k+1}}{\max(|s_k|,10^{-12})}.
+\end{equation}
+Der Hyperparameter $\gamma$ left fest, wie groß dieser relative Abstand mindestens sein muss. Gilt $m_k(q)\geq\gamma$, werden die ersten $k$ Chunks ausgegeben, andernfalls lautet die Vorhersage $[\,]$. Bei $k=1$ misst die Regel, wie deutlich der beste Chunk relativ zum zweitbesten Kandidaten abgesetzt ist. Ein hoher absoluter Spitzenwert ist dafür weder notwendig noch hinreichend.
+
+\subsection{Bestimmung der Suchbereiche}
+
+Da die drei Repräsentationen unterschiedliche Ähnlichkeitsverteilungen erzeugen, werden keine gemeinsamen Schwellenwertbereiche verwendet. Die anfänglichen Regionen werden auf dem Entwicklungssplit aus robusten Quantilen dreier Score-Verteilungen abgeleitet: den jeweils schlechtesten Ähnlichkeitswerten erforderlicher Gold-Chunks, den besten Werten von Nicht-Gold-Chunks und den höchsten Werten bei Zero-Gold-Fragen. Dieses Verfahren grenzt die Suche auf Bereiche ein, in denen zwischen korrektem Abruf und Enthaltung unterschieden werden kann, ohne Validierungs- oder Testdaten einzubeziehen. Die dokumentierten Startbereiche betragen $0.8331$ bis $0.8865$ für E5, $0.0591$ bis $0.5162$ für TF-IDF und $0.4740$ bis $0.7595$ für Sentence-BERT. Sämtliche Auswertungen zur Wahl von $k$, $\theta$ und $\gamma$ erfolgen ausschließlich auf dem Entwicklungssplit.
+
+
+\section{Experimenteller Aufbau}
+
+\subsection{Korpus, Chunking und Goldstandard}
+
+Das Korpus basiert auf der Prüfungsordnung 2026 für den Bachelorstudiengang Computerlinguistik. Die aktive Retrieval-Sammlung enthält 201 Chunks mit insgesamt 10{\,}194 Wörtern. Ein Chunk umfasst im Mittel 50.72 Wörter, der Median liegt bei 41 Wörtern; die Spannweite reicht von 8 bis 204 Wörtern. Inhaltlich entfallen 133 Chunks auf die allgemeine Prüfungsordnung, 30 auf den fachspezifischen Anhang, 36 auf den exemplarischen Studienverlaufsplan und 2 auf den Vorspann. Kurze Ausschnitte aus Tabellen oder Anhängen führen ihre hierarchischen Kontextüberschriften mit, damit ihre Bedeutung auch außerhalb der ursprünglichen Seite erkennbar bleibt. 
+
+Der Fragendatensatz umfasst 720 Einträge. Davon sind 600 anhand des Korpus beantwortbar, während 120 Zero-Gold-Fragen absichtlich keine belegende Passage besitzen. Für jede beantwortbare Frage bezeichnet \texttt{all\_required\_chunk\_ids} ein minimal vorgesehenes, vollständiges Evidenzset. Dieses Ziel enthält damit die Chunks, die für die intendierte Antwort gemeinsam erforderlich sind, erhebt aber keinen Anspruch, jede semantisch gleichwertige alternative Belegstelle im Dokument zu erfassen. Tabelle~\ref{tab:gold-distribution} zeigt die Verteilung leerer, einteiliger und zweiteiliger Gold-Sets.
+
+\textcolor{red}{TODO: dokumentieren, welche Schritte bei Chunking, Fragenerstellung, Gold-Zuordnung und Qualitätsprüfung menschlich, skriptgestützt oder sprachmodellassistiert durchgeführt wurden.}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Split} & \textbf{Ges.} & \textbf{0 Gold} & \textbf{1 Gold} & \textbf{2 Gold} \\
+\midrule
+Entwicklung & 432 & 74 & 340 & 18 \\
+Validierung & 144 & 24 & 116 & 4 \\
+Test         & 144 & 22 & 112 & 10 \\
+\midrule
+Gesamt       & 720 & 120 & 568 & 32 \\
+\bottomrule
+\end{tabular}
+\caption{Verteilung der Gold-Evidenzsets auf die drei Datenanteile.}
+\label{tab:gold-distribution}
+\end{table}
+
+\subsection{Datenaufteilung und Modellauswahl}
+
+Die Daten werden in 432 Entwicklungs-, 144 Validierungs- und 144 Testfragen geteilt. Maßgeblich ist die Gruppierungsregel \texttt{same\_non\_empty\_gold\_chunk\_set}: Alle Fragen mit demselben nicht-leeren Gold-Evidenzset verbleiben im selben Datenanteil. Dadurch kann eine Belegstelle, die im Test über mehrere paraphrasierte Fragen geprüft wird, nicht bereits über eine Frage mit demselben Gold-Set im Entwicklungs- oder Validierungssplit erscheinen. Die Aufteilung enthält 315 Gruppen; die größte umfasst 13 Fragen. Kein nicht-leeres Gold-Set kommt in mehreren Splits vor. Zero-Gold-Fragen bilden jeweils eigene Gruppen, weil sie andernfalls allein aufgrund ihres identischen leeren Sets zu einer einzigen Großgruppe zusammenfallen würden.
+
+Diese Gruppierung reduziert Evidenzleckage, verschärft aber das Generalisierungskriterium. Das Testsystem muss nicht nur neue Frageformulierungen verarbeiten, sondern teilweise Belegstellen abrufen, deren Gold-Set weder in der Entwicklung noch in der Validierung als Ziel vorkam. Dieser Unterschied ist für die Interpretation des Testwerts zentral: Ein Leistungsrückgang kann mit der strengeren Evidenzgruppentrennung zusammenhängen. Ohne einen Vergleich mit einer Aufteilung ohne Evidenzgruppierung lässt sich ihr Einfluss jedoch nicht quantifizieren.
+
+Selektorfamilien und Hyperparameter werden ausschließlich auf dem Entwicklungssplit verglichen. Primäres Rankingkriterium ist der mittlere fragenweise F1-Wert; bei Gleichstand folgen exakte Übereinstimmung, mittlere fragenweise Präzision und schließlich eine geringere durchschnittliche Zahl ausgewählter Chunks. Vor der Validierung werden fünf Finalisten eingefroren. Nur diese Konfigurationen werden auf dem Validierungssplit verglichen; eine Nachjustierung anhand der Validierung findet nicht statt. Der dort ausgewählte Sieger wird anschließend unverändert genau einmal auf dem Testsplit ausgeführt.
+
+\subsection{Metriken und Vergleichsverfahren}
+
+Für jede Frage werden vorhergesagte Menge $P_q$ und Goldmenge $G_q$ verglichen. Sind beide Mengen nicht leer, ergeben sich Präzision und Recall aus $|P_q\cap G_q|/|P_q|$ beziehungsweise $|P_q\cap G_q|/|G_q|$; ihr harmonisches Mittel ist der fragenweise F1-Wert. Für $P_q=G_q=[\,]$ werden Präzision, Recall und F1 als 1 gewertet, weil das System korrekt abstainiert. Ist genau eine der beiden Mengen leer, beträgt F1 dagegen 0. Die primäre Metrik Q-F1 ist das arithmetische Mittel dieser fragenweisen Werte. Sie gewichtet damit jede Frage gleich, unabhängig von der Größe ihres Gold-Sets.
+
+Ein vollständig fehlender Vorhersagedatensatz ist semantisch von der expliziten leeren Vorhersage zu unterscheiden. Fehlende Einträge werden aus den Mittelwerten ausgeschlossen und separat als unbeantwortet gezählt. Für die eingefrorene Testauswertung liegen 144 von 144 Vorhersagedatensätzen vor. Ergänzend werden mittlere fragenweise Präzision und Recall, exakte Übereinstimmung (EM), Micro-F1, Zero-Gold-Enthaltungsrate, Rate leerer Selektionen und durchschnittliche Zahl ausgewählter Chunks berichtet.
+
+Drei einfache Vergleichsverfahren ordnen die Testleistung ein. \emph{Zufälliges Top-1} wählt pro Frage einen gleichverteilt zufälligen Chunk; berichtet werden Mittelwert und Standardabweichung über die festen Seeds 0 bis 99. Die \emph{häufigste Entwicklungsantwort} sagt für jede Validierungs- und Testfrage das im Entwicklungssplit häufigste nicht-leere exakte Gold-Set voraus. \emph{Immer keine Auswahl} gibt unabhängig von der Frage $[\,]$ zurück. Dieses letzte Verfahren misst unmittelbar, welcher Q-F1 allein durch den Anteil der Zero-Gold-Fragen erreichbar ist.
+
+Die Experimente wurden mit Python~3.11 durchgeführt. Zu den für die Reproduktion zentralen Paketen gehören \texttt{scikit-learn==1.9.0}, \texttt{sentence-transformers==3.4.1}, \texttt{transformers==4.46.3}, \texttt{torch==2.1.2} als CPU-Build und \texttt{numpy==1.26.4}. Die vollständige, eingefrorene Abhängigkeitsliste ist im Projektartefakt \texttt{requirements.txt} dokumentiert.
+
+
+\section{Ergebnisse und Evaluation}
+
+\subsection{Entwicklungsergebnisse}
+
+Tabelle~\ref{tab:development-results} berichtet für jede Kombination aus Repräsentation und Selektorfamilie die beste auf dem Entwicklungssplit gefundene Konfiguration. Unter den evaluierten Repräsentationen erreicht E5 durchgängig die höchsten Q-F1-Werte. Die beste E5-Konfiguration kombiniert Top-1 mit dem absoluten Schwellenwert $\theta=0.83959$ und erzielt Q-F1 $=0.6474$. Gegenüber reinem Top-1 mit Q-F1 $=0.6165$ beträgt der Unterschied $0.0309$; gegenüber dem besten reinen Schwellenwertselektor mit Q-F1 $=0.4941$ beträgt er $0.1533$. Die relative Marge liegt mit Q-F1 $=0.6312$ zwischen diesen Konfigurationen.
+
+TF-IDF bleibt trotz der fehlenden dichten Semantik konkurrenzfähig. Seine beste Konfiguration ist die relative Marge mit Q-F1 $=0.5702$, knapp vor Top-1 mit Schwellenwert bei $0.5671$. Damit ergibt sich keine repräsentationsübergreifend einheitliche Rangfolge der Selektoren. Der evaluierte Sentence-BERT-Checkpoint erreicht mit Top-1 und Schwellenwert seinen besten Q-F1 von $0.3989$ und liegt im gesamten Versuchsaufbau hinter E5 und TF-IDF. Diese Aussage bezieht sich auf den konkreten Checkpoint ohne Fine-Tuning und erlaubt keine Verallgemeinerung auf Sentence-BERT oder juristische Texte insgesamt.
+
+Die Unterschiede zwischen den Selektoren zeigen den Zielkonflikt zwischen Abruf und Enthaltung. Reines Top-1 begrenzt die Ausgabe wirksam, kann jedoch bei keiner Frage abstainieren. Reine Schwellenwertselektion ermöglicht leere und mehrteilige Ausgaben, weist bei allen drei Repräsentationen aber einen deutlichen Abstand zwischen Präzision und Recall auf. Für E5 stehen beispielsweise einer mittleren Präzision von $0.4578$ ein Recall von $0.6285$ gegenüber. Top-1 mit Schwellenwert verbindet die Enthaltungsoption mit einer Obergrenze von einem Chunk; die relative Marge verwendet dagegen die lokale Trennung der beiden höchsten Scores. Welche Regel günstiger ist, hängt in den Entwicklungsergebnissen von der Repräsentation ab.
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{llcrrrr}
+\toprule
+\textbf{Repräsentation} & \textbf{Selektor} & \textbf{Parameter} & \textbf{Q-F1} & \textbf{EM} & \textbf{Präzision} & \textbf{Recall} \\
+\midrule
+\textbf{E5} & \textbf{Top-1 + Schwelle} & $\theta=0.83959$ & \textbf{0.6474} & \textbf{0.6366} & \textbf{0.6528} & \textbf{0.6447} \\
+E5 & Relative Marge & $\gamma=0.0025$ & 0.6312 & 0.6204 & 0.6366 & 0.6285 \\
+E5 & Top-1 & $k=1$ & 0.6165 & 0.6042 & 0.6227 & 0.6134 \\
+E5 & Schwellenwert & $\theta=0.866475$ & 0.4941 & 0.3657 & 0.4578 & 0.6285 \\
+\midrule
+TF-IDF & Relative Marge & $\gamma=0.235$ & 0.5702 & 0.5579 & 0.5764 & 0.5671 \\
+TF-IDF & Top-1 + Schwelle & $\theta=0.0999$ & 0.5671 & 0.5532 & 0.5741 & 0.5637 \\
+TF-IDF & Top-1 & $k=1$ & 0.5509 & 0.5370 & 0.5579 & 0.5475 \\
+TF-IDF & Schwellenwert & $\theta=0.127665$ & 0.4866 & 0.3657 & 0.4596 & 0.5706 \\
+\midrule
+Sentence-BERT & Top-1 + Schwelle & $\theta=0.6751$ & 0.3989 & 0.3958 & 0.4005 & 0.3981 \\
+Sentence-BERT & Relative Marge & $\gamma=0.005$ & 0.3866 & 0.3819 & 0.3889 & 0.3854 \\
+Sentence-BERT & Top-1 & $k=1$ & 0.3742 & 0.3681 & 0.3773 & 0.3727 \\
+Sentence-BERT & Schwellenwert & $\theta=0.7095375$ & 0.3583 & 0.2801 & 0.3343 & 0.4421 \\
+\bottomrule
+\end{tabular}
+\caption{Beste Entwicklungskonfiguration je Repräsentation und Selektorfamilie. Präzision und Recall sind mittlere fragenweise Metriken.}
+\label{tab:development-results}
+\end{table*}
+
+\subsection{Validierung und zurückgehaltener Test}
+
+Unter den fünf vorab eingefrorenen Finalisten erzielt E5 mit Top-1 und $\theta=0.83959$ auf dem Validierungssplit den höchsten Q-F1 und wird deshalb als finales System ausgewählt. Sentence-BERT gehört nicht zu diesen fünf Finalisten; die Validierung ist folglich kein erneuter vollständiger Vergleich aller drei Repräsentationen. Wie Tabelle~\ref{tab:final-system} zeigt, erreicht die ausgewählte Konfiguration auf der Validierung Q-F1 $=0.6111$, EM $=0.5972$ und eine Zero-Gold-Enthaltungsrate von $0.4167$.
+
+Auf dem zurückgehaltenen Testsplit sinkt Q-F1 auf $0.4907$, ein absoluter Rückgang um $0.1204$ gegenüber der Validierung. EM beträgt $0.4861$, der Micro-F1 $0.5041$. Die Konfiguration gibt im Mittel $0.7917$ Chunks aus und liefert bei $20.83\%$ der Fragen die leere Menge. Von den 22 Zero-Gold-Fragen werden 9 korrekt zurückgewiesen, entsprechend einer Enthaltungsrate von $0.4091$. Die verbleibenden Fehler sind jedoch nicht durch eine einseitig zu hohe oder zu niedrige Ausgabebereitschaft erklärbar: Neben falsch-positiven Abrufen bei Zero-Gold treten leere Vorhersagen bei beantwortbaren Fragen auf. Da keine wiederholten Splits oder vergleichbare Unsicherheitsanalyse vorliegen, wird der Unterschied zwischen Validierung und Test nicht als statistisch erwartbare Schwankung interpretiert.
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+\textbf{Split} & \textbf{Q-F1} & \textbf{EM} & \textbf{Präz.} & \textbf{Recall} & \textbf{Micro-F1} & \textbf{ZG-Enth.} \\
+\midrule
+Validierung & 0.6111 & 0.5972 & 0.6181 & 0.6076 & 0.6475 & 0.4167 \\
+Test         & 0.4907 & 0.4861 & 0.4931 & 0.4896 & 0.5041 & 0.4091 \\
+\bottomrule
+\end{tabular}
+\caption{Eingefrorener Sieger E5 Top-1 mit $\theta=0.83959$ auf Validierung und Test. Für den Test liegen 144 von 144 Vorhersagen vor; TP${}=62$, FP${}=52$ und FN${}=70$.}
+\label{tab:final-system}
+\end{table*}
+
+Die Vergleichsverfahren in Tabelle~\ref{tab:baselines} zeigen, dass der Testwert nicht durch triviale Strategien erreicht wird. Zufälliges Top-1 erzielt über 100 Seeds einen mittleren Q-F1 von lediglich $0.0047$. Die häufigste nicht-leere Entwicklungsantwort stimmt mit keinem vollständigen Test-Goldset überein und erreicht daher Q-F1 $=0$. Immer keine Auswahl erzielt dagegen $0.1528$, weil dieses Verfahren genau die 22 Zero-Gold-Fragen korrekt und alle 122 beantwortbaren Fragen falsch behandelt. Das finale System übertrifft diese Bezugspunkte deutlich, seine absolute Testleistung bleibt gleichwohl begrenzt.
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{System} & \textbf{Q-F1} & \textbf{Präz.} & \textbf{Recall} & \textbf{EM} & \textbf{ZG-Enth.} \\
+\midrule
+Zufälliges Top-1 & $0.0047\pm0.0049$ & $0.0050\pm0.0050$ & $0.0045\pm0.0048$ & $0.0041\pm0.0048$ & 0.0000 \\
+Häufigste Entwicklungsantwort & 0.0000 & 0.0000 & 0.0000 & 0.0000 & 0.0000 \\
+Immer keine Auswahl & 0.1528 & 0.1528 & 0.1528 & 0.1528 & 1.0000 \\
+\textbf{E5 Top-1 + Schwellenwert} & \textbf{0.4907} & \textbf{0.4931} & \textbf{0.4896} & \textbf{0.4861} & \textbf{0.4091} \\
+\bottomrule
+\end{tabular}
+\caption{Testleistung des finalen Systems und der eingefrorenen Vergleichsverfahren. Für zufälliges Top-1 werden Mittelwert und Standardabweichung über 100 feste Seeds angegeben.}
+\label{tab:baselines}
+\end{table*}
+
+\subsection{Fehleranalyse und Einordnung}
+
+Die manuelle Prüfung umfasst alle 74 Testfragen ohne exakte Übereinstimmung. Tabelle~\ref{tab:error-analysis} ordnet jedem Fall eine primäre Fehlerkategorie zu. Mit 21 Fällen ist der Abruf eines ähnlichen, aber für die konkrete Frage falschen Chunks die größte Gruppe. Solche Verwechslungen entsprechen dem Kernproblem des Korpus: Lexikalisch oder thematisch nahe Passagen können unterschiedliche Regelungsfunktionen besitzen. Weitere 18 Fälle entstehen, weil der beste korrekte Kandidat den absoluten Schwellenwert nicht überschreitet und das System bei einer beantwortbaren Frage abstainiert. Umgekehrt ruft es bei 13 unbeantwortbaren Fragen einen Chunk ab. Die ähnliche Größe dieser beiden Gruppen spricht dagegen, dass sich die Fehler durch eine bloße globale Verschiebung des Schwellenwerts vollständig auflösen lassen.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+\textbf{Fehlerkategorie} & \textbf{$n$} & \textbf{Anteil} \\
+\midrule
+Ähnlicher, falscher Chunk & 21 & 28.4\% \\
+Fehl-Enthaltung & 18 & 24.3\% \\
+Falsch-positiv bei Zero-Gold & 13 & 17.6\% \\
+Top-1-Limitation & 9 & 12.2\% \\
+Valide Alternativbelegstelle & 9 & 12.2\% \\
+Frageformulierung / Lexik & 4 & 5.4\% \\
+\midrule
+Gesamt & 74 & 100.0\% \\
+\bottomrule
+\end{tabular}
+\caption{Primäre Kategorisierung aller nicht exakt korrekten Testfälle.}
+\label{tab:error-analysis}
+\end{table}
+
+Eine zweite Fehlerquelle liegt in der festen Top-1-Begrenzung. Zehn Testfragen benötigen laut Goldstandard zwei Chunks. Ein Selektor, der höchstens einen Chunk ausgeben kann, erreicht für diese Fälle niemals exakte Übereinstimmung. Wird genau einer der beiden erforderlichen Chunks korrekt gefunden, ergeben sich $P=1$, $R=0.5$ und damit höchstens
+\begin{equation}
+\mathrm{F1}=\frac{2\cdot1\cdot0.5}{1+0.5}=\frac{2}{3}.
+\end{equation}
+Neun nicht exakt korrekte Fälle werden in der Auditierung primär dieser strukturellen Limitation zugeordnet. Der Befund betrifft somit nicht nur die Güte der E5-Repräsentation oder die Lage des Schwellenwerts, sondern die vorab festgelegte maximale Ausgabemenge.
+
+Die gruppenbasierte Datenaufteilung wird an der Evidenzgruppe G0040 besonders sichtbar. Sie umfasst die acht Testfragen Q0153 bis Q0160 mit dem gemeinsamen Gold-Chunk \texttt{PO25CL-GEN-C03-P12-A02}; dieses nicht-leere Gold-Set kommt weder in der Entwicklung noch in der Validierung vor. Alle acht Fragen erzielen F1 $=0$. Q0153, Q0154, Q0155, Q0156, Q0158 und Q0159 liefern jeweils einen falschen nicht-leeren Chunk, während Q0157 und Q0160 mit $[\,]$ abstainieren. Der Cluster ist damit ein verifiziertes Beispiel für fehlende Generalisierung auf eine ungesehene Evidenzgruppe. Dass diese Evidenzgruppe vollständig ungesehen bleibt, entspricht dem bewusst strengeren Split-Kriterium und ist kein Hinweis auf einen fehlerhaften Testsplit.
+
+Die Evaluation ist zugleich durch die Exhaustivität des Goldstandards begrenzt. Neun formal falsche Chunk-IDs enthalten nach der abgeschlossenen Prüfung eine semantisch vollständige alternative Belegstelle. Diese Fälle werden als \texttt{valid\_alternative\_evidence} klassifiziert, bleiben in der offiziellen Auswertung aber falsch, weil sie nicht zum minimal vorgesehenen Gold-Set gehören. Der offizielle Q-F1 von $0.4907$ wird deshalb nicht nachträglich ersetzt. Eine rein post-hoc durchgeführte Sensitivitätsrechnung kann die Größenordnung dieses Effekts gemeinsam mit der ungesehenen Gruppe G0040 sichtbar machen: Werden die neun Alternativbelege als vollständig korrekt gewertet und die acht G0040-Fälle mit F1 $=0$ aus der Diagnose ausgeschlossen, ergibt sich
+\begin{equation}
+\frac{70.6667+9}{144-8}\approx0.5858.
+\end{equation}
+Dieser Wert ist weder ein korrigiertes Testergebnis noch eine neue Modellbewertung. Er beschreibt lediglich, wie stark zwei bereits identifizierte Eigenschaften von Datensatz und Evaluation den rohen Abstand beeinflussen können.
+
+Für RQ1 zeigen die Entwicklungsergebnisse somit eine klare projektspezifische Rangfolge: E5 liegt vor TF-IDF, während der evaluierte Sentence-BERT-Checkpoint schwächer abschneidet. Die retrieval-orientierte kontrastive Vorbildung von E5 ist mit diesem Befund vereinbar, wird aber nicht als isolierte Ursache getestet. Ebenso ist die terminologische Spezifität der Prüfungsordnung eine plausible Erklärung für die relativ starke TF-IDF-Leistung, ohne dass der Versuch einen entsprechenden Kausalnachweis liefert. Für RQ2 ergibt sich kein universell bester Selektor. Top-1 mit absolutem Schwellenwert ist die beste E5-Konfiguration und gewinnt die Validierung; bei TF-IDF liegt die relative Marge auf der Entwicklung geringfügig vorn. RQ3 beantwortet der Test durch eine gegenüber der Validierung schwächere Generalisierung und mehrere gleichzeitig wirksame Fehlerarten. Neben Ranking- und Schwellenwertfehlern tragen die feste Top-1-Grenze, ungesehene Evidenzgruppen und nicht exhaustive Goldalternativen zum gemessenen Ergebnis bei.
+
+
+\section{Fazit}
+
+Die Untersuchung trennt die Auswahl von Belegstellen bewusst von einer späteren Antwortgenerierung und vergleicht drei Textrepräsentationen unter denselben Retrieval- und Evaluationsbedingungen. Hinsichtlich RQ1 erzielt multilingual E5 auf dem Entwicklungssplit die höchsten Werte aller evaluierten Repräsentationen; die daraus gewählte Konfiguration bleibt auch unter den fünf Finalisten auf der Validierung vorn. TF-IDF erreicht in dem kleinen, terminologisch spezifischen Korpus dennoch deutlich höhere Werte als der untersuchte multilinguale Sentence-BERT-Checkpoint. Diese Rangfolge gilt für den vorliegenden Datensatz und die verwendeten Checkpoints, nicht für andere Rechts- oder Verwaltungskorpora.
+
+Für RQ2 erweist sich die Selektionsregel als eigenständiger Teil des Systems. Reines Top-1 erzielt bereits starke Entwicklungsergebnisse, besitzt aber keine Enthaltungsoption. Ein reiner Schwellenwert kann zwar abstainieren, begrenzt die Zahl ausgegebener Chunks jedoch nicht. Die auf der Validierung ausgewählte Kombination aus E5, Top-1 und $\theta=0.83959$ verbindet Ranking, eine Obergrenze von einem Chunk und die leere Ausgabe. Dass bei TF-IDF stattdessen die relative Marge geringfügig besser abschneidet, spricht gegen eine allgemeine Dominanz dieses Selektors.
+
+RQ3 zeigt die Grenze der ausgewählten Konfiguration. Der Q-F1 sinkt von $0.6111$ auf der Validierung auf $0.4907$ im zurückgehaltenen Test. Die vollständige Prüfung aller 74 nicht exakt korrekten Fälle führt diesen Rückgang nicht auf eine einzelne Ursache zurück. Falsche ähnliche Chunks, Fehl-Enthaltungen, Abrufe bei Zero-Gold, die Top-1-Begrenzung, alternative gültige Evidenz und Probleme einzelner Frageformulierungen wirken nebeneinander. Die acht vollständig fehlerhaften Fragen der ungesehenen Evidenzgruppe G0040 illustrieren dabei die strengere Generalisierung, die durch die Trennung identischer Gold-Sets entsteht. Belegstellen-Retrieval bleibt damit eine klar messbare vorgelagerte Komponente für spätere QA- oder RAG-Systeme; die Qualität generierter Antworten ist aus den vorliegenden Ergebnissen nicht ableitbar.
+
+
+\section{Limitationen und Ausblick}
+
+Der empirische Geltungsbereich ist auf ein regulatorisches Dokument für einen Studiengang beschränkt. Weder die Übertragbarkeit auf andere Prüfungsordnungen oder Hochschulen noch auf größere juristische Dokumentbestände wurde untersucht. Auch die Fragen und Gold-Evidenzsets sind projektspezifisch konstruiert. Eine unabhängige Doppelannotation und Inter-Annotator-Reliabilität sind nicht dokumentiert. Vor der Einreichung muss außerdem die Provenienz von Chunking, Fragenerstellung, Zuordnung und Prüfung vollständig ausgewiesen werden; ohne diese Information lässt sich der Anteil menschlicher, skriptgestützter oder sprachmodellassistierter Arbeit nicht belastbar beschreiben.
+
+Das Evaluationsziel bildet ein minimal vorgesehenes vollständiges Evidenzset ab, aber keine exhaustive Menge aller zulässigen Belegstellen. Die neun als valide Alternativen geprüften Testvorhersagen zeigen die praktische Folge dieser Entscheidung. Sie rechtfertigen keine nachträgliche Änderung des offiziellen Testwerts, sprechen jedoch für künftige Goldstandards, die äquivalente Evidenzsets oder kanonisierte Verweise explizit modellieren. Daneben begrenzt der finale Top-1-Selektor die erreichbare Leistung bei Fragen mit mehreren erforderlichen Belegstellen; allein im Test betrifft dies zehn Fragen.
+
+Auch die Enthaltung ist nicht abschließend kalibriert. Das System erkennt 9 von 22 Zero-Gold-Fragen, ruft bei den übrigen 13 aber fälschlich einen Chunk ab. Gleichzeitig entstehen 18 schwellenwertbedingte Enthaltungen bei beantwortbaren Fragen. Eine bloße Charakterisierung als zu konservativ oder zu freizügig greift daher zu kurz. Künftige Experimente sollten die Kalibrierung getrennt nach Fragetypen untersuchen und Selektoren zulassen, die abhängig von der Frage keinen, einen oder mehrere Chunks ausgeben.
+
+Der eingefrorene Vergleich umfasst weder BM25 noch hybride Sparse-Dense-Verfahren, Cross-Encoder-Reranking oder generative Lesemodelle. BEIR weist BM25 als robuste Zero-Shot-Basislinie aus \citep{thakur2021beir}; ein direkter Vergleich im vorliegenden Korpus steht jedoch noch aus. Sinnvolle Erweiterungen sind daher BM25 und hybride Verfahren, ein nachgelagertes Reranking ähnlich bewerteter Chunks, adaptive Evidenzmengen sowie inhaltstypbewusste Strategien für Fließtext, Anhänge und Tabellen. Erst nach einer solchen Erweiterung des Retrievals sollte eine nachgelagerte Antwortgenerierung evaluiert werden. RAG bietet dafür einen geeigneten Systemrahmen \citep{lewis2020rag}, doch müssten dann Antwortkorrektheit und Belegtreue zusätzlich und getrennt von der hier untersuchten Retrieval-Leistung gemessen werden.
+
+\bibliography{references}
+
+\end{document}

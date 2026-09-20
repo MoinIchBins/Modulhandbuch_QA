@@ -7,18 +7,13 @@ from chunk_selector import ChunkSelector
 from mapping_evaluator import QAMappingEvaluator
 
 
-GOLD_PATH = Path(
-    "data/produced_v2/frozen/qa_mapping_merged.jsonl"
-)
-
+GOLD_PATH = Path("data/produced_v2/frozen/qa_mapping_merged.jsonl")
 VALIDATION_IDS_PATH = Path(
     "data/produced_v2/frozen/split/validation_question_ids.json"
 )
-
 OUTPUT_DIR = Path(
     "data/produced_v2/selector_experiments/validation_finalists"
 )
-
 
 REPRESENTATIONS = {
     "e5": {
@@ -31,173 +26,77 @@ REPRESENTATIONS = {
             "retrieval_bi_encoder/question_ids.json"
         ),
         "chunk_ids": Path(
-            "data/produced_v2/similarity_matrices/"
-            "retrieval_bi_encoder/chunk_ids.json"
+            "data/produced_v2/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
         ),
     },
     "tfidf": {
         "matrix": Path(
-            "data/produced_v2/similarity_matrices/"
-            "tf_idf/cosine_similarity_matrix.npy"
+            "data/produced_v2/similarity_matrices/tf_idf/cosine_similarity_matrix.npy"
         ),
         "question_ids": Path(
-            "data/produced_v2/similarity_matrices/"
-            "tf_idf/question_ids.json"
+            "data/produced_v2/similarity_matrices/tf_idf/question_ids.json"
         ),
-        "chunk_ids": Path(
-            "data/produced_v2/similarity_matrices/"
-            "tf_idf/chunk_ids.json"
-        ),
-    },
-    "sentence_bert": {
-        "matrix": Path(
-            "data/produced_v2/similarity_matrices/"
-            "sentence_bert/cosine_similarity_matrix.npy"
-        ),
-        "question_ids": Path(
-            "data/produced_v2/similarity_matrices/"
-            "sentence_bert/question_ids.json"
-        ),
-        "chunk_ids": Path(
-            "data/produced_v2/similarity_matrices/"
-            "sentence_bert/chunk_ids.json"
-        ),
+        "chunk_ids": Path("data/produced_v2/similarity_matrices/tf_idf/chunk_ids.json"),
     },
 }
 
-
 FINALISTS = [
-    (
-        "e5",
-        "top_k_threshold",
-        {
-            "top_k": 1,
-            "threshold": 0.83959,
-        },
-    ),
-    (
-        "e5",
-        "relative_margin",
-        {
-            "top_k": 1,
-            "margin": 0.0025,
-        },
-    ),
-    (
-        "e5",
-        "top_k",
-        {
-            "top_k": 1,
-        },
-    ),
-    (
-        "tfidf",
-        "relative_margin",
-        {
-            "top_k": 1,
-            "margin": 0.235,
-        },
-    ),
-    (
-        "tfidf",
-        "top_k_threshold",
-        {
-            "top_k": 1,
-            "threshold": 0.0999,
-        },
-    ),
+    ("e5", "top_k_threshold", {"top_k": 1, "threshold": 0.83959}),
+    ("e5", "relative_margin", {"top_k": 1, "margin": 0.0025}),
+    ("e5", "top_k", {"top_k": 1}),
+    ("tfidf", "relative_margin", {"top_k": 1, "margin": 0.235}),
+    ("tfidf", "top_k_threshold", {"top_k": 1, "threshold": 0.0999}),
 ]
-
-
-def load_json(path):
-    with path.open("r", encoding="utf-8") as file:
-        return json.load(file)
-
-
-def save_jsonl(path, rows):
-    with path.open("w", encoding="utf-8") as file:
-        for row in rows:
-            file.write(
-                json.dumps(row, ensure_ascii=False) + "\n"
-            )
 
 
 def experiment_name(representation, method, parameters):
     parts = [representation, method]
-
-    for key in ("top_k", "threshold", "margin", "temperature"):
+    for key in ("top_k", "threshold", "margin"):
         if key in parameters:
             parts.append(f"{key}_{parameters[key]}")
-
     return "_".join(parts)
 
 
 def main():
-    validation_ids = load_json(VALIDATION_IDS_PATH)
+    with VALIDATION_IDS_PATH.open("r", encoding="utf-8") as file:
+        validation_ids = json.load(file)
 
-    OUTPUT_DIR.mkdir(
-        parents=True,
-        exist_ok=False,
-    )
-
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=False)
     evaluator = QAMappingEvaluator(GOLD_PATH)
     summaries = []
 
+    cache = {}
     for representation, method, parameters in FINALISTS:
-        files = REPRESENTATIONS[representation]
+        if representation not in cache:
+            files = REPRESENTATIONS[representation]
 
-        matrix_question_ids = load_json(
-            files["question_ids"]
-        )
-        chunk_ids = load_json(
-            files["chunk_ids"]
-        )
+            with files["question_ids"].open("r", encoding="utf-8") as file:
+                matrix_question_ids = json.load(file)
+            with files["chunk_ids"].open("r", encoding="utf-8") as file:
+                chunk_ids = json.load(file)
 
-        row_by_question_id = {
-            question_id: row
-            for row, question_id
-            in enumerate(matrix_question_ids)
-        }
-
-        missing_ids = [
-            question_id
-            for question_id in validation_ids
-            if question_id not in row_by_question_id
-        ]
-
-        if missing_ids:
-            raise ValueError(
-                f"{representation}: validation questions missing "
-                f"from similarity matrix: {missing_ids}"
+            row_by_question_id = {
+                question_id: row
+                for row, question_id in enumerate(matrix_question_ids)
+            }
+            validation_rows = [
+                row_by_question_id[question_id]
+                for question_id in validation_ids
+            ]
+            cache[representation] = (
+                np.load(files["matrix"], mmap_mode="r")[validation_rows],
+                chunk_ids,
             )
 
-        validation_rows = [
-            row_by_question_id[question_id]
-            for question_id in validation_ids
-        ]
-
-        matrix = np.load(
-            files["matrix"],
-            mmap_mode="r",
-        )
-
-        validation_scores = matrix[validation_rows]
+        validation_scores, chunk_ids = cache[representation]
 
         selector = ChunkSelector(
             method=method,
             top_k=parameters.get("top_k"),
             threshold=parameters.get("threshold"),
             margin=parameters.get("margin"),
-            temperature=parameters.get(
-                "temperature",
-                0.05,
-            ),
         )
-
-        selections = selector.select(
-            validation_scores,
-            chunk_ids,
-        )
+        selections = selector.select(validation_scores, chunk_ids)
 
         predictions = [
             {
@@ -205,37 +104,33 @@ def main():
                 "chunk_ids": selection["chunk_ids"],
                 "scores": selection["scores"],
             }
-            for question_id, selection
-            in zip(validation_ids, selections)
-        ]
-
-        evaluation_input = [
-            {
-                "question_id": row["question_id"],
-                "chunk_ids": row["chunk_ids"],
-            }
-            for row in predictions
+            for question_id, selection in zip(validation_ids, selections)
         ]
 
         result = evaluator.eval(
-            evaluation_input,
+            [
+                {
+                    "question_id": row["question_id"],
+                    "chunk_ids": row["chunk_ids"],
+                }
+                for row in predictions
+            ],
             question_ids=validation_ids,
         )
 
-        name = experiment_name(
-            representation,
-            method,
-            parameters,
-        )
+        name = experiment_name(representation, method, parameters)
 
-        save_jsonl(
-            OUTPUT_DIR / f"{name}_predictions.jsonl",
-            predictions,
-        )
+        with (OUTPUT_DIR / f"{name}_predictions.jsonl").open(
+            "w",
+            encoding="utf-8",
+        ) as file:
+            for row in predictions:
+                file.write(json.dumps(row, ensure_ascii=False) + "\n")
 
-        with (
-            OUTPUT_DIR / f"{name}_evaluation.json"
-        ).open("w", encoding="utf-8") as file:
+        with (OUTPUT_DIR / f"{name}_evaluation.json").open(
+            "w",
+            encoding="utf-8",
+        ) as file:
             json.dump(
                 {
                     "representation": representation,
@@ -255,7 +150,6 @@ def main():
             **parameters,
             **result["summary"],
         }
-
         summaries.append(summary)
 
         print(
@@ -266,10 +160,9 @@ def main():
             f"avg_chunks={summary['average_selected_chunks']:.2f}"
         )
 
-    save_jsonl(
-        OUTPUT_DIR / "summary.jsonl",
-        summaries,
-    )
+    with (OUTPUT_DIR / "summary.jsonl").open("w", encoding="utf-8") as file:
+        for row in summaries:
+            file.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
 if __name__ == "__main__":

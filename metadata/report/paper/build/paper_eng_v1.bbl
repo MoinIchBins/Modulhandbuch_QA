@@ -1,0 +1,79 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{B{\"u}ttner and Habernal(2024)}]{buttner-habernal-2024-answering}
+Marius B{\"u}ttner and Ivan Habernal. 2024.
+\newblock \href {https://doi.org/10.18653/v1/2024.eacl-long.122} {Answering legal questions from laymen in {G}erman civil law system}.
+\newblock In \emph{Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 2015--2027. Association for Computational Linguistics.
+
+\bibitem[{Geifman and El-Yaniv(2019)}]{pmlr-v97-geifman19a}
+Yonatan Geifman and Ran El-Yaniv. 2019.
+\newblock \href {https://proceedings.mlr.press/v97/geifman19a.html} {{S}elective{N}et: A deep neural network with an integrated reject option}.
+\newblock In \emph{Proceedings of the 36th International Conference on Machine Learning}, volume~97 of \emph{Proceedings of Machine Learning Research}, pages 2151--2159. PMLR.
+
+\bibitem[{Karpukhin et~al.(2020)Karpukhin, Oguz, Min, Lewis, Wu, Edunov, Chen, and Yih}]{karpukhin-etal-2020-dense}
+Vladimir Karpukhin, Barlas Oguz, Sewon Min, Patrick Lewis, Ledell Wu, Sergey Edunov, Danqi Chen, and Wen-tau Yih. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.emnlp-main.550} {Dense passage retrieval for open-domain question answering}.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pages 6769--6781. Association for Computational Linguistics.
+
+\bibitem[{Lewis et~al.(2020)Lewis, Perez, Piktus, Petroni, Karpukhin, Goyal, K{\"u}ttler, Lewis, Yih, Rockt{\"a}schel, Riedel, and Kiela}]{lewis2020rag}
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich K{\"u}ttler, Mike Lewis, Wen-tau Yih, Tim Rockt{\"a}schel, Sebastian Riedel, and Douwe Kiela. 2020.
+\newblock \href {https://proceedings.neurips.cc/paper/2020/hash/6b493230205f780e1bc26945df7481e5-Abstract.html} {Retrieval-augmented generation for knowledge-intensive {NLP} tasks}.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~33, pages 9459--9474.
+
+\bibitem[{Muennighoff et~al.(2023)Muennighoff, Tazi, Magne, and Reimers}]{muennighoff-etal-2023-mteb}
+Niklas Muennighoff, Nouamane Tazi, Loic Magne, and Nils Reimers. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.eacl-main.148} {{MTEB}: Massive text embedding benchmark}.
+\newblock In \emph{Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics}, pages 2014--2037. Association for Computational Linguistics.
+
+\bibitem[{Rajpurkar et~al.(2018)Rajpurkar, Jia, and Liang}]{rajpurkar-etal-2018-know}
+Pranav Rajpurkar, Robin Jia, and Percy Liang. 2018.
+\newblock \href {https://doi.org/10.18653/v1/P18-2124} {Know what you don{'}t know: Unanswerable questions for {SQ}u{AD}}.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)}, pages 784--789. Association for Computational Linguistics.
+
+\bibitem[{Reimers and Gurevych(2019)}]{reimers-gurevych-2019-sentence}
+Nils Reimers and Iryna Gurevych. 2019.
+\newblock \href {https://doi.org/10.18653/v1/D19-1410} {Sentence-{BERT}: Sentence embeddings using siamese {BERT}-networks}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)}, pages 3982--3992. Association for Computational Linguistics.
+
+\bibitem[{Reimers and Gurevych(2020)}]{reimers-gurevych-2020-making}
+Nils Reimers and Iryna Gurevych. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.emnlp-main.365} {Making monolingual sentence embeddings multilingual using knowledge distillation}.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pages 4512--4525. Association for Computational Linguistics.
+
+\bibitem[{Reuter et~al.(2025)Reuter, Lingenberg, Liepina, Lagioia, Lippi, Sartor, Passerini, and Sayin}]{reuter-etal-2025-towards}
+Markus Reuter, Tobias Lingenberg, Ruta Liepina, Francesca Lagioia, Marco Lippi, Giovanni Sartor, Andrea Passerini, and Burcu Sayin. 2025.
+\newblock \href {https://doi.org/10.18653/v1/2025.nllp-1.3} {Towards reliable retrieval in {RAG} systems for large legal datasets}.
+\newblock In \emph{Proceedings of the Natural Legal Language Processing Workshop 2025}, pages 17--30. Association for Computational Linguistics.
+
+\bibitem[{Salton et~al.(1975)Salton, Wong, and Yang}]{salton1975vector}
+Gerard Salton, Anita Wong, and Chung-Shu Yang. 1975.
+\newblock \href {https://doi.org/10.1145/361219.361220} {A vector space model for automatic indexing}.
+\newblock \emph{Communications of the ACM}, 18(11):613--620.
+
+\bibitem[{Sp{\"a}rck~Jones(1972)}]{sparckjones1972statistical}
+Karen Sp{\"a}rck~Jones. 1972.
+\newblock \href {https://doi.org/10.1108/eb026526} {A statistical interpretation of term specificity and its application in retrieval}.
+\newblock \emph{Journal of Documentation}, 28(1):11--21.
+
+\bibitem[{Thakur et~al.(2021)Thakur, Reimers, R{\"u}ckl{\'e}, Srivastava, and Gurevych}]{thakur2021beir}
+Nandan Thakur, Nils Reimers, Andreas R{\"u}ckl{\'e}, Abhishek Srivastava, and Iryna Gurevych. 2021.
+\newblock {BEIR}: A heterogeneous benchmark for zero-shot evaluation of information retrieval models.
+\newblock In \emph{Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track (Round 2)}.
+
+\bibitem[{Wang et~al.(2022)Wang, Yang, Huang, Jiao, Yang, Jiang, Majumder, and Wei}]{wang2022text}
+Liang Wang, Nan Yang, Xiaolong Huang, Binxing Jiao, Linjun Yang, Daxin Jiang, Rangan Majumder, and Furu Wei. 2022.
+\newblock \href {https://doi.org/10.48550/arXiv.2212.03533} {Text embeddings by weakly-supervised contrastive pre-training}.
+\newblock \emph{arXiv preprint arXiv:2212.03533}.
+
+\bibitem[{Wang et~al.(2024)Wang, Yang, Huang, Yang, Majumder, and Wei}]{wang2024multilingual}
+Liang Wang, Nan Yang, Xiaolong Huang, Linjun Yang, Rangan Majumder, and Furu Wei. 2024.
+\newblock \href {https://doi.org/10.48550/arXiv.2402.05672} {Multilingual {E5} text embeddings: A technical report}.
+\newblock Technical Report MSR-TR-2024-45, Microsoft Research.
+
+\bibitem[{Wrzalik and Krechel(2021)}]{wrzalik-krechel-2021-gerdalir}
+Marco Wrzalik and Dirk Krechel. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.nllp-1.13} {{G}er{D}a{LIR}: A {G}erman dataset for legal information retrieval}.
+\newblock In \emph{Proceedings of the Natural Legal Language Processing Workshop 2021}, pages 123--128. Association for Computational Linguistics.
+
+\end{thebibliography}

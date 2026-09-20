@@ -3,174 +3,77 @@ from pathlib import Path
 
 import numpy as np
 
-from similarity_calculator import SimilarityCalculator
+from similarity_calculator import compare_embeddings
 
 
-embeddings_folder = Path(
-    r"data/produced_v2/embeddings"
-)
+EMBEDDINGS_FOLDER = Path("data/produced_v2/embeddings")
+OUTPUT_FOLDER = Path("data/produced_v2/similarity_matrices")
 
-output_folder = Path(
-    r"data/produced_v2/similarity_matrices"
-)
-
-embedding_methods = [
+EMBEDDING_METHODS = [
     "TF_IDF",
     "SENTENCE_BERT",
     "RETRIEVAL_BI_ENCODER",
 ]
-
-similarity_methods = [
-    "cosine",
-    "dot",
-    "euclidean",
-]
+SIMILARITY_METHODS = ["cosine", "dot", "euclidean"]
 
 
+def main():
+    OUTPUT_FOLDER.mkdir(parents=True, exist_ok=True)
 
-def load_json(path: Path):
-    with path.open("r", encoding="utf-8") as file:
-        return json.load(file)
+    for embedding_method in EMBEDDING_METHODS:
+        embedding_name = embedding_method.lower()
+        embedding_folder = EMBEDDINGS_FOLDER / embedding_name
+        method_output_folder = OUTPUT_FOLDER / embedding_name
+        method_output_folder.mkdir(parents=True, exist_ok=True)
 
+        print()
+        print(f"Loading embeddings for {embedding_method}...")
 
-def save_json(path: Path, data) -> None:
-    with path.open("w", encoding="utf-8") as file:
-        json.dump(
-            data,
-            file,
-            ensure_ascii=False,
-            indent=2,
-        )
+        question_embeddings = np.load(embedding_folder / "question_embeddings.npy")
+        chunk_embeddings = np.load(embedding_folder / "chunk_embeddings.npy")
 
+        with (embedding_folder / "question_ids.json").open(
+            "r",
+            encoding="utf-8",
+        ) as file:
+            question_ids = json.load(file)
 
-output_folder.mkdir(
-    parents=True,
-    exist_ok=True,
-)
+        with (embedding_folder / "chunk_ids.json").open(
+            "r",
+            encoding="utf-8",
+        ) as file:
+            chunk_ids = json.load(file)
 
-for embedding_method in embedding_methods:
-    embedding_name = embedding_method.lower()
+        with (method_output_folder / "question_ids.json").open(
+            "w",
+            encoding="utf-8",
+        ) as file:
+            json.dump(question_ids, file, ensure_ascii=False, indent=2)
 
-    embedding_folder = (
-        embeddings_folder / embedding_name
-    )
+        with (method_output_folder / "chunk_ids.json").open(
+            "w",
+            encoding="utf-8",
+        ) as file:
+            json.dump(chunk_ids, file, ensure_ascii=False, indent=2)
 
-    question_embeddings_file = (
-        embedding_folder / "question_embeddings.npy"
-    )
+        for similarity_method in SIMILARITY_METHODS:
+            print(f"Computing {similarity_method} similarity matrix...")
+            matrix = compare_embeddings(
+                similarity_method,
+                question_embeddings,
+                chunk_embeddings,
+            )
+            np.save(
+                method_output_folder / f"{similarity_method}_similarity_matrix.npy",
+                matrix,
+            )
+            print(f"Saved matrix with shape {matrix.shape}")
 
-    chunk_embeddings_file = (
-        embedding_folder / "chunk_embeddings.npy"
-    )
-
-    question_ids_file = (
-        embedding_folder / "question_ids.json"
-    )
-
-    chunk_ids_file = (
-        embedding_folder / "chunk_ids.json"
-    )
+        print(f"Saved to: {method_output_folder}")
 
     print()
-    print(
-        f"Loading embeddings for "
-        f"{embedding_method}..."
-    )
+    print("Finished computing all similarity matrices.")
 
-    question_embeddings = np.load(
-        question_embeddings_file
-    )
 
-    chunk_embeddings = np.load(
-        chunk_embeddings_file
-    )
-
-    question_ids = load_json(question_ids_file)
-    chunk_ids = load_json(chunk_ids_file)
-
-    if question_embeddings.shape[0] != len(question_ids):
-        raise ValueError(
-            f"{embedding_method}: number of question "
-            f"embeddings does not match question IDs."
-        )
-
-    if chunk_embeddings.shape[0] != len(chunk_ids):
-        raise ValueError(
-            f"{embedding_method}: number of chunk "
-            f"embeddings does not match chunk IDs."
-        )
-
-    method_output_folder = (
-        output_folder / embedding_name
-    )
-
-    method_output_folder.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    save_json(
-        method_output_folder / "question_ids.json",
-        question_ids,
-    )
-
-    save_json(
-        method_output_folder / "chunk_ids.json",
-        chunk_ids,
-    )
-
-    matrix_metadata = {}
-
-    for similarity_method in similarity_methods:
-        print(
-            f"Computing {similarity_method} "
-            f"similarity matrix..."
-        )
-
-        calculator = SimilarityCalculator(
-            method=similarity_method
-        )
-
-        similarity_matrix = calculator.compare(
-            question_embeddings,
-            chunk_embeddings,
-        )
-
-        matrix_file_name = (
-            f"{similarity_method}_similarity_matrix.npy"
-        )
-
-        np.save(
-            method_output_folder / matrix_file_name,
-            similarity_matrix,
-        )
-
-        matrix_metadata[similarity_method] = {
-            "file": matrix_file_name,
-            "shape": list(similarity_matrix.shape),
-            "higher_is_better": (
-                similarity_method != "euclidean"
-            ),
-        }
-
-        print(
-            f"Saved matrix with shape "
-            f"{similarity_matrix.shape}"
-        )
-
-    metadata = {
-        "embedding_method": embedding_method,
-        "number_of_questions": len(question_ids),
-        "number_of_chunks": len(chunk_ids),
-        "matrices": matrix_metadata,
-    }
-
-    save_json(
-        method_output_folder / "metadata.json",
-        metadata,
-    )
-
-    print(f"Saved to: {method_output_folder}")
-
-print()
-print("Finished computing all similarity matrices.")
+if __name__ == "__main__":
+    main()

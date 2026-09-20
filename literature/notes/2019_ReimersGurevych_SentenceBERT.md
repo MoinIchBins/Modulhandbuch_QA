@@ -2,20 +2,28 @@
 
 **PDF:** `2019_ReimersGurevych_SentenceBERT.pdf`  
 **Citekey:** `reimers-gurevych-2019-sentence`  
-**Status:** unread / skimmed / read  
-**Priority:** core / supporting / optional
+**Status:**  skimmed / read  
+**Priority:** core 
 
 For **Sentence-BERT**, look for the problem SBERT was designed to solve, its siamese/bi-encoder architecture, how it produces fixed-size sentence embeddings, and how those embeddings can be compared efficiently with similarity functions. Pay particular attention to what distinguishes SBERT from cross-encoder BERT usage and what kinds of semantic-similarity tasks it targets.
 
+solved problem: computing sentence similarity with BERT took too long., ABSTRACT
+
+modiﬁcation of the pretrained BERT network that use siamese and triplet network structures to derive semantically meaningful sentence embeddings that can be compared using cosine-similarity, ABSTRACT
+
+how it produces?
+
 ## Why this paper is in my bibliography
 
-One or two sentences explaining its role in my paper.
+introduces Sentence-BERT for the same application as in my paper: comparing a sentence to a set of sentences and finding their cosine-similarity.
 
 ## Main contribution
 
-Very short summary in my own words.
+intro of SBERT, fit for task is given: SBERT can give the most similar sentences.
 
 ## Claims I may use
+
+
 
 ### Claim 1
 
@@ -36,6 +44,8 @@ What this source does NOT justify me claiming.
 
 ---
 
+
+
 ### Claim 2
 
 **Source says:**  
@@ -49,6 +59,8 @@ What this source does NOT justify me claiming.
 **Caveat:**  
 
 ---
+
+
 
 ## Relevant methodology
 
@@ -72,6 +84,8 @@ Separate source-supported explanation from my own inference.
 - term:
 - term:
 
+
+
 ## Final decision
 
 **Use:** yes / maybe / no
@@ -81,3 +95,4 @@ Separate source-supported explanation from my own inference.
 **Paper sections:**
 
 - ...
+

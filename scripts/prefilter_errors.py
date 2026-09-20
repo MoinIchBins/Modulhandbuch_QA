@@ -2,11 +2,6 @@ import csv
 import json
 from pathlib import Path
 
-
-# ---------------------------------------------------------------------
-# Paths and field names
-# ---------------------------------------------------------------------
-
 GOLD_PATH = Path("data/produced_v2/frozen/split/gold_with_split.jsonl")
 PREDICTIONS_PATH = Path(
     "data/produced_v2/selector_experiments/validation_finalists/"

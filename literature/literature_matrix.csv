@@ -1,1 +1,14 @@
 citekey,title,topic,priority,paper_sections,main_claim,read
+sparckjones1972statistical,A Statistical Interpretation of Term Specificity and Its Application in Retrieval,TF-IDF / inverse document frequency,core,Methodology,,skimmed
+salton1975vector,A Vector Space Model for Automatic Indexing,vector-space retrieval / sparse retrieval,core,Methodology,,
+rajpurkar-etal-2018-know,Know What You Don't Know: Unanswerable Questions for SQuAD,unanswerable questions / abstention,core,Motivation|Methodology,,
+reimers-gurevych-2019-sentence,Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks,Sentence-BERT / sentence embeddings,core,Methodology,,
+pmlr-v97-geifman19a,SelectiveNet: A Deep Neural Network with an Integrated Reject Option,selective prediction / reject option,optional,Motivation|Methodology,,
+karpukhin-etal-2020-dense,Dense Passage Retrieval for Open-Domain Question Answering,dense retrieval / bi-encoders,core,Motivation|Methodology,,
+reimers-gurevych-2020-making,Making Monolingual Sentence Embeddings Multilingual using Knowledge Distillation,multilingual sentence embeddings,supporting,Methodology,,
+thakur2021beir,BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models,retrieval benchmarking / sparse vs dense / generalization,core,Motivation|Results|Limitations,,
+wrzalik-krechel-2021-gerdalir,GerDaLIR: A German Dataset for Legal Information Retrieval,German legal information retrieval,supporting,Motivation|Results,,
+wang2022text,Text Embeddings by Weakly-Supervised Contrastive Pre-training,E5 / contrastive text embeddings,core,Methodology|Results,,
+muennighoff-etal-2023-mteb,MTEB: Massive Text Embedding Benchmark,embedding benchmarking / task dependence,supporting,Results|Limitations,,
+wang2024multilingual,Multilingual E5 Text Embeddings: A Technical Report,multilingual E5 / multilingual retrieval embeddings,core,Methodology|Results,,
+buttner-habernal-2024-answering,Answering legal questions from laymen in German civil law system,German legal QA / retrieval,supporting,Motivation|Results,,
