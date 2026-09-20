@@ -1,67 +1,6 @@
 .
 ├── README.md
 ├── data
-│   ├── non_current
-│   │   ├── old
-│   │   │   ├── README.md
-│   │   │   ├── analysis_output
-│   │   │   │   ├── chunk_diagnostics.csv
-│   │   │   │   ├── chunk_length_statistics.csv
-│   │   │   │   ├── chunk_type_distribution.csv
-│   │   │   │   ├── ects_distribution.csv
-│   │   │   │   ├── metadata_completeness.csv
-│   │   │   │   ├── module_diagnostics.csv
-│   │   │   │   ├── module_section_coverage.csv
-│   │   │   │   ├── modules_per_module_group.csv
-│   │   │   │   ├── modules_per_program.csv
-│   │   │   │   ├── modules_per_semester.csv
-│   │   │   │   ├── plots
-│   │   │   │   │   ├── chunk_length_by_section_type_boxplot.png
-│   │   │   │   │   ├── chunk_token_length_histogram.png
-│   │   │   │   │   ├── chunk_word_length_histogram.png
-│   │   │   │   │   ├── chunks_per_module.png
-│   │   │   │   │   ├── chunks_per_section_type.png
-│   │   │   │   │   ├── ects_distribution.png
-│   │   │   │   │   ├── ects_vs_module_words.png
-│   │   │   │   │   ├── metadata_missingness.png
-│   │   │   │   │   ├── module_words_vs_chunks.png
-│   │   │   │   │   ├── modules_per_module_group.png
-│   │   │   │   │   ├── modules_per_semester.png
-│   │   │   │   │   ├── retrieval_priority_distribution.png
-│   │   │   │   │   ├── table_confidence_distribution.png
-│   │   │   │   │   └── table_rows_distribution.png
-│   │   │   │   ├── rag_dataset_analysis_report.md
-│   │   │   │   ├── rag_readiness_summary.csv
-│   │   │   │   ├── retrieval_priority_distribution.csv
-│   │   │   │   ├── section_type_distribution.csv
-│   │   │   │   ├── summary_overview.csv
-│   │   │   │   ├── table_confidence_distribution.csv
-│   │   │   │   ├── table_diagnostics.csv
-│   │   │   │   ├── token_bucket_distribution.csv
-│   │   │   │   └── top_keywords.csv
-│   │   │   ├── analyze_dataset.py
-│   │   │   ├── assessment_QA_pairs.txt
-│   │   │   ├── document_metadata.json
-│   │   │   ├── modules.json
-│   │   │   ├── quality_control_report.json
-│   │   │   ├── question_answer_mapping.json
-│   │   │   ├── questions_without_answers.json
-│   │   │   ├── retrieval_chunks.jsonl
-│   │   │   ├── tables.json
-│   │   │   └── todoList_MH.md
-│   │   ├── raw
-│   │   │   ├── Beispiel_Studienverlauf.pdf
-│   │   │   ├── Modulhandbuch.pdf
-│   │   │   ├── PO_25_CL.pdf
-│   │   │   ├── metadata.txt
-│   │   │   ├── module_aliases.json
-│   │   │   └── questions.json
-│   │   └── split_before_non_answerable
-│   │       ├── development_question_ids.json
-│   │       ├── gold_with_split.jsonl
-│   │       ├── split_groups.json
-│   │       ├── test_question_ids.json
-│   │       └── validation_question_ids.json
 │   ├── processed
 │   │   ├── PO_25_CL_chunks.jsonl
 │   │   ├── qSet_PO.jsonl
@@ -91,49 +30,6 @@
 │   │   │   ├── qa_mappings_v2.jsonl
 │   │   │   └── readme.md
 │   │   └── readme.md
-│   ├── produced_v1
-│   │   ├── embeddings
-│   │   │   ├── retrieval_bi_encoder
-│   │   │   │   ├── chunk_embeddings.npy
-│   │   │   │   ├── chunk_ids.json
-│   │   │   │   ├── metadata.json
-│   │   │   │   ├── question_embeddings.npy
-│   │   │   │   └── question_ids.json
-│   │   │   ├── sentence_bert
-│   │   │   │   ├── chunk_embeddings.npy
-│   │   │   │   ├── chunk_ids.json
-│   │   │   │   ├── metadata.json
-│   │   │   │   ├── question_embeddings.npy
-│   │   │   │   └── question_ids.json
-│   │   │   └── tf_idf
-│   │   │       ├── chunk_embeddings.npy
-│   │   │       ├── chunk_ids.json
-│   │   │       ├── metadata.json
-│   │   │       ├── question_embeddings.npy
-│   │   │       ├── question_ids.json
-│   │   │       └── tfidf_vectorizer.joblib
-│   │   └── similarity_matrices
-│   │       ├── retrieval_bi_encoder
-│   │       │   ├── chunk_ids.json
-│   │       │   ├── cosine_similarity_matrix.npy
-│   │       │   ├── dot_similarity_matrix.npy
-│   │       │   ├── euclidean_similarity_matrix.npy
-│   │       │   ├── metadata.json
-│   │       │   └── question_ids.json
-│   │       ├── sentence_bert
-│   │       │   ├── chunk_ids.json
-│   │       │   ├── cosine_similarity_matrix.npy
-│   │       │   ├── dot_similarity_matrix.npy
-│   │       │   ├── euclidean_similarity_matrix.npy
-│   │       │   ├── metadata.json
-│   │       │   └── question_ids.json
-│   │       └── tf_idf
-│   │           ├── chunk_ids.json
-│   │           ├── cosine_similarity_matrix.npy
-│   │           ├── dot_similarity_matrix.npy
-│   │           ├── euclidean_similarity_matrix.npy
-│   │           ├── metadata.json
-│   │           └── question_ids.json
 │   ├── produced_v2
 │   │   ├── baselines
 │   │   │   ├── README.md
@@ -144,6 +40,16 @@
 │   │   │   ├── freeze_dev_reference.py
 │   │   │   ├── plot_baselines.py
 │   │   │   ├── run_baselines.py
+│   │   │   ├── test_v1
+│   │   │   │   ├── always_abstain_evaluation.json
+│   │   │   │   ├── always_abstain_predictions.jsonl
+│   │   │   │   ├── baseline_f1_comparison.png
+│   │   │   │   ├── most_frequent_dev_answer_evaluation.json
+│   │   │   │   ├── most_frequent_dev_answer_predictions.jsonl
+│   │   │   │   ├── random_top1_runs.jsonl
+│   │   │   │   ├── random_top1_summary.json
+│   │   │   │   ├── summary.csv
+│   │   │   │   └── summary.jsonl
 │   │   │   └── validation_v1
 │   │   │       ├── always_abstain_evaluation.json
 │   │   │       ├── always_abstain_predictions.jsonl
@@ -153,7 +59,9 @@
 │   │   │       ├── random_top1_runs.jsonl
 │   │   │       ├── random_top1_summary.json
 │   │   │       ├── summary.csv
-│   │   │       └── summary.jsonl
+│   │   │       ├── summary.jsonl
+│   │   │       ├── system_vs_baselines.csv
+│   │   │       └── system_vs_baselines.png
 │   │   ├── embeddings
 │   │   │   ├── retrieval_bi_encoder
 │   │   │   │   ├── chunk_embeddings.npy
@@ -2655,8 +2563,6 @@
 │   │   │   │   ├── tfidf_top_k_threshold_1_0.1017_predictions.jsonl
 │   │   │   │   ├── tfidf_top_k_threshold_1_0.102_evaluation.json
 │   │   │   │   └── tfidf_top_k_threshold_1_0.102_predictions.jsonl
-│   │   │   ├── dev_top_k_threshold_v7
-│   │   │   │   └── comparison
 │   │   │   ├── dev_top_k_v1
 │   │   │   │   ├── comparison
 │   │   │   │   │   ├── e5_top_k_metrics.png
@@ -2721,6 +2627,22 @@
 │   │   │   │   ├── tfidf_top_k_8_predictions.jsonl
 │   │   │   │   ├── tfidf_top_k_9_evaluation.json
 │   │   │   │   └── tfidf_top_k_9_predictions.jsonl
+│   │   │   ├── single_gold_only_evaluations
+│   │   │   │   ├── test_winner__e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation__single_gold_only.json
+│   │   │   │   └── validation_finalists__e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation__single_gold_only.json
+│   │   │   ├── test_winner
+│   │   │   │   ├── e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+│   │   │   │   ├── e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl
+│   │   │   │   ├── error_analysis
+│   │   │   │   │   ├── category_2_multi_gold_single_prediction.csv
+│   │   │   │   │   ├── category_3_answerable_but_abstained.csv
+│   │   │   │   │   ├── category_4_zero_gold_but_retrieved.csv
+│   │   │   │   │   ├── manual_review.csv
+│   │   │   │   │   ├── manual_review_all_error_groups.csv
+│   │   │   │   │   ├── manual_review_evaluated_v1.csv
+│   │   │   │   │   ├── manual_review_evaluated_v2.csv
+│   │   │   │   │   └── manual_review_evaluated_v3.csv
+│   │   │   │   └── summary.jsonl
 │   │   │   ├── threshold_analysis
 │   │   │   │   ├── all_threshold_scores.csv
 │   │   │   │   ├── e5_threshold_distributions.png
@@ -2737,6 +2659,12 @@
 │   │   │       ├── e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl
 │   │   │       ├── e5_top_k_top_k_1_evaluation.json
 │   │   │       ├── e5_top_k_top_k_1_predictions.jsonl
+│   │   │       ├── error_analysis_of_best
+│   │   │       │   ├── category_2_multi_gold_single_prediction.csv
+│   │   │       │   ├── category_3_answerable_but_abstained.csv
+│   │   │       │   ├── category_4_zero_gold_but_retrieved.csv
+│   │   │       │   ├── manual_review.csv
+│   │   │       │   └── manual_review_all_error_groups.csv
 │   │   │       ├── summary.jsonl
 │   │   │       ├── tfidf_relative_margin_top_k_1_margin_0.235_evaluation.json
 │   │   │       ├── tfidf_relative_margin_top_k_1_margin_0.235_predictions.jsonl
@@ -2811,6 +2739,13 @@
 │   │           ├── euclidean_similarity_matrix.npy
 │   │           ├── metadata.json
 │   │           └── question_ids.json
+│   ├── raw
+│   │   ├── Beispiel_Studienverlauf.pdf
+│   │   ├── Modulhandbuch.pdf
+│   │   ├── PO_25_CL.pdf
+│   │   ├── metadata.txt
+│   │   ├── module_aliases.json
+│   │   └── questions.json
 │   ├── split
 │   │   ├── development_question_ids.json
 │   │   ├── gold_with_split.jsonl
@@ -2828,41 +2763,146 @@
 │       ├── visualize_evaluation_optional.py
 │       └── visualize_validation_results.py
 ├── filestructure.txt
+├── literature
+│   ├── Hausarbeit_QA_Model_Agent_Handover_V2_Audited.md
+│   ├── PapersJobs.md
+│   ├── howToCite.txt
+│   ├── literature_matrix.csv
+│   ├── notes
+│   │   ├── 1972_SparckJones_TermSpecificityRetrieval.md
+│   │   ├── 1975_SaltonWongYang_VectorSpaceModel.md
+│   │   ├── 2018_RajpurkarJiaLiang_UnanswerableSQuAD.md
+│   │   ├── 2019_GeifmanElYaniv_SelectiveNet.md
+│   │   ├── 2019_ReimersGurevych_SentenceBERT.md
+│   │   ├── 2020_KarpukhinEtAl_DensePassageRetrieval.md
+│   │   ├── 2020_ReimersGurevych_MultilingualSentenceEmbeddings.md
+│   │   ├── 2021_ThakurEtAl_BEIR.md
+│   │   ├── 2021_WrzalikKrechel_GerDaLIR.md
+│   │   ├── 2022_WangEtAl_E5TextEmbeddings.md
+│   │   ├── 2023_MuennighoffEtAl_MTEB.md
+│   │   ├── 2024_BuettnerHabernal_GermanLegalQA.md
+│   │   └── 2024_WangEtAl_MultilingualE5.md
+│   ├── papers
+│   │   ├── 1972_SparckHones_termSpecificityRetrieval.pdf
+│   │   ├── 1975_SaltonWongYang_VectorSpaceModel.pdf
+│   │   ├── 2018_RajpurkarJiaLiang_UnanswerableSQuAD.pdf
+│   │   ├── 2019_GeifmanElYaniv_SelectiveNet.pdf
+│   │   ├── 2019_ReimersGurevych_SentenceBert.pdf
+│   │   ├── 2020_KarpuhkinEtAl_DensePassageRetrieval.pdf
+│   │   ├── 2020_Lewis_RAG.pdf
+│   │   ├── 2020_ReimersGurevych_MultilingualSentenceEmbeddings.pdf
+│   │   ├── 2021_ThakurEtAl_BEIR.pdf
+│   │   ├── 2021_WrzalikKrechel_GerDaLIR.pdf
+│   │   ├── 2022_WangEtAl_E5TextEmbeddings.pdf
+│   │   ├── 2023_MuennighoffEtAl_MTEB.pdf
+│   │   ├── 2024_BuettnerHabernal_GermanLegalQA.pdf
+│   │   ├── 2024_WangEtAl_MultilingualE5.pdf
+│   │   └── 2025_Reuter_legalRetrievalRAG.pdf
+│   └── strategy.md
 ├── metadata
 │   ├── decisions.md
 │   ├── limitations.md
 │   ├── promptsForChunking.txt
 │   ├── promptsForQuestions.txt
 │   ├── report
+│   │   ├── example_misses.txt
 │   │   ├── first_try_at_top_k_threshold.txt
 │   │   ├── notes.txt
+│   │   ├── paper
+│   │   │   ├── acl.sty
+│   │   │   ├── acl_latex.tex
+│   │   │   ├── acl_natbib.bst
+│   │   │   ├── build
+│   │   │   │   ├── paper_eng_v1.aux
+│   │   │   │   ├── paper_eng_v1.bbl
+│   │   │   │   ├── paper_eng_v1.blg
+│   │   │   │   ├── paper_eng_v1.fdb_latexmk
+│   │   │   │   ├── paper_eng_v1.fls
+│   │   │   │   ├── paper_eng_v1.log
+│   │   │   │   ├── paper_eng_v1.out
+│   │   │   │   ├── paper_eng_v1.pdf
+│   │   │   │   ├── paper_eng_v1.synctex.gz
+│   │   │   │   ├── paper_eng_v2.aux
+│   │   │   │   ├── paper_eng_v2.bbl
+│   │   │   │   ├── paper_eng_v2.blg
+│   │   │   │   ├── paper_eng_v2.fdb_latexmk
+│   │   │   │   ├── paper_eng_v2.fls
+│   │   │   │   ├── paper_eng_v2.log
+│   │   │   │   ├── paper_eng_v2.out
+│   │   │   │   ├── paper_eng_v2.pdf
+│   │   │   │   ├── paper_eng_v2.synctex.gz
+│   │   │   │   ├── paper_eng_v3.aux
+│   │   │   │   ├── paper_eng_v3.bbl
+│   │   │   │   ├── paper_eng_v3.blg
+│   │   │   │   ├── paper_eng_v3.fdb_latexmk
+│   │   │   │   ├── paper_eng_v3.fls
+│   │   │   │   ├── paper_eng_v3.log
+│   │   │   │   ├── paper_eng_v3.out
+│   │   │   │   ├── paper_eng_v3.pdf
+│   │   │   │   ├── paper_eng_v3.synctex.gz
+│   │   │   │   ├── paper_eng_v4.aux
+│   │   │   │   ├── paper_eng_v4.bbl
+│   │   │   │   ├── paper_eng_v4.blg
+│   │   │   │   ├── paper_eng_v4.fdb_latexmk
+│   │   │   │   ├── paper_eng_v4.fls
+│   │   │   │   ├── paper_eng_v4.log
+│   │   │   │   ├── paper_eng_v4.out
+│   │   │   │   ├── paper_eng_v4.pdf
+│   │   │   │   ├── paper_eng_v4.synctex.gz
+│   │   │   │   ├── paper_v4.aux
+│   │   │   │   ├── paper_v4.bbl
+│   │   │   │   ├── paper_v4.blg
+│   │   │   │   ├── paper_v4.fdb_latexmk
+│   │   │   │   ├── paper_v4.fls
+│   │   │   │   ├── paper_v4.log
+│   │   │   │   ├── paper_v4.out
+│   │   │   │   ├── paper_v4.pdf
+│   │   │   │   ├── paper_v4.synctex.gz
+│   │   │   │   └── texput.fls
+│   │   │   ├── fetch_acl_style.sh
+│   │   │   ├── paper_eng_v1.tex
+│   │   │   ├── paper_eng_v2.tex
+│   │   │   ├── paper_eng_v3.tex
+│   │   │   ├── paper_eng_v4.tex
+│   │   │   ├── paper_v1.pdf
+│   │   │   ├── paper_v2.pdf
+│   │   │   ├── paper_v3.pdf
+│   │   │   ├── paper_v3.tex
+│   │   │   ├── paper_v4.tex
+│   │   │   └── references.bib
+│   │   ├── paper_todo.md
 │   │   ├── retrieval_model_comparison_report.md
 │   │   ├── threshold_region_method.md
 │   │   └── top_k_threshold_method.md
 │   └── todoList_PO.md
+├── python_version.txt
 ├── requirements.txt
-└── scripts
-    ├── __pycache__
-    │   ├── chunk_selector.cpython-311.pyc
-    │   ├── mapping_evaluator.cpython-311.pyc
-    │   ├── similarity_calculator.cpython-311.pyc
-    │   ├── text_embedder.cpython-311.pyc
-    │   └── text_embedder.cpython-312.pyc
-    ├── analyze_gold.py
-    ├── analyze_selector_experiments.py
-    ├── analyze_similarity_matrices.py
-    ├── analyze_threshold_regions.py
-    ├── chunk_selector.py
-    ├── compute_embeddings.py
-    ├── compute_similarity_matrices.py
-    ├── data_splitter.py
-    ├── dev_summary_script.py
-    ├── embeddings_similarity_integrity_check.py
-    ├── example_evaluation.py
-    ├── mapping_evaluator.py
-    ├── run_selector_experiments.py
-    ├── run_validation_finalists.py
-    ├── similarity_calculator.py
-    └── text_embedder.py
+├── results
+│   ├── baseline_summary.jsonl
+│   ├── dev_ranking.csv
+│   ├── validation_summary.jsonl
+│   └── winner_summary.jsonl
+├── scripts
+│   ├── analyze_gold.py
+│   ├── analyze_selector_experiments.py
+│   ├── analyze_similarity_matrices.py
+│   ├── analyze_threshold_regions.py
+│   ├── check_empty_jsonl_in_predictions.py
+│   ├── chunk_selector.py
+│   ├── compute_embeddings.py
+│   ├── compute_similarity_matrices.py
+│   ├── data_splitter.py
+│   ├── dev_summary_script.py
+│   ├── embeddings_similarity_integrity_check.py
+│   ├── evaluate_single_gold_only.py
+│   ├── manual_error_review_all_groups.py
+│   ├── mapping_evaluator.py
+│   ├── prefilter_errors.py
+│   ├── run_selector_experiments.py
+│   ├── run_test_winner.py
+│   ├── run_validation_finalists.py
+│   ├── similarity_calculator.py
+│   └── text_embedder.py
+└── tree.txt
 
-77 directories, 2789 files
+71 directories, 2835 files
