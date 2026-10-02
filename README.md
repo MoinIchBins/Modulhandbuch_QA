@@ -55,7 +55,9 @@ Development results informed the validation finalists; validation selected the f
 
 Use the repository root as the working directory. The project’s Python version is recorded in `python_version.txt`; dependencies are in `requirements.txt`.
 
-Before generating anything, inspect the configured input and output paths in the relevant script. Several scripts can overwrite files. For new runs, direct outputs to a new, empty directory and preserve the checked-in artifacts.
+Before generating anything, inspect the JSON configuration and output path. Experiment runners refuse to use an existing output directory; pass `--output-dir` to choose another location.
+
+For the `manual_review_v1` runs below, skip steps 1–3: the reviewed questions are an unchanged subset of the questions already embedded, and the chunks are unchanged. The experiment runners align matrix rows by question ID. The embedding and matrix generation scripts use the frozen input paths and rewrite shared artifact folders.
 
 1. Generate embeddings:
   ```bash
@@ -71,22 +73,23 @@ Before generating anything, inspect the configured input and output paths in the
   ```bash
    python scripts/embeddings_similarity_integrity_check.py
   ```
-4. Explore configurations on development data. Inspect the constants in the runner first:
+4. Compare every representation (`tfidf`, `e5`, `sentence_bert`) with all four selectors on development. The coarse grid uses representation-specific threshold and margin values because score scales differ. The fine run narrows each continuous search around its best coarse configuration; `top_k` uses the discrete coarse values directly.
   ```bash
-   python scripts/run_selector_experiments.py
-   python scripts/dev_summary_script.py
+   .venv/bin/python scripts/run_selector_experiments.py --config configs/manual_review_v1_coarse.json
+   .venv/bin/python scripts/analyze_selector_experiments.py artifacts/experiments/manual_review_v1/outputs/development/coarse_all_v2
+   .venv/bin/python scripts/run_selector_experiments.py --config configs/manual_review_v1_fine.json --coarse-run artifacts/experiments/manual_review_v1/outputs/development/coarse_all_v2
+   .venv/bin/python scripts/dev_summary_script.py --run-set configs/manual_review_v1_dev_round_1.json
   ```
-   Development outputs belong under `artifacts/experiments/development/`.
-5. Evaluate the frozen validation finalists. Inspect `FINALISTS` before running:
+   The coarse config lists every representation, selector, and parameter grid. The fine config explicitly lists each representation/selector region and its point count; edit those intervals and densities after reviewing the coarse analysis if needed. The fine runner retains each discrete `top_k` winner and checks that its config matches the coarse run. The development summary ranks the fine results within each representation and selector and writes those 12 candidates to `validation_candidates.json`.
+5. Compare the development-selected candidates on validation:
   ```bash
-   python scripts/run_validation_finalists.py
+   .venv/bin/python scripts/run_validation_finalists.py --config configs/manual_review_v1_validation.json
   ```
-   Outputs belong under `artifacts/experiments/validation/`.
-6. After selecting and freezing a configuration using validation, evaluate the held-out test split:
+   Validation ranks all candidates by question-level F1, exact match, precision, then fewer selected chunks. It writes a single `frozen_winner.json` from the top validation result. The test runner accepts that validation output directory and evaluates only that winner:
   ```bash
-   python scripts/run_test_winner.py
+   .venv/bin/python scripts/run_test_winner.py --validation-dir artifacts/experiments/manual_review_v1/outputs/validation/finalists_full_search_v2
   ```
-   The preserved final run is under `artifacts/experiments/test/test_winner/`. Do not tune on test results.
+   Do not tune on test results. Use `--output-dir` on a runner to choose another new run directory.
 
 The commands show the pipeline order; they are not a batch rerun recipe for the existing output directories. To interpret results, see `scripts/analyze_similarity_matrices.py`, `scripts/analyze_threshold_regions.py`, and the error-analysis scripts. The local chunk browser is documented in `tools/chunk_browser/README.md`.
 

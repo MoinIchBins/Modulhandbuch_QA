@@ -1,0 +1,175 @@
+{
+  "source_runs": [
+    "artifacts/experiments/manual_review_v1/outputs/development/fine_all_v2"
+  ],
+  "ranking": [
+    "mean_question_f1 descending",
+    "exact_match_rate descending",
+    "mean_question_precision descending",
+    "average_selected_chunks ascending"
+  ],
+  "candidates": [
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "parameters": {
+        "top_k": 1,
+        "threshold": 0.84
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.6549570647931303,
+        "exact_match_rate": 0.6440281030444965,
+        "mean_question_precision": 0.6604215456674473,
+        "average_selected_chunks": 0.8384074941451991
+      }
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "parameters": {
+        "top_k": 1,
+        "margin": 0.003
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.643247462919594,
+        "exact_match_rate": 0.6323185011709602,
+        "mean_question_precision": 0.6487119437939111,
+        "average_selected_chunks": 0.8149882903981265
+      }
+    },
+    {
+      "representation": "e5",
+      "method": "top_k",
+      "parameters": {
+        "top_k": 1
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.6237314597970339,
+        "exact_match_rate": 0.6112412177985949,
+        "mean_question_precision": 0.629976580796253,
+        "average_selected_chunks": 1.0
+      }
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "parameters": {
+        "top_k": 1,
+        "margin": 0.3
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.5628415300546447,
+        "exact_match_rate": 0.550351288056206,
+        "mean_question_precision": 0.5690866510538641,
+        "average_selected_chunks": 0.5011709601873536
+      }
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "parameters": {
+        "top_k": 1,
+        "threshold": 0.1
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.5620608899297422,
+        "exact_match_rate": 0.5480093676814989,
+        "mean_question_precision": 0.5690866510538641,
+        "average_selected_chunks": 0.9133489461358314
+      }
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k",
+      "parameters": {
+        "top_k": 1
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.5456674473067914,
+        "exact_match_rate": 0.531615925058548,
+        "mean_question_precision": 0.5526932084309133,
+        "average_selected_chunks": 1.0
+      }
+    },
+    {
+      "representation": "e5",
+      "method": "threshold",
+      "parameters": {
+        "threshold": 0.8668
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.49711382814427313,
+        "exact_match_rate": 0.3700234192037471,
+        "mean_question_precision": 0.46142585802590447,
+        "average_selected_chunks": 1.4613583138173303
+      }
+    },
+    {
+      "representation": "tfidf",
+      "method": "threshold",
+      "parameters": {
+        "threshold": 0.13
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.48790007806401253,
+        "exact_match_rate": 0.3770491803278688,
+        "mean_question_precision": 0.46390097022415533,
+        "average_selected_chunks": 1.3466042154566744
+      }
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "parameters": {
+        "top_k": 1,
+        "threshold": 0.646
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.3918813427010149,
+        "exact_match_rate": 0.38875878220140514,
+        "mean_question_precision": 0.39344262295081966,
+        "average_selected_chunks": 0.6721311475409836
+      }
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "parameters": {
+        "top_k": 1,
+        "margin": 0.0103
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.3793911007025761,
+        "exact_match_rate": 0.3747072599531616,
+        "mean_question_precision": 0.38173302107728335,
+        "average_selected_chunks": 0.8126463700234192
+      }
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k",
+      "parameters": {
+        "top_k": 1
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.36690085870413736,
+        "exact_match_rate": 0.36065573770491804,
+        "mean_question_precision": 0.3700234192037471,
+        "average_selected_chunks": 1.0
+      }
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "threshold",
+      "parameters": {
+        "threshold": 0.711
+      },
+      "development_metrics": {
+        "mean_question_f1": 0.35533239854082954,
+        "exact_match_rate": 0.2810304449648712,
+        "mean_question_precision": 0.33246200616361793,
+        "average_selected_chunks": 1.2107728337236534
+      }
+    }
+  ]
+}

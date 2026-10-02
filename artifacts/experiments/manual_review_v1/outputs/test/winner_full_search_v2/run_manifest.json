@@ -1,0 +1,24 @@
+{
+  "split": "test",
+  "winner_config_path": "artifacts/experiments/manual_review_v1/outputs/validation/finalists_full_search_v2/frozen_winner.json",
+  "validation_run_dir": "artifacts/experiments/manual_review_v1/outputs/validation/finalists_full_search_v2",
+  "validation_metrics": {
+    "mean_question_f1": 0.5539906103286385,
+    "exact_match_rate": 0.5492957746478874,
+    "mean_question_precision": 0.5563380281690141,
+    "average_selected_chunks": 0.795774647887324
+  },
+  "gold_path": "data/manual_review_v1/gold_with_split.jsonl",
+  "split_ids_path": "artifacts/experiments/manual_review_v1/inputs/test_question_ids.json",
+  "winner": {
+    "representation": "e5",
+    "method": "relative_margin",
+    "top_k": 1,
+    "margin": 0.0032
+  },
+  "representation_artifacts": {
+    "matrix": "artifacts/similarity_matrices/retrieval_bi_encoder/cosine_similarity_matrix.npy",
+    "question_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/question_ids.json",
+    "chunk_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
+  }
+}

@@ -1,3 +1,4 @@
+import argparse
 import json
 from pathlib import Path
 
@@ -5,225 +6,139 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-# ----------------------------
-# Configuration
-# ----------------------------
-
-RESULTS_DIR = Path(
-    "artifacts/experiments/development/dev_threshold_v1"
-)
-
-OUTPUT_DIR = RESULTS_DIR / "comparison"
-
-METHOD = "threshold"
-X_PARAMETER = "threshold"
-
-# Metrics available:
-# overall_f1
-# overall_precision
-# overall_recall
-# exact_match
-# micro_f1
-# answerable_f1
-# answerable_precision
-# answerable_recall
-# zero_gold_abstention_rate
-# empty_selection_rate
-# average_selected_chunks
-
-TABLE_METRICS = [
-    "overall_f1",
-    "answerable_precision",
-    "answerable_recall",
-    "answerable_f1",
-    "zero_gold_abstention_rate",
-    "empty_selection_rate",
-    "average_selected_chunks",
-]
-
-# Keep this short to avoid graph spam.
-PLOT_METRICS = [
-    "overall_f1",
-    "zero_gold_abstention_rate",
-    "answerable_recall",
-]
+PARAMETERS = ("threshold", "margin")
 
 
-# ----------------------------
-# Helpers
-# ----------------------------
-
-def mean_metric(rows, metric):
-    if not rows:
-        return None
-
-    return sum(row[metric] for row in rows) / len(rows)
+def rank_key(row):
+    return (
+        row["mean_question_f1"],
+        row["exact_match_rate"],
+        row["mean_question_precision"],
+        -row["average_selected_chunks"],
+    )
 
 
-def load_evaluations():
+def load_results(run_dir):
     rows = []
-
-    for path in RESULTS_DIR.glob("*_evaluation.json"):
+    for path in sorted(run_dir.glob("*_evaluation.json")):
         with path.open("r", encoding="utf-8") as file:
             result = json.load(file)
-
         experiment = result["experiment"]
-
-        if experiment["method"] != METHOD:
-            continue
-
-        if X_PARAMETER not in experiment:
-            continue
-
-        summary = result["summary"]
-        per_question = result["per_question"]
-
-        answerable = [
-            row
-            for row in per_question
-            if len(row["gold_chunk_ids"]) > 0
-        ]
-
-        row = {
+        rows.append({
+            "experiment": path.stem.removesuffix("_evaluation"),
             "representation": experiment["representation"],
-            X_PARAMETER: experiment[X_PARAMETER],
-
-            "overall_f1": summary["mean_question_f1"],
-            "overall_precision": summary["mean_question_precision"],
-            "overall_recall": summary["mean_question_recall"],
-            "exact_match": summary["exact_match_rate"],
-            "micro_f1": summary["micro_f1"],
-
-            "answerable_precision": mean_metric(
-                answerable, "precision"
-            ),
-            "answerable_recall": mean_metric(
-                answerable, "recall"
-            ),
-            "answerable_f1": mean_metric(
-                answerable, "f1"
-            ),
-
-            "zero_gold_abstention_rate": summary[
-                "zero_gold_abstention_rate"
-            ],
-            "empty_selection_rate": summary[
-                "empty_selection_rate"
-            ],
-            "average_selected_chunks": summary[
-                "average_selected_chunks"
-            ],
-        }
-
-        rows.append(row)
-
-    return pd.DataFrame(rows)
+            "method": experiment["method"],
+            "top_k": experiment.get("top_k"),
+            "threshold": experiment.get("threshold"),
+            "margin": experiment.get("margin"),
+            **result["summary"],
+        })
+    return rows
 
 
-def save_table(df):
-    columns = [
-        "representation",
-        X_PARAMETER,
-        *TABLE_METRICS,
-    ]
+def make_suggestions(rows):
+    suggestions = []
+    groups = {}
+    for row in rows:
+        groups.setdefault((row["representation"], row["method"]), []).append(row)
 
-    table = (
-        df[columns]
-        .sort_values(["representation", X_PARAMETER])
-    )
-
-    table.to_csv(
-        OUTPUT_DIR / f"{METHOD}_comparison.csv",
-        index=False,
-    )
-
-    print(f"\n{METHOD} comparison\n")
-    print(table.round(4).to_string(index=False))
-
-
-def print_best_configs(df):
-    print("\nBest configuration per representation")
-    print("(selected by overall_f1)\n")
-
-    for representation, group in df.groupby("representation"):
-        best = group.loc[group["overall_f1"].idxmax()]
-
-        print(
-            f"{representation:15} "
-            f"{X_PARAMETER}={best[X_PARAMETER]:.4f}  "
-            f"F1={best['overall_f1']:.4f}  "
-            f"answerable_recall={best['answerable_recall']:.4f}  "
-            f"abstention={best['zero_gold_abstention_rate']:.4f}"
-        )
+    for (representation, method), group in sorted(groups.items()):
+        best = max(group, key=rank_key)
+        parameter = next((name for name in PARAMETERS if best[name] is not None), None)
+        if parameter is None:
+            continue
+        top_k = best["top_k"]
+        values = sorted({
+            row[parameter]
+            for row in group
+            if row["top_k"] == top_k and row[parameter] is not None
+        })
+        if len(values) < 3:
+            continue
+        index = values.index(best[parameter])
+        suggestions.append({
+            "representation": representation,
+            "method": method,
+            "top_k": top_k,
+            "parameter": parameter,
+            "best_coarse_value": best[parameter],
+            "suggested_interval": [values[max(0, index - 1)], values[min(len(values) - 1, index + 1)]],
+            "mean_question_f1": best["mean_question_f1"],
+            "exact_match_rate": best["exact_match_rate"],
+        })
+    return suggestions
 
 
-def plot_metrics(df):
-    if not PLOT_METRICS:
-        return
-
-    fig, ax = plt.subplots(figsize=(9, 5))
-
-    line_styles = ["-", "--", ":", "-."]
-
-    for representation, group in df.groupby("representation"):
-        group = group.sort_values(X_PARAMETER)
-
-        for index, metric in enumerate(PLOT_METRICS):
-            ax.plot(
-                group[X_PARAMETER],
-                group[metric],
-                marker="o",
-                linestyle=line_styles[index % len(line_styles)],
-                label=f"{representation} — {metric}",
-            )
-
-    ax.set_xlabel(X_PARAMETER.replace("_", " ").title())
-    ax.set_ylabel("Score")
-    ax.set_title(
-        f"{METHOD.replace('_', ' ').title()} development comparison"
-    )
-    ax.legend()
-    ax.grid(alpha=0.25)
-
-    fig.tight_layout()
-
-    fig.savefig(
-        OUTPUT_DIR / f"{METHOD}_metrics.png",
-        dpi=300,
-    )
-
-    plt.close(fig)
+def plot_numeric_results(rows, output_dir):
+    frame = pd.DataFrame(rows)
+    for method in sorted(frame["method"].unique()):
+        method_rows = frame[frame["method"] == method]
+        parameter = next((name for name in PARAMETERS if method_rows[name].notna().any()), None)
+        fig, ax = plt.subplots(figsize=(9, 5))
+        if parameter:
+            for (representation, top_k), group in method_rows.groupby(["representation", "top_k"], dropna=False):
+                group = group.dropna(subset=[parameter]).sort_values(parameter)
+                if group.empty:
+                    continue
+                label = representation if pd.isna(top_k) else f"{representation}, top_k={int(top_k)}"
+                ax.plot(group[parameter], group["mean_question_f1"], marker="o", label=label)
+            ax.set_xlabel(parameter.replace("_", " ").title())
+        else:
+            for representation, group in method_rows.groupby("representation"):
+                group = group.sort_values("top_k")
+                ax.plot(group["top_k"], group["mean_question_f1"], marker="o", label=representation)
+            ax.set_xlabel("Top K")
+        ax.set_ylabel("Mean question-level F1")
+        ax.set_title(f"Development coarse sweep: {method}")
+        ax.grid(alpha=0.25)
+        ax.legend()
+        fig.tight_layout()
+        fig.savefig(output_dir / f"{method}_development.png", dpi=200)
+        plt.close(fig)
 
 
 def main():
-    OUTPUT_DIR.mkdir(
-        parents=True,
-        exist_ok=True,
+    parser = argparse.ArgumentParser(description="Compare all methods and representations in one development run.")
+    parser.add_argument("run_dir", type=Path)
+    parser.add_argument("--output-dir", type=Path)
+    args = parser.parse_args()
+
+    rows = load_results(args.run_dir)
+    if not rows:
+        raise ValueError(f"No evaluation files found in {args.run_dir}")
+    output_dir = args.output_dir or args.run_dir / "comparison"
+    output_dir.mkdir(parents=True, exist_ok=False)
+
+    results = pd.DataFrame(rows).sort_values(
+        ["representation", "method", "mean_question_f1"],
+        ascending=[True, True, False],
     )
+    results.to_csv(output_dir / "development_comparison.csv", index=False)
+    suggestions = make_suggestions(rows)
+    (output_dir / "fine_search_suggestions.json").write_text(
+        json.dumps(suggestions, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    plot_numeric_results(rows, output_dir)
 
-    df = load_evaluations()
+    print("\nBest coarse configuration per representation and selector")
+    best_rows = {}
+    for row in rows:
+        key = (row["representation"], row["method"])
+        if key not in best_rows or rank_key(row) > rank_key(best_rows[key]):
+            best_rows[key] = row
+    for key, row in sorted(best_rows.items()):
+        parameter = next((name for name in ("top_k", "threshold", "margin") if row[name] is not None), None)
+        setting = f"{parameter}={row[parameter]}" if parameter else "default"
+        print(f"  {key[0]} / {key[1]} / {setting}: F1={row['mean_question_f1']:.4f}")
 
-    if df.empty:
-        raise ValueError(
-            f"No '{METHOD}' evaluation files found in {RESULTS_DIR}"
+    print("\nSuggested local intervals for fine search")
+    for item in suggestions:
+        print(
+            f"  {item['representation']} / {item['method']} / top_k={item['top_k']} "
+            f"{item['parameter']}={item['best_coarse_value']}: "
+            f"[{item['suggested_interval'][0]}, {item['suggested_interval'][1]}]"
         )
-
-    missing_metrics = [
-        metric
-        for metric in set(TABLE_METRICS + PLOT_METRICS)
-        if metric not in df.columns
-    ]
-
-    if missing_metrics:
-        raise ValueError(
-            f"Unknown metrics: {missing_metrics}"
-        )
-
-    save_table(df)
-    print_best_configs(df)
-    plot_metrics(df)
-
-    print(f"\nResults saved to: {OUTPUT_DIR}")
+    print(f"\nComparison saved to: {output_dir}")
 
 
 if __name__ == "__main__":

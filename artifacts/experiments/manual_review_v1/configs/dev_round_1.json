@@ -1,0 +1,6 @@
+{
+  "output_dir": "artifacts/experiments/manual_review_v1/outputs/development/summary_run_1",
+  "runs": [
+    {"path": "artifacts/experiments/manual_review_v1/outputs/development/coarse", "selector": "relative_margin"}
+  ]
+}

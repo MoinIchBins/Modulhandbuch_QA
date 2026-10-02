@@ -1,0 +1,119 @@
+[
+  {
+    "representation": "e5",
+    "method": "relative_margin",
+    "top_k": 1,
+    "parameter": "margin",
+    "best_coarse_value": 0.005,
+    "suggested_interval": [
+      0.0025,
+      0.01
+    ],
+    "mean_question_f1": 0.6111111111111109,
+    "exact_match_rate": 0.5985915492957746
+  },
+  {
+    "representation": "e5",
+    "method": "threshold",
+    "top_k": null,
+    "parameter": "threshold",
+    "best_coarse_value": 0.86,
+    "suggested_interval": [
+      0.84,
+      0.88
+    ],
+    "mean_question_f1": 0.47310190300885085,
+    "exact_match_rate": 0.33568075117370894
+  },
+  {
+    "representation": "e5",
+    "method": "top_k_threshold",
+    "top_k": 1,
+    "parameter": "threshold",
+    "best_coarse_value": 0.84,
+    "suggested_interval": [
+      0.83,
+      0.85
+    ],
+    "mean_question_f1": 0.6439749608763692,
+    "exact_match_rate": 0.6314553990610329
+  },
+  {
+    "representation": "sentence_bert",
+    "method": "relative_margin",
+    "top_k": 1,
+    "parameter": "margin",
+    "best_coarse_value": 0.005,
+    "suggested_interval": [
+      0.0025,
+      0.01
+    ],
+    "mean_question_f1": 0.3779342723004695,
+    "exact_match_rate": 0.3732394366197183
+  },
+  {
+    "representation": "sentence_bert",
+    "method": "threshold",
+    "top_k": null,
+    "parameter": "threshold",
+    "best_coarse_value": 0.7,
+    "suggested_interval": [
+      0.65,
+      0.75
+    ],
+    "mean_question_f1": 0.34712102581820886,
+    "exact_match_rate": 0.26291079812206575
+  },
+  {
+    "representation": "sentence_bert",
+    "method": "top_k_threshold",
+    "top_k": 1,
+    "parameter": "threshold",
+    "best_coarse_value": 0.65,
+    "suggested_interval": [
+      0.6,
+      0.7
+    ],
+    "mean_question_f1": 0.38575899843505473,
+    "exact_match_rate": 0.3826291079812207
+  },
+  {
+    "representation": "tfidf",
+    "method": "relative_margin",
+    "top_k": 1,
+    "parameter": "margin",
+    "best_coarse_value": 0.25,
+    "suggested_interval": [
+      0.2,
+      0.3
+    ],
+    "mean_question_f1": 0.5367762128325507,
+    "exact_match_rate": 0.5258215962441315
+  },
+  {
+    "representation": "tfidf",
+    "method": "threshold",
+    "top_k": null,
+    "parameter": "threshold",
+    "best_coarse_value": 0.13,
+    "suggested_interval": [
+      0.1,
+      0.16
+    ],
+    "mean_question_f1": 0.46752738654147097,
+    "exact_match_rate": 0.3380281690140845
+  },
+  {
+    "representation": "tfidf",
+    "method": "top_k_threshold",
+    "top_k": 1,
+    "parameter": "threshold",
+    "best_coarse_value": 0.1,
+    "suggested_interval": [
+      0.08,
+      0.12
+    ],
+    "mean_question_f1": 0.5422535211267604,
+    "exact_match_rate": 0.528169014084507
+  }
+]

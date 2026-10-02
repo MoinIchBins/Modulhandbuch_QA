@@ -1,0 +1,16 @@
+{
+  "output_dir": "artifacts/experiments/manual_review_v1/outputs/test/winner",
+  "gold_path": "data/manual_review_v1/gold_with_split.jsonl",
+  "split_ids_path": "artifacts/experiments/manual_review_v1/inputs/test_question_ids.json",
+  "winner": {
+    "representation": "e5",
+    "method": "top_k_threshold",
+    "top_k": 1,
+    "threshold": 0.83959
+  },
+  "representation_artifacts": {
+    "matrix": "artifacts/similarity_matrices/retrieval_bi_encoder/cosine_similarity_matrix.npy",
+    "question_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/question_ids.json",
+    "chunk_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
+  }
+}
