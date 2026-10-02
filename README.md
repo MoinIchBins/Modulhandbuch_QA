@@ -1,6 +1,6 @@
 # QA Retrieval Codebase Guide
 
-This file is the recommended entry point for understanding and operating the repository.
+This is the recommended entry point for understanding and operating the repository.
 
 The repository implements an **offline evidence-retrieval experiment for question answering over a German examination regulation**. It does **not** implement end-to-end answer generation. Its core task is to predict which document chunk or chunks provide the evidence required for a question, including the option to return no chunk for questions that are not answerable from the corpus.
 
@@ -34,7 +34,7 @@ questions + chunks + gold mappings
  frozen validation finalists
         │
         ▼
- validation + error analysis
+ validation
         │
         ▼
  frozen final configuration
@@ -44,6 +44,8 @@ questions + chunks + gold mappings
 ```
 
 ---
+
+
 
 ## 1. Project scope and mental model
 
@@ -64,22 +66,26 @@ The repository should be understood as an **experimental research codebase with 
 
 ---
 
+
+
 ## 2. Dataset and annotation provenance
 
 The processed dataset was created specifically for this project.
 
-The current methodological provenance is:
+The methodological provenance is:
 
-| Stage | Provenance |
-|---|---|
-| Document chunking | Manual |
-| Question creation | Language-model supported |
+
+| Stage                    | Provenance               |
+| ------------------------ | ------------------------ |
+| Document chunking        | Manual                   |
+| Question creation        | Language-model supported |
 | Gold evidence assignment | Language-model supported |
-| Quality control | Manual |
+| Quality control          | Manual                   |
+
 
 The resulting experiment works with **720 questions** and **201 chunks**.
 
-The project uses a **development / validation / test** protocol. It is not a supervised `train/dev/validation/test` workflow: the retrieval representations are not trained on a project-specific training split. Development data is used for selector/configuration exploration; validation is used to compare a frozen finalist set; test is reserved for the final frozen configuration.
+The project uses a **development / validation / test** protocol. Development data is used for selector/configuration exploration; validation is used to compare a frozen finalist set; test is reserved for the final frozen configuration.
 
 Questions sharing the same **non-empty required gold-chunk set** are kept together during splitting. This reduces leakage caused by placing closely related questions with identical evidence targets into different experimental splits.
 
@@ -102,6 +108,8 @@ split_groups.json
 A second split directory also exists under `data/split/`, but the active later-stage experiment scripts use the frozen artifacts. Do not regenerate or replace the frozen split unless the experimental protocol is intentionally being changed.
 
 ---
+
+
 
 ## 3. Repository layout
 
@@ -127,9 +135,10 @@ A useful condensed view of the repository is:
 ├── scripts/
 ├── results/
 ├── literature/
-├── metadata/
-└── tree.txt
+└── metadata/
 ```
+
+
 
 ### `data/raw/`
 
@@ -148,8 +157,6 @@ data/processed/PO_25_CL_chunks.jsonl
 data/processed/qSet_PO.jsonl
 data/processed/qamappings/qa_mapping_merged.jsonl
 ```
-
-The `qamappings/` directory also preserves earlier mapping versions and mapping-quality comparison artifacts. These are useful for understanding dataset construction but are not the main runtime outputs of the retrieval pipeline.
 
 ### `data/produced_v2/frozen/`
 
@@ -174,7 +181,7 @@ sentence_bert/
 retrieval_bi_encoder/
 ```
 
-`retrieval_bi_encoder` is the directory/backend name used for the **E5-style representation**. In experiment filenames and discussion, the same representation is commonly referred to simply as **E5**.
+`retrieval_bi_encoder` is the directory/backend name used for the **E5-style representation**. In experiment filenames and discussion, the same representation is referred to simply as **E5**.
 
 Each representation directory contains question and chunk embeddings plus aligned ID files. TF-IDF additionally stores its fitted vectorizer.
 
@@ -239,6 +246,8 @@ The chunk browser lives at:
 data/visualization/chunk_browser/
 ```
 
+
+
 ### `scripts/`
 
 The active Python code for embeddings, similarity computation, selector logic, evaluation, experiment running, diagnostics, and error analysis.
@@ -276,6 +285,8 @@ This directory is separate from the retrieval runtime pipeline.
 
 ---
 
+
+
 ## 4. Core implementation modules
 
 Four modules contain most of the reusable experiment logic.
@@ -303,6 +314,8 @@ Used by:
 scripts/compute_embeddings.py
 ```
 
+
+
 ### `scripts/similarity_calculator.py`
 
 Computes pairwise question/chunk similarity or distance matrices.
@@ -320,6 +333,8 @@ Used by:
 ```text
 scripts/compute_similarity_matrices.py
 ```
+
+
 
 ### `scripts/chunk_selector.py`
 
@@ -366,32 +381,38 @@ Because downstream scripts expect these fields, changes to evaluator output name
 
 ---
 
+
+
 ## 5. Main executable scripts
 
-| Script | Role | Typical use |
-|---|---|---|
-| `compute_embeddings.py` | Generate TF-IDF, Sentence-BERT, and E5-style embeddings | Run when embeddings need to be rebuilt |
-| `compute_similarity_matrices.py` | Convert embeddings into cosine/dot/euclidean matrices | Run after embeddings |
-| `embeddings_similarity_integrity_check.py` | Check shapes, IDs, mappings, and cosine spot checks | Sanity check before experiments |
-| `analyze_similarity_matrices.py` | Diagnose raw retrieval/ranking behavior | Representation analysis |
-| `analyze_threshold_regions.py` | Suggest plausible threshold ranges from dev scores | Threshold exploration |
-| `run_selector_experiments.py` | Execute configurable selector sweeps on development | Parameter exploration |
-| `analyze_selector_experiments.py` | Analyze one selector sweep family | Local experiment comparison |
-| `dev_summary_script.py` | Consolidate selected dev experiment directories | Global development ranking |
-| `run_validation_finalists.py` | Evaluate the frozen finalist set on validation | Model/config selection stage |
-| `evaluate_single_gold_only.py` | Re-evaluate a result on one-gold questions only | Diagnostic slice |
-| `prefilter_errors.py` | Group obvious retrieval-error types | Error-analysis preparation |
-| `manual_error_review_all_groups.py` | Human review of grouped errors | Manual qualitative audit |
-| `run_test_winner.py` | Run the one frozen final system on test | Final held-out evaluation |
-| `check_empty_jsonl_in_predictions.py` | Narrow debugging utility for test predictions | One-off debugging |
-| `analyze_gold.py` | Inspect gold mapping files | Data diagnostics |
-| `data_splitter.py` | Split/preparation utility | Not part of normal frozen reruns |
+
+| Script                                     | Role                                                    | Typical use                            |
+| ------------------------------------------ | ------------------------------------------------------- | -------------------------------------- |
+| `compute_embeddings.py`                    | Generate TF-IDF, Sentence-BERT, and E5-style embeddings | Run when embeddings need to be rebuilt |
+| `compute_similarity_matrices.py`           | Convert embeddings into cosine/dot/euclidean matrices   | Run after embeddings                   |
+| `embeddings_similarity_integrity_check.py` | Check shapes, IDs, mappings, and cosine spot checks     | Sanity check before experiments        |
+| `analyze_similarity_matrices.py`           | Diagnose raw retrieval/ranking behavior                 | Representation analysis                |
+| `analyze_threshold_regions.py`             | Suggest plausible threshold ranges from dev scores      | Threshold exploration                  |
+| `run_selector_experiments.py`              | Execute configurable selector sweeps on development     | Parameter exploration                  |
+| `analyze_selector_experiments.py`          | Analyze one selector sweep family                       | Local experiment comparison            |
+| `dev_summary_script.py`                    | Consolidate selected dev experiment directories         | Global development ranking             |
+| `run_validation_finalists.py`              | Evaluate the frozen finalist set on validation          | Model/config selection stage           |
+| `evaluate_single_gold_only.py`             | Re-evaluate a result on one-gold questions only         | Diagnostic slice                       |
+| `prefilter_errors.py`                      | Group obvious retrieval-error types                     | Error-analysis preparation             |
+| `manual_error_review_all_groups.py`        | Human review of grouped errors                          | Manual qualitative audit               |
+| `run_test_winner.py`                       | Run the one frozen final system on test                 | Final held-out evaluation              |
+| `check_empty_jsonl_in_predictions.py`      | Narrow debugging utility for test predictions           | One-off debugging                      |
+| `analyze_gold.py`                          | Inspect gold mapping files                              | Data diagnostics                       |
+| `data_splitter.py`                         | Split/preparation utility                               | Not part of normal frozen reruns       |
+
 
 ---
 
+
+
 ## 6. End-to-end operating procedure
 
-Most scripts use fixed repository-relative paths and hard-coded configuration constants. Run them from the **repository root** unless a script explicitly says otherwise.
+Most scripts use fixed repository-relative paths and hard-coded configuration constants. Run them from the **repository root**.
 
 ### 6.1 Environment setup
 
@@ -451,6 +472,8 @@ Expected outputs are written below:
 data/produced_v2/similarity_matrices/
 ```
 
+
+
 ### 6.5 Run integrity checks
 
 Before tuning selectors:
@@ -472,6 +495,8 @@ and, when exploring abstention thresholds:
 ```bash
 python scripts/analyze_threshold_regions.py
 ```
+
+
 
 ### 6.6 Run development selector experiments
 
@@ -559,6 +584,8 @@ The compact exported ranking is also available at:
 results/dev_ranking.csv
 ```
 
+
+
 ### 6.8 Freeze and evaluate validation finalists
 
 The validation stage is intentionally narrower than development.
@@ -596,6 +623,8 @@ A compact validation result handoff is stored in:
 ```text
 results/validation_summary.jsonl
 ```
+
+
 
 ### 6.9 Perform validation error analysis
 
@@ -732,6 +761,8 @@ results/baseline_summary.jsonl
 
 ---
 
+
+
 ## 7. Current authoritative experiment endpoint
 
 The final reported system is the E5 `top_k_threshold` configuration with:
@@ -761,7 +792,11 @@ results/winner_summary.jsonl
 
 ---
 
+
+
 ## 8. Generated artifact flow
+
+
 
 ### Embeddings
 
@@ -774,6 +809,8 @@ scripts/compute_embeddings.py
           └── retrieval_bi_encoder/
 ```
 
+
+
 ### Similarities
 
 ```text
@@ -781,6 +818,8 @@ scripts/compute_similarity_matrices.py
     │
     └──> data/produced_v2/similarity_matrices/
 ```
+
+
 
 ### Development
 
@@ -799,6 +838,8 @@ data/produced_v2/selector_experiments/dev_*/
               ▼
        dev_consolidated/
 ```
+
+
 
 ### Validation
 
@@ -819,6 +860,8 @@ validation_finalists/
        scripts/manual_error_review_all_groups.py
 ```
 
+
+
 ### Test
 
 ```text
@@ -836,6 +879,8 @@ test_winner/
 ```
 
 ---
+
+
 
 ## 9. Development experiment history versus current script state
 
@@ -857,7 +902,11 @@ Do not infer that missing current constants mean those historical experiments di
 
 ---
 
+
+
 ## 10. Selector configuration guide
+
+
 
 ### Change a representation
 
@@ -879,6 +928,8 @@ scripts/analyze_similarity_matrices.py
 scripts/embeddings_similarity_integrity_check.py
 ```
 
+
+
 ### Change or add a selector
 
 Implement selector behavior in:
@@ -894,6 +945,8 @@ scripts/run_selector_experiments.py
 scripts/run_validation_finalists.py
 scripts/run_test_winner.py
 ```
+
+
 
 ### Change a development sweep
 
@@ -919,7 +972,11 @@ Be aware that many analysis scripts expect the existing field names.
 
 ---
 
+
+
 ## 11. Diagnostics: where to look when something is wrong
+
+
 
 ### Embeddings or matrices look suspicious
 
@@ -935,6 +992,8 @@ Then inspect:
 python scripts/analyze_similarity_matrices.py
 ```
 
+
+
 ### Threshold behavior looks strange
 
 Use:
@@ -948,6 +1007,8 @@ and inspect:
 ```text
 data/produced_v2/selector_experiments/threshold_analysis/
 ```
+
+
 
 ### Development ranking looks inconsistent
 
@@ -982,6 +1043,8 @@ The test error audit is post-hoc analysis only; it must not feed back into thres
 
 ---
 
+
+
 ## 12. Files that are not normal pipeline stages
 
 Several scripts are useful but should not be mistaken for required steps in every reproduction.
@@ -1003,6 +1066,8 @@ A diagnostic evaluation slice. It supplements rather than replaces the main eval
 The review CSVs explain failure modes. They are not alternative gold labels for recomputing the official headline score.
 
 ---
+
+
 
 ## 13. Research and paper support files
 
@@ -1030,6 +1095,8 @@ metadata/report/paper/
 These files describe, interpret, or report the experiments. They should not be confused with code that generates the primary retrieval predictions.
 
 ---
+
+
 
 ## 14. Recommended reading order for a new contributor
 
@@ -1061,6 +1128,8 @@ This gives the shortest path from implementation to the reported experiment.
 
 ---
 
+
+
 ## 15. Rules for preserving experimental validity
 
 When extending or reproducing the project, follow these rules:
@@ -1077,6 +1146,8 @@ When extending or reproducing the project, follow these rules:
 10. Record any changed representation, selector, threshold, split, or evaluator behavior in project metadata.
 
 ---
+
+
 
 ## 16. Minimal reproduction checklist
 
@@ -1112,6 +1183,8 @@ python scripts/manual_error_review_all_groups.py
 Do not assume the minimal command sequence reconstructs every historical development sweep. The repository preserves experiment history that was produced over multiple rounds and parameter-grid refinements.
 
 ---
+
+
 
 ## 17. One-sentence summary
 

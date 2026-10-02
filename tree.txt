@@ -4,31 +4,6 @@
 │   ├── processed
 │   │   ├── PO_25_CL_chunks.jsonl
 │   │   ├── qSet_PO.jsonl
-│   │   ├── qamappings
-│   │   │   ├── full_mapping_evaluation
-│   │   │   │   ├── charts
-│   │   │   │   │   ├── chunk_selection_overlap_patterns.png
-│   │   │   │   │   ├── chunks_per_question_distribution.png
-│   │   │   │   │   ├── confidence_vs_quality.png
-│   │   │   │   │   ├── difference_causes.png
-│   │   │   │   │   ├── error_rate_by_question_family.png
-│   │   │   │   │   ├── exact_agreement_rates.png
-│   │   │   │   │   ├── pairwise_jaccard_heatmap.png
-│   │   │   │   │   ├── status_distribution.png
-│   │   │   │   │   └── wins_per_mapping.png
-│   │   │   │   ├── mapping_comparison_per_question.csv
-│   │   │   │   ├── mapping_comparison_report.md
-│   │   │   │   ├── mapping_comparison_summary.json
-│   │   │   │   ├── mapping_differences_detailed.jsonl
-│   │   │   │   ├── mapping_validation_issues.csv
-│   │   │   │   └── recommended_consensus_mapping.jsonl
-│   │   │   ├── qa_mapping_merged.jsonl
-│   │   │   ├── qa_mapping_non_answerable.jsonl
-│   │   │   ├── qa_mapping_test.jsonl
-│   │   │   ├── qa_mappings_v1-1.jsonl
-│   │   │   ├── qa_mappings_v1.jsonl
-│   │   │   ├── qa_mappings_v2.jsonl
-│   │   │   └── readme.md
 │   │   └── readme.md
 │   ├── produced_v2
 │   │   ├── baselines
@@ -2762,7 +2737,6 @@
 │       │   └── styles.css
 │       ├── visualize_evaluation_optional.py
 │       └── visualize_validation_results.py
-├── filestructure.txt
 ├── literature
 │   ├── Hausarbeit_QA_Model_Agent_Handover_V2_Audited.md
 │   ├── PapersJobs.md
@@ -2875,6 +2849,7 @@
 │   │   ├── threshold_region_method.md
 │   │   └── top_k_threshold_method.md
 │   └── todoList_PO.md
+├── old_README.md
 ├── python_version.txt
 ├── requirements.txt
 ├── results
@@ -2905,4 +2880,4 @@
 │   └── text_embedder.py
 └── tree.txt
 
-71 directories, 2835 files
+68 directories, 2813 files
