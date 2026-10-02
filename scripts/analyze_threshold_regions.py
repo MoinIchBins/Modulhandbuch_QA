@@ -53,7 +53,7 @@ REPRESENTATIONS = {
 }
 
 OUTPUT_DIR = Path(
-    "artifacts/experiments/development/threshold_analysis"
+    "artifacts/experiments/base/outputs/development/threshold_analysis"
 )
 
 

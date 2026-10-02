@@ -14,7 +14,7 @@ CHUNKS_PATH = Path(
 )
 
 ERROR_ANALYSIS_DIR = Path(
-    "artifacts/experiments/validation/validation_finalists/"
+    "artifacts/experiments/base/outputs/validation/finalists/"
     "error_analysis_of_best"
 )
 

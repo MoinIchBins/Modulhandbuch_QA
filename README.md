@@ -1,121 +1,63 @@
 # QA Evidence Retrieval Experiments
 
-This repository evaluates how well different text representations and chunk-selection rules can recover evidence for questions about a German examination regulation. It predicts relevant `chunk_id` values, including an empty selection when the corpus does not answer a question. It does not generate answers.
+This project compares TF-IDF, Sentence-BERT, and E5 with four chunk-selection rules for questions about a German examination regulation. It retrieves evidence chunks and can abstain; it does not generate answers.
 
-The dataset contains 720 questions and 201 manually created document chunks. The experiment compares TF-IDF, Sentence-BERT, and E5-style retrieval embeddings with `top_k`, `threshold`, `top_k_threshold`, and `relative_margin` selectors.
+## Base experiment
 
-## Reported result
+The canonical experiment is `artifacts/experiments/base/`. It uses 720 questions, 201 chunks, and the original frozen grouped split (432 development, 144 validation, 144 test). Its validation-selected winner is **E5, top_k_threshold, top_k=1, threshold=0.84**.
 
-The final system uses the E5 representation (`retrieval_bi_encoder`) with `top_k_threshold`, `top_k = 1`, and `threshold = 0.83959`.
+| Split | Mean question F1 | Exact matches |
+| --- | ---: | ---: |
+| Development | 0.647377 | 275/432 |
+| Validation | 0.604167 | 85/144 |
+| Test | 0.483796 | 69/144 |
 
+The completed rerun is now the base experiment. The historical first run is archived. The researcher reviewed the differences and judged them immaterial to the research questions; the reported numbers nevertheless use the actual rerun results. See `artifacts/experiments/base/README.md` for provenance.
 
-| Split      | Question-level F1 |
-| ---------- | ----------------- |
-| Validation | 0.6111            |
-| Test       | 0.4907            |
-
-
-Development results informed the validation finalists; validation selected the final configuration; the test split was reserved for its final evaluation. 
-
-## Repository layout
+## Layout
 
 ```text
-.
-├── data/
-│   ├── raw/                 # source documents
-│   ├── processed/           # prepared questions and chunks
-│   ├── split/               # retained preparation-era split files
-│   └── frozen/              # exact inputs and splits for reported runs
-├── artifacts/
-│   ├── embeddings/
-│   ├── similarity_matrices/
-│   ├── similarity_analysis/
-│   ├── experiments/
-│   │   ├── development/
-│   │   ├── validation/
-│   │   ├── test/
-│   │   └── single_gold_only_evaluations/
-│   └── baselines/
-├── results/                 # compact result summaries
-├── scripts/                 # pipeline, evaluation, and analysis code
-│   ├── baselines/
-│   └── visualization/
-├── tools/chunk_browser/     # local browser for reviewing chunks
-├── literature/              # papers and reading notes
-└── metadata/                # decisions, methods, limitations, and paper files
+artifacts/experiments/
+  base/
+    configs/                 # coarse, fine, development summary, validation
+    outputs/
+      development/           # coarse_all, fine_all, fine_summary
+      validation/finalists/  # five candidates and frozen_winner.json
+      test/winner/           # held-out winner and reconciled error analysis
+  manual_review_v1/          # separate revised-dataset experiment
+  archive/
+    first_run/               # historical outputs, documentation, snapshots
+    migration_provenance/    # original rerun path metadata
+results/                     # compact canonical exports
+metadata/report/paper/       # current paper.tex
 ```
 
-`data/frozen/` is the authoritative input snapshot for the reported experiments. The active pipeline uses its questions, chunks, gold mappings, and split files. Treat these as immutable when reproducing results. `data/split/` is retained for reference; do not use it to replace the frozen split.
+Frozen inputs are in `data/frozen/`; shared embeddings and similarity matrices remain under `artifacts/`. Do not regenerate these inputs for this recreation. `data/split/` is the preparation-era reference. `data/manual_review_v1/` belongs to the separate follow-up. Scripts are under `scripts/`, literature under `literature/`, and the chunk browser under `tools/chunk_browser/`.
 
-`artifacts/` contains generated representations, diagnostics, and preserved experiment outputs. Development run names retain their experiment-round identifiers. The current runner settings do not recreate every historical run.
+## Pipeline
 
-`results/` contains concise handoff files: `baseline_summary.jsonl`, `dev_ranking.csv`, `validation_summary.jsonl`, and `winner_summary.jsonl`.
+From the repository root, with dependencies from `requirements.txt` installed:
 
-## Reproduction workflow
+```bash
+.venv/bin/python scripts/run_selector_experiments.py --config artifacts/experiments/base/configs/coarse.json
+.venv/bin/python scripts/run_selector_experiments.py --config artifacts/experiments/base/configs/fine.json --coarse-run artifacts/experiments/base/outputs/development/coarse_all
+.venv/bin/python scripts/dev_summary_script.py --run-set artifacts/experiments/base/configs/dev_summary.json
+.venv/bin/python scripts/run_validation_finalists.py --config artifacts/experiments/base/configs/validation.json
+.venv/bin/python scripts/run_test_winner.py --validation-dir artifacts/experiments/base/outputs/validation/finalists
+```
 
-Use the repository root as the working directory. The project’s Python version is recorded in `python_version.txt`; dependencies are in `requirements.txt`.
+These commands document the completed run. Its output folders already exist, and runners refuse to overwrite them. For another experiment, copy the configs, choose fresh output directories, and update downstream references together; do not clear the canonical outputs.
 
-Before generating anything, inspect the JSON configuration and output path. Experiment runners refuse to use an existing output directory; pass `--output-dir` to choose another location.
+The coarse stage evaluates 157 settings. The fine stage automatically brackets each best coarse parameter by its neighboring values, evaluates 201 points per interval, retains the best coarse point, and deduplicates settings (4,227 configurations). At grid edges it extends one neighboring step within the configured bounds. Development ranks the best setting for each of 12 representation/selector pairs and forwards the top five. Ranking uses question F1, exact match, precision, then fewer selected chunks. Validation freezes the winner, and test evaluates only that configuration.
 
-For the `manual_review_v1` runs below, skip steps 1–3: the reviewed questions are an unchanged subset of the questions already embedded, and the chunks are unchanged. The experiment runners align matrix rows by question ID. The embedding and matrix generation scripts use the frozen input paths and rewrite shared artifact folders.
+## Results and interpretation
 
-1. Generate embeddings:
-  ```bash
-   python scripts/compute_embeddings.py
-  ```
-   Outputs: `artifacts/embeddings/`.
-2. Generate similarity matrices:
-  ```bash
-   python scripts/compute_similarity_matrices.py
-  ```
-   Outputs: `artifacts/similarity_matrices/`.
-3. Check the embedding and matrix IDs, dimensions, and mappings:
-  ```bash
-   python scripts/embeddings_similarity_integrity_check.py
-  ```
-4. Compare every representation (`tfidf`, `e5`, `sentence_bert`) with all four selectors on development. The coarse grid uses representation-specific threshold and margin values because score scales differ. The fine run narrows each continuous search around its best coarse configuration; `top_k` uses the discrete coarse values directly.
-  ```bash
-   .venv/bin/python scripts/run_selector_experiments.py --config configs/manual_review_v1_coarse.json
-   .venv/bin/python scripts/analyze_selector_experiments.py artifacts/experiments/manual_review_v1/outputs/development/coarse_all_v2
-   .venv/bin/python scripts/run_selector_experiments.py --config configs/manual_review_v1_fine.json --coarse-run artifacts/experiments/manual_review_v1/outputs/development/coarse_all_v2
-   .venv/bin/python scripts/dev_summary_script.py --run-set configs/manual_review_v1_dev_round_1.json
-  ```
-   The coarse config lists every representation, selector, and parameter grid. The fine config explicitly lists each representation/selector region and its point count; edit those intervals and densities after reviewing the coarse analysis if needed. The fine runner retains each discrete `top_k` winner and checks that its config matches the coarse run. The development summary ranks the fine results within each representation and selector and writes those 12 candidates to `validation_candidates.json`.
-5. Compare the development-selected candidates on validation:
-  ```bash
-   .venv/bin/python scripts/run_validation_finalists.py --config configs/manual_review_v1_validation.json
-  ```
-   Validation ranks all candidates by question-level F1, exact match, precision, then fewer selected chunks. It writes a single `frozen_winner.json` from the top validation result. The test runner accepts that validation output directory and evaluates only that winner:
-  ```bash
-   .venv/bin/python scripts/run_test_winner.py --validation-dir artifacts/experiments/manual_review_v1/outputs/validation/finalists_full_search_v2
-  ```
-   Do not tune on test results. Use `--output-dir` on a runner to choose another new run directory.
+`results/` exports the base development ranking, all five validation results, and test winner. `artifacts/baselines/` preserves unchanged reference baseline predictions; its system comparisons use the base winner. `metadata/report/paper/paper.tex` is the current paper source. Earlier drafts and the old handover belong to the first-run archive.
 
-The commands show the pipeline order; they are not a batch rerun recipe for the existing output directories. To interpret results, see `scripts/analyze_similarity_matrices.py`, `scripts/analyze_threshold_regions.py`, and the error-analysis scripts. The local chunk browser is documented in `tools/chunk_browser/README.md`.
+The base test has 75 non-exact predictions. Its error analysis retains historical human labels for 73 unchanged cases and reclassifies two changed predictions as false abstentions. The reconciliation and provenance are saved with the test winner; it is not represented as a new manual audit.
 
-## Baselines
+## Separate follow-up
 
-Baseline programs are in `scripts/baselines/`. Their definitions, frozen development reference, and preserved validation/test outputs are in `artifacts/baselines/`. See `[artifacts/baselines/README.md](artifacts/baselines/README.md)` before running a baseline; the scripts use configured output paths, and preserved runs should not be overwritten.
+`manual_review_v1` removes ten reviewed items and uses a different split. Its configs remain under `configs/manual_review_v1_*.json`, with outputs under `artifacts/experiments/manual_review_v1/`. Its metrics must not be mixed with the base experiment.
 
-## Core modules
-
-- `scripts/text_embedder.py` creates TF-IDF, Sentence-BERT, and retrieval bi-encoder representations. E5 uses `query:` and `passage:` prefixes.
-- `scripts/similarity_calculator.py` computes cosine, dot-product, and Euclidean scores.
-- `scripts/chunk_selector.py` implements the four selection rules.
-- `scripts/mapping_evaluator.py` is the shared scoring authority. Analysis scripts depend on its metric field names.
-
-
-
-## Experimental safeguards
-
-- Questions with the same non-empty gold-chunk set are kept together when the frozen splits are formed.
-- Use development for exploration, validation for finalist selection, and test only for the frozen final evaluation.
-- Preserve existing predictions, evaluations, and versioned run directories. Write new experiments to new directories.
-- Keep manual error analysis separate from headline metric computation.
-- `scripts/data_splitter.py` is a preparation-era utility that refers to unavailable prepared gold data. It is not part of reported-run reproduction; do not use it to regenerate the frozen split.
-
-
-
-## Research material
-
-`literature/` contains papers and reading notes. `metadata/` contains decisions, limitations, method notes, reports, and the paper workspace at `metadata/report/paper/`. These materials document and interpret the experiment; they do not generate the primary retrieval predictions.
+Use development for search, validation for selection, and test for the frozen winner. Neither the archived test result nor the rerun test result is a reason to retune the selected configuration. Historical launch configs were not retained; the old outputs remain the evidence for that first run.

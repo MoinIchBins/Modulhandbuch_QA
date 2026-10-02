@@ -14,7 +14,7 @@ import pandas as pd
 # ------------------------------------------------------------
 #
 # RESULTS_DIR = Path(
-#     "artifacts/experiments/development/dev_top_k_v1"
+#     "artifacts/experiments/archive/first_run/outputs/development/dev_top_k_v1"
 # )
 # METHOD = "top_k"
 # X_PARAMETER = "top_k"
@@ -41,7 +41,7 @@ import pandas as pd
 # ------------------------------------------------------------
 #
 # RESULTS_DIR = Path(
-#     "artifacts/experiments/development/dev_threshold_v1"
+#     "artifacts/experiments/archive/first_run/outputs/development/dev_threshold_v1"
 # )
 # METHOD = "threshold"
 # X_PARAMETER = "threshold"
@@ -65,10 +65,10 @@ import pandas as pd
 
 
 # ------------------------------------------------------------
-# Active settings: dev_top_k_threshold_v5
+# Active settings: base validation relative-margin candidates
 # ------------------------------------------------------------
 RESULTS_DIR = Path(
-    "artifacts/experiments/validation/validation_finalists"
+    "artifacts/experiments/base/outputs/validation/finalists"
 )
 
 OUTPUT_DIR = RESULTS_DIR / "comparison"

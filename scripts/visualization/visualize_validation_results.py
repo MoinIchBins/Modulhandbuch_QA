@@ -6,7 +6,7 @@ import pandas as pd
 
 
 SUMMARY_PATH = Path(
-    "artifacts/experiments/validation/validation_finalists/summary.jsonl"
+    "artifacts/experiments/base/outputs/validation/finalists/summary.jsonl"
 )
 
 OUTPUT_DIR = SUMMARY_PATH.parent

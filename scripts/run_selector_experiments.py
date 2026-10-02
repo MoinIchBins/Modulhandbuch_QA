@@ -127,15 +127,14 @@ def expand_fine_search(config, coarse_dir):
         if search.get("parameter") != parameter:
             raise ValueError(f"{representation}/{method} fine search must tune '{parameter}'")
         top_k_values = search.get("top_k_values", [None])
-        lower = float(search["lower"])
-        upper = float(search["upper"])
         points = int(search["points"])
-        if lower >= upper or points < 2:
-            raise ValueError(f"Invalid fine-search range or density: {search}")
-        if parameter == "margin" and (lower < 0 or upper > 1):
-            raise ValueError(f"Relative margins must be in [0, 1]: {search}")
-        if parameter == "threshold" and (lower < -1 or upper > 1):
-            raise ValueError(f"Cosine thresholds must be in [-1, 1]: {search}")
+        if points < 2:
+            raise ValueError(f"Fine-search points must be at least 2: {search}")
+        domain_lower, domain_upper = (0.0, 1.0) if parameter == "margin" else (-1.0, 1.0)
+        search_lower = float(search.get("lower", domain_lower))
+        search_upper = float(search.get("upper", domain_upper))
+        if not domain_lower <= search_lower < search_upper <= domain_upper:
+            raise ValueError(f"Fine-search bounds are outside the valid {parameter} domain: {search}")
 
         for top_k in top_k_values:
             matched = [
@@ -145,8 +144,34 @@ def expand_fine_search(config, coarse_dir):
             ]
             if not matched:
                 raise ValueError(f"No coarse runs for {representation}/{method}, top_k={top_k}")
-            # Carry forward the best coarse point as well as the manually specified fine grid.
-            fine_experiments.append(max(matched, key=result_rank)["experiment"])
+            best_coarse = max(matched, key=result_rank)["experiment"]
+            best_value = float(best_coarse[parameter])
+            coarse_values = sorted({float(result["experiment"][parameter]) for result in matched})
+            if len(coarse_values) < 2:
+                raise ValueError(
+                    f"Need at least two coarse {parameter} values for {representation}/{method}, top_k={top_k}"
+                )
+
+            best_index = coarse_values.index(best_value)
+            if best_index > 0:
+                lower = coarse_values[best_index - 1]
+            else:
+                lower = best_value - (coarse_values[1] - best_value)
+            if best_index < len(coarse_values) - 1:
+                upper = coarse_values[best_index + 1]
+            else:
+                upper = best_value + (best_value - coarse_values[-2])
+
+            lower = max(lower, search_lower)
+            upper = min(upper, search_upper)
+            if lower >= upper:
+                raise ValueError(
+                    f"Could not form a local fine-search range for {representation}/{method}, "
+                    f"top_k={top_k}, best={best_value}"
+                )
+
+            # Keep the best coarse point even if the local grid does not land on it.
+            fine_experiments.append(best_coarse)
             for value in np.linspace(lower, upper, points):
                 experiment = {"representation": representation, "method": method, parameter: round(float(value), 8)}
                 if top_k is not None:

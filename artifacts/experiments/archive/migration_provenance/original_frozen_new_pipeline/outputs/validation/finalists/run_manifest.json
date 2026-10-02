@@ -1,0 +1,29 @@
+{
+  "run_name": "original_frozen_validation_all_candidates",
+  "split": "validation",
+  "config_path": "configs/original_frozen_validation.json",
+  "gold_path": "data/frozen/split/gold_with_split.jsonl",
+  "split_ids_path": "data/frozen/split/validation_question_ids.json",
+  "candidates_path": "artifacts/experiments/original_frozen_new_pipeline/outputs/development/fine_summary/validation_candidates.json",
+  "candidate_sources": [
+    "artifacts/experiments/original_frozen_new_pipeline/outputs/development/fine_all"
+  ],
+  "representations": {
+    "tfidf": {
+      "matrix": "artifacts/similarity_matrices/tf_idf/cosine_similarity_matrix.npy",
+      "question_ids": "artifacts/similarity_matrices/tf_idf/question_ids.json",
+      "chunk_ids": "artifacts/similarity_matrices/tf_idf/chunk_ids.json"
+    },
+    "e5": {
+      "matrix": "artifacts/similarity_matrices/retrieval_bi_encoder/cosine_similarity_matrix.npy",
+      "question_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/question_ids.json",
+      "chunk_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
+    },
+    "sentence_bert": {
+      "matrix": "artifacts/similarity_matrices/sentence_bert/cosine_similarity_matrix.npy",
+      "question_ids": "artifacts/similarity_matrices/sentence_bert/question_ids.json",
+      "chunk_ids": "artifacts/similarity_matrices/sentence_bert/chunk_ids.json"
+    }
+  },
+  "finalist_count": 5
+}

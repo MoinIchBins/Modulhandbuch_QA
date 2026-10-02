@@ -165,13 +165,13 @@ The winner selected from the frozen validation finalists is:
 ```text
 E5 + top_k_threshold
 top_k = 1
-threshold = 0.83959
+threshold = 0.84
 ```
 
 Its validation evaluation file is:
 
 ```text
-artifacts/experiments/validation/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+artifacts/experiments/base/outputs/validation/finalists/e5_top_k_threshold_top_k_1_threshold_0.84_evaluation.json
 ```
 
 Run exactly:
@@ -179,13 +179,13 @@ Run exactly:
 ```bash
 python scripts/baselines/compare_with_system.py \
     validation \
-    artifacts/experiments/validation/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+    artifacts/experiments/base/outputs/validation/finalists/e5_top_k_threshold_top_k_1_threshold_0.84_evaluation.json
 ```
 
 Do **not** pass the finalist summary file:
 
 ```text
-artifacts/experiments/validation/validation_finalists/summary.jsonl
+artifacts/experiments/base/outputs/validation/finalists/summary.jsonl
 ```
 
 `compare_with_system.py` expects the evaluation JSON of the **single frozen system**, not the combined finalist summary.
@@ -209,7 +209,7 @@ After validation, the frozen final retrieval configuration is:
 representation: e5
 selector:       top_k_threshold
 top_k:          1
-threshold:      0.83959
+threshold:      0.84
 ```
 
 These values must remain unchanged for the test evaluation.
@@ -266,20 +266,20 @@ artifacts/baselines/test_v1/baseline_f1_comparison.png
 
 First run the **single frozen final retrieval configuration** on the test split and save its evaluation JSON.
 
-The final test evaluation is already preserved in `artifacts/experiments/test/test_winner/`.
+The final test evaluation is already preserved in `artifacts/experiments/base/outputs/test/winner/`.
 
 For a new comparison output (redirect output paths first), run:
 
 ```bash
 python scripts/baselines/compare_with_system.py \
     test \
-    artifacts/experiments/test/test_winner/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+    artifacts/experiments/base/outputs/test/winner/e5_top_k_threshold_top_k_1_threshold_0.84_evaluation.json
 ```
 
 The second argument must be the `_evaluation.json` for:
 
 ```text
-E5 + top_k_threshold + top_k=1 + threshold=0.83959
+E5 + top_k_threshold + top_k=1 + threshold=0.84
 ```
 
 The command will create:
@@ -312,12 +312,12 @@ The baseline comparison may be reported as contextual evidence, but it must not 
 Current validation retrieval winner:
 
 ```text
-E5 + top_k_threshold + top_k=1 + threshold=0.83959
+E5 + top_k_threshold + top_k=1 + threshold=0.84
 ```
 
 ### Test
 
-Evaluate only the single frozen winner on the untouched test split.
+Evaluate only the single frozen winner on the test split reserved within the selection workflow.
 
 The main final comparison should contain:
 
@@ -382,7 +382,7 @@ python scripts/baselines/plot_baselines.py validation
 
 python scripts/baselines/compare_with_system.py \
     validation \
-    artifacts/experiments/validation/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+    artifacts/experiments/base/outputs/validation/finalists/e5_top_k_threshold_top_k_1_threshold_0.84_evaluation.json
 ```
 
 ### Test
@@ -398,5 +398,9 @@ Then compare the preserved final test evaluation, with outputs redirected:
 ```bash
 python scripts/baselines/compare_with_system.py \
     test \
-    artifacts/experiments/test/test_winner/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+    artifacts/experiments/base/outputs/test/winner/e5_top_k_threshold_top_k_1_threshold_0.84_evaluation.json
 ```
+
+## Current system comparison
+
+`system_vs_baselines.csv` and its plot use the promoted base winner (threshold 0.84). Reference baseline predictions and scores are unchanged. Prior comparison files are retained in the first-run archive.

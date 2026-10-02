@@ -4,13 +4,13 @@ from pathlib import Path
 
 GOLD_PATH = Path("data/frozen/split/gold_with_split.jsonl")
 PREDICTIONS_PATH = Path(
-    "artifacts/experiments/validation/validation_finalists/"
-    "e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl"
+    "artifacts/experiments/base/outputs/validation/finalists/"
+    "e5_top_k_threshold_top_k_1_threshold_0.84_predictions.jsonl"
 )
 CHUNKS_PATH = Path("data/frozen/PO_25_CL_chunks.jsonl")
 
 OUTPUT_DIR = Path(
-    "artifacts/experiments/validation/validation_finalists/error_analysis_of_best"
+    "artifacts/experiments/base/outputs/validation/finalists/error_analysis_of_best"
 )
 
 SPLIT = "validation"

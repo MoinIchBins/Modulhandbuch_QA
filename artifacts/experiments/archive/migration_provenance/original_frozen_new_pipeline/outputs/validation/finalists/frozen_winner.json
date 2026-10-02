@@ -1,0 +1,24 @@
+{
+  "selected_by": "validation ranking",
+  "validation_run_dir": "artifacts/experiments/original_frozen_new_pipeline/outputs/validation/finalists",
+  "validation_metrics": {
+    "mean_question_f1": 0.6041666666666667,
+    "exact_match_rate": 0.5902777777777778,
+    "mean_question_precision": 0.6111111111111112,
+    "average_selected_chunks": 0.8263888888888888
+  },
+  "winner": {
+    "representation": "e5",
+    "method": "top_k_threshold",
+    "top_k": 1,
+    "threshold": 0.84
+  },
+  "gold_path": "data/frozen/split/gold_with_split.jsonl",
+  "split_ids_path": "data/frozen/split/test_question_ids.json",
+  "representation_artifacts": {
+    "matrix": "artifacts/similarity_matrices/retrieval_bi_encoder/cosine_similarity_matrix.npy",
+    "question_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/question_ids.json",
+    "chunk_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
+  },
+  "test_output_dir": "artifacts/experiments/original_frozen_new_pipeline/outputs/test/winner"
+}

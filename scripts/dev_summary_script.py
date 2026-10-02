@@ -49,8 +49,15 @@ def main():
     selector_winners = rank_results(best_configs).groupby("selector", as_index=False, sort=False).first()
     overall_ranking = rank_results(best_configs)
 
+    candidate_limit = run_set.get("validation_candidate_limit")
+    if candidate_limit is not None and (not isinstance(candidate_limit, int) or candidate_limit < 1):
+        raise ValueError("validation_candidate_limit must be a positive integer")
+    candidate_rows = rank_results(best_configs)
+    if candidate_limit is not None:
+        candidate_rows = candidate_rows.head(candidate_limit)
+
     candidates = []
-    for row in best_configs.itertuples(index=False):
+    for row in candidate_rows.itertuples(index=False):
         parameters = {}
         for key in ("top_k", "threshold", "margin"):
             value = getattr(row, key, None)

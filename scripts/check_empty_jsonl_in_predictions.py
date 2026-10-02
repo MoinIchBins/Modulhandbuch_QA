@@ -6,8 +6,8 @@ split_path = (
 )
 
 prediction_path = (
-    "artifacts/experiments/test/test_winner/"
-    "e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl"
+    "artifacts/experiments/base/outputs/test/winner/"
+    "e5_top_k_threshold_top_k_1_threshold_0.84_predictions.jsonl"
 )
 
 with open(split_path, encoding="utf-8") as file:

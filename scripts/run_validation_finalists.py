@@ -46,17 +46,23 @@ def main():
     candidates = candidate_document["candidates"]
     if not candidates:
         raise ValueError(f"No development candidates found in {candidate_file}")
-    expected = {
-        (representation, method)
-        for representation in config["representations"]
-        for method in ("top_k", "threshold", "top_k_threshold", "relative_margin")
-    }
     actual = [(candidate["representation"], candidate["method"]) for candidate in candidates]
-    if set(actual) != expected or len(actual) != len(expected):
-        raise ValueError(
-            "Validation needs exactly one development-selected candidate for every "
-            f"representation/selector pair; expected {sorted(expected)}, got {actual}"
-        )
+    if len(set(actual)) != len(actual):
+        raise ValueError(f"Validation candidates must have unique representation/selector pairs: {actual}")
+    expected_candidate_count = config.get("expected_candidate_count")
+    if expected_candidate_count is not None:
+        if len(candidates) != expected_candidate_count:
+            raise ValueError(
+                f"Expected {expected_candidate_count} validation candidates, got {len(candidates)}"
+            )
+    else:
+        expected = {
+            (representation, method)
+            for representation in config["representations"]
+            for method in ("top_k", "threshold", "top_k_threshold", "relative_margin")
+        }
+        if set(actual) != expected or len(actual) != len(expected):
+            raise ValueError(f"Unexpected validation candidates; expected {sorted(expected)}, got {actual}")
 
     validation_ids = read_json(config["split_ids_path"])
     output_dir = args.output_dir or Path(config["output_dir"])

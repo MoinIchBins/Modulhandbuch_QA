@@ -1,0 +1,128 @@
+{
+  "run_name": "original_frozen_development_fine",
+  "split": "development",
+  "gold_path": "data/frozen/split/gold_with_split.jsonl",
+  "split_ids_path": "data/frozen/split/development_question_ids.json",
+  "output_dir": "artifacts/experiments/base/outputs/development/fine_all",
+  "representations": {
+    "tfidf": {
+      "matrix": "artifacts/similarity_matrices/tf_idf/cosine_similarity_matrix.npy",
+      "question_ids": "artifacts/similarity_matrices/tf_idf/question_ids.json",
+      "chunk_ids": "artifacts/similarity_matrices/tf_idf/chunk_ids.json"
+    },
+    "e5": {
+      "matrix": "artifacts/similarity_matrices/retrieval_bi_encoder/cosine_similarity_matrix.npy",
+      "question_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/question_ids.json",
+      "chunk_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
+    },
+    "sentence_bert": {
+      "matrix": "artifacts/similarity_matrices/sentence_bert/cosine_similarity_matrix.npy",
+      "question_ids": "artifacts/similarity_matrices/sentence_bert/question_ids.json",
+      "chunk_ids": "artifacts/similarity_matrices/sentence_bert/chunk_ids.json"
+    }
+  },
+  "fine_searches": [
+    {
+      "representation": "tfidf",
+      "method": "threshold",
+      "parameter": "threshold",
+      "lower": 0.04,
+      "upper": 0.19,
+      "points": 201
+    },
+    {
+      "representation": "e5",
+      "method": "threshold",
+      "parameter": "threshold",
+      "lower": 0.8,
+      "upper": 0.88,
+      "points": 201
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "threshold",
+      "parameter": "threshold",
+      "lower": 0.55,
+      "upper": 0.75,
+      "points": 201
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "parameter": "threshold",
+      "top_k_values": [
+        1,
+        2,
+        3
+      ],
+      "lower": 0.04,
+      "upper": 0.16,
+      "points": 201
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "parameter": "threshold",
+      "top_k_values": [
+        1,
+        2,
+        3
+      ],
+      "lower": 0.82,
+      "upper": 0.86,
+      "points": 201
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "parameter": "threshold",
+      "top_k_values": [
+        1,
+        2,
+        3
+      ],
+      "lower": 0.55,
+      "upper": 0.75,
+      "points": 201
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "parameter": "margin",
+      "top_k_values": [
+        1,
+        2,
+        3
+      ],
+      "lower": 0.0,
+      "upper": 0.4,
+      "points": 201
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "parameter": "margin",
+      "top_k_values": [
+        1,
+        2,
+        3
+      ],
+      "lower": 0.0,
+      "upper": 0.08,
+      "points": 201
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "parameter": "margin",
+      "top_k_values": [
+        1,
+        2,
+        3
+      ],
+      "lower": 0.0,
+      "upper": 0.08,
+      "points": 201
+    }
+  ]
+}
