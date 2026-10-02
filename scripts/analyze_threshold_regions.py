@@ -6,54 +6,54 @@ import numpy as np
 import pandas as pd
 
 
-GOLD_PATH = Path("data/produced_v2/frozen/qa_mapping_merged.jsonl")
+GOLD_PATH = Path("data/frozen/qa_mapping_merged.jsonl")
 DEVELOPMENT_IDS_PATH = Path(
-    "data/produced_v2/frozen/split/development_question_ids.json"
+    "data/frozen/split/development_question_ids.json"
 )
 
 REPRESENTATIONS = {
     "e5": {
         "matrix": Path(
-            "data/produced_v2/similarity_matrices/retrieval_bi_encoder/"
+            "artifacts/similarity_matrices/retrieval_bi_encoder/"
             "cosine_similarity_matrix.npy"
         ),
         "question_ids": Path(
-            "data/produced_v2/similarity_matrices/retrieval_bi_encoder/"
+            "artifacts/similarity_matrices/retrieval_bi_encoder/"
             "question_ids.json"
         ),
         "chunk_ids": Path(
-            "data/produced_v2/similarity_matrices/retrieval_bi_encoder/"
+            "artifacts/similarity_matrices/retrieval_bi_encoder/"
             "chunk_ids.json"
         ),
     },
     "tfidf": {
         "matrix": Path(
-            "data/produced_v2/similarity_matrices/tf_idf/"
+            "artifacts/similarity_matrices/tf_idf/"
             "cosine_similarity_matrix.npy"
         ),
         "question_ids": Path(
-            "data/produced_v2/similarity_matrices/tf_idf/question_ids.json"
+            "artifacts/similarity_matrices/tf_idf/question_ids.json"
         ),
         "chunk_ids": Path(
-            "data/produced_v2/similarity_matrices/tf_idf/chunk_ids.json"
+            "artifacts/similarity_matrices/tf_idf/chunk_ids.json"
         ),
     },
     "sentence_bert": {
         "matrix": Path(
-            "data/produced_v2/similarity_matrices/sentence_bert/"
+            "artifacts/similarity_matrices/sentence_bert/"
             "cosine_similarity_matrix.npy"
         ),
         "question_ids": Path(
-            "data/produced_v2/similarity_matrices/sentence_bert/question_ids.json"
+            "artifacts/similarity_matrices/sentence_bert/question_ids.json"
         ),
         "chunk_ids": Path(
-            "data/produced_v2/similarity_matrices/sentence_bert/chunk_ids.json"
+            "artifacts/similarity_matrices/sentence_bert/chunk_ids.json"
         ),
     },
 }
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/threshold_analysis"
+    "artifacts/experiments/development/threshold_analysis"
 )
 
 

@@ -1062,11 +1062,11 @@ Three baseline families were defined in advance and are **contextual references*
 
 The baseline scripts are in:
 
-`data/produced_v2/baselines/`
+`artifacts/baselines/`
 
 The development-derived reference is frozen in:
 
-`data/produced_v2/baselines/dev_reference/most_frequent_answer.json`
+`artifacts/baselines/dev_reference/most_frequent_answer.json`
 
 The baseline README uses an explicit confirmation gate for held-out test evaluation (`--confirm-test`). Preserve that freeze discipline. The system-comparison utility expects the evaluator JSON of a **single frozen system**, not an entire finalist-summary file.
 
@@ -1772,32 +1772,32 @@ Use artifact-driven values, not memory or planning notes.
 Useful paths mentioned repeatedly:
 
 ```text
-data/produced_v2/frozen/PO_25_CL_chunks.jsonl
-data/produced_v2/frozen/qa_mapping_merged.jsonl
-data/produced_v2/frozen/split/development_question_ids.json
-data/produced_v2/frozen/split/validation_question_ids.json
-data/produced_v2/frozen/split/test_question_ids.json
-data/produced_v2/frozen/split/gold_with_split.jsonl
+data/frozen/PO_25_CL_chunks.jsonl
+data/frozen/qa_mapping_merged.jsonl
+data/frozen/split/development_question_ids.json
+data/frozen/split/validation_question_ids.json
+data/frozen/split/test_question_ids.json
+data/frozen/split/gold_with_split.jsonl
 ```
 
 Similarity matrices:
 
 ```text
-data/produced_v2/similarity_matrices/retrieval_bi_encoder/
-data/produced_v2/similarity_matrices/tf_idf/
-data/produced_v2/similarity_matrices/sentence_bert/
+artifacts/similarity_matrices/retrieval_bi_encoder/
+artifacts/similarity_matrices/tf_idf/
+artifacts/similarity_matrices/sentence_bert/
 ```
 
 Selector outputs:
 
 ```text
-data/produced_v2/selector_experiments/
+artifacts/experiments/
 ```
 
 Final test:
 
 ```text
-data/produced_v2/selector_experiments/test_final_v1/
+artifacts/experiments/test/test_winner/
 ```
 
 Final prediction/evaluation filenames mentioned:
@@ -1810,13 +1810,13 @@ e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
 Error analysis:
 
 ```text
-data/produced_v2/selector_experiments/test_final_v1/error_analysis/
+artifacts/experiments/test/test_winner/error_analysis/
 ```
 
 Baselines:
 
 ```text
-data/produced_v2/baselines/
+artifacts/baselines/
 ```
 
 Important paper-side artifacts in the environment include:

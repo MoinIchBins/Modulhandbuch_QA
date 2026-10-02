@@ -5,20 +5,20 @@ reasons for the specific architecture: necessity, no options, basic rag pipeline
 added 120 non-answerable questions that could be mistaken for answerable by user
 Questions sharing the same non-empty gold evidence set were assigned to the same split to reduce dependence between evaluation partitions. This constitutes a conservative splitting strategy, as the retrieval representations themselves were frozen and the complete chunk corpus remained available in all partitions. A consequence is increased split-level variance: large evidence groups are evaluated entirely within one partition, so differences in group difficulty can affect validation–test comparability.
 
-3. models: see goodnotes document and produced_v2/embeddings/embeddor/metadata.json
+3. models: see goodnotes document and artifacts/embeddings/embeddor/metadata.json
 decided on TF-IDF as baseline (compared to ctr-f), one lightweight sentence-BERT as main research question model and one retrieval trained model for "whats possible"
 TF-IDF representations were obtained with scikit-learn's TfidfVectorizer, fitted on the retrieval chunks, using lowercased word uni-, bi-, and trigrams and the vectorizer's remaining recorded settings.
 
-4. similarity measures: see goodnotes document and produced_v2/similarity_matrices/embeddor/metadata.json
+4. similarity measures: see goodnotes document and artifacts/similarity_matrices/embeddor/metadata.json
 cosine similarity as main measure, dot product and euclidean distance as backup only for comparing on best model with best selector, should not be too different from cosine similarity
 
-5. evaluation of similarity matrices: see produced_v2/similarity_analysis
+5. evaluation of similarity matrices: see artifacts/similarity_analysis
 E5 won, TF-IDF is second place, larger gap to Sentence-BERT
 from now on: test all on E5, some on TF-IDF, none on Sentence-BERT
 
 6. selector: see goodnotes document, testing experience
 6.1 experiment
-data/produced_v2/selector_experiments/dev_top_k_v1:
+artifacts/experiments/development/dev_top_k_v1:
     first_experiment = [
         {
             "representation": representation,
@@ -44,7 +44,7 @@ found threshold regions, see metadata/report/threshold_region_method.md
     TF-IDF: 0.0591–0.5162
     Sentence-Bert: 0.4740–0.7595
 
-data/produced_v2/selector_experiments/dev_threshold
+artifacts/experiments/development/dev_threshold
     THRESHOLD_REGIONS = {
         "e5": (0.8331, 0.8865),
         "tfidf": (0.0591, 0.5162),
@@ -309,7 +309,7 @@ Interpretation of the remaining gap. Outside these difficult groups, performance
 
 
 9. baselines
-added three baselines in produced_v2
+added three baselines (now in artifacts/baselines)
 a. random chunk
 b. biggest group
 c. always say none

@@ -5,7 +5,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 
-BASELINE_DIR = Path(__file__).parent
+BASELINE_DIR = Path(__file__).resolve().parents[2] / "artifacts/baselines"
 
 
 def load_rows(path):

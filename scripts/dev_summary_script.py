@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-RESULTS_DIR = Path("data/produced_v2/selector_experiments")
+RESULTS_DIR = Path("artifacts/experiments/development")
 EXPERIMENT_DIRS = {
     "top_k": RESULTS_DIR / "dev_top_k_v1",
     "threshold": RESULTS_DIR / "dev_threshold_v2",

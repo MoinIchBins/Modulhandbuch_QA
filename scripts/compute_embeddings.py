@@ -7,9 +7,9 @@ import numpy as np
 from text_embedder import TextEmbedder
 
 
-QUESTIONS_FILE = Path("data/processed/qSet_PO.jsonl")
-CHUNKS_FILE = Path("data/processed/PO_25_CL_chunks.jsonl")
-OUTPUT_FOLDER = Path("data/produced_v2/embeddings")
+QUESTIONS_FILE = Path("data/frozen/qSet_PO.jsonl")
+CHUNKS_FILE = Path("data/frozen/PO_25_CL_chunks.jsonl")
+OUTPUT_FOLDER = Path("artifacts/embeddings")
 
 EMBEDDING_METHODS = [
     "TF_IDF",

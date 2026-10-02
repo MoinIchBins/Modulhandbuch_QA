@@ -4,14 +4,13 @@ from pathlib import Path
 
 EVALUATION_FILES = [
     Path(
-        "data/produced_v2/selector_experiments/validation_finalists/"
+        "artifacts/experiments/validation/validation_finalists/"
         "e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json"
     )
 ]
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/"
-    "single_gold_only_evaluations"
+    "artifacts/experiments/single_gold_only_evaluations"
 )
 
 

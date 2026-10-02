@@ -7,19 +7,19 @@ from chunk_selector import ChunkSelector
 from mapping_evaluator import QAMappingEvaluator
 
 
-GOLD_PATH = Path("data/produced_v2/frozen/qa_mapping_merged.jsonl")
-TEST_IDS_PATH = Path("data/produced_v2/frozen/split/test_question_ids.json")
-OUTPUT_DIR = Path("data/produced_v2/selector_experiments/test_winner")
+GOLD_PATH = Path("data/frozen/qa_mapping_merged.jsonl")
+TEST_IDS_PATH = Path("data/frozen/split/test_question_ids.json")
+OUTPUT_DIR = Path("artifacts/experiments/test/test_winner")
 
 MATRIX_PATH = Path(
-    "data/produced_v2/similarity_matrices/"
+    "artifacts/similarity_matrices/"
     "retrieval_bi_encoder/cosine_similarity_matrix.npy"
 )
 QUESTION_IDS_PATH = Path(
-    "data/produced_v2/similarity_matrices/retrieval_bi_encoder/question_ids.json"
+    "artifacts/similarity_matrices/retrieval_bi_encoder/question_ids.json"
 )
 CHUNK_IDS_PATH = Path(
-    "data/produced_v2/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
+    "artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
 )
 
 REPRESENTATION = "e5"

@@ -7,14 +7,14 @@ import webbrowser
 from pathlib import Path
 from urllib.parse import quote
 
-CHUNK_BROWSER_DIR = Path("data/visualization/chunk_browser")
+CHUNK_BROWSER_DIR = Path("tools/chunk_browser")
 
 CHUNKS_PATH = Path(
-    "data/produced_v2/frozen/PO_25_CL_chunks.jsonl"
+    "data/frozen/PO_25_CL_chunks.jsonl"
 )
 
 ERROR_ANALYSIS_DIR = Path(
-    "data/produced_v2/selector_experiments/validation_finalists/"
+    "artifacts/experiments/validation/validation_finalists/"
     "error_analysis_of_best"
 )
 

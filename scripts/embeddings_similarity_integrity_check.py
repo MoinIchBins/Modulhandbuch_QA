@@ -5,9 +5,9 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-EMBEDDINGS_DIR = Path("data/produced_v2/embeddings")
-SIMILARITIES_DIR = Path("data/produced_v2/similarity_matrices")
-GOLD_FILE = Path("data/processed/qamappings/qa_mapping_merged.jsonl")
+EMBEDDINGS_DIR = Path("artifacts/embeddings")
+SIMILARITIES_DIR = Path("artifacts/similarity_matrices")
+GOLD_FILE = Path("data/frozen/qa_mapping_merged.jsonl")
 
 EMBEDDING_METHODS = [
     "tf_idf",

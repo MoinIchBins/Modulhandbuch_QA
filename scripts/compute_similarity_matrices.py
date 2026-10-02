@@ -6,8 +6,8 @@ import numpy as np
 from similarity_calculator import compare_embeddings
 
 
-EMBEDDINGS_FOLDER = Path("data/produced_v2/embeddings")
-OUTPUT_FOLDER = Path("data/produced_v2/similarity_matrices")
+EMBEDDINGS_FOLDER = Path("artifacts/embeddings")
+OUTPUT_FOLDER = Path("artifacts/similarity_matrices")
 
 EMBEDDING_METHODS = [
     "TF_IDF",

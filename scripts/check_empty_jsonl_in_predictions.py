@@ -2,11 +2,11 @@ import json
 from collections import Counter
 
 split_path = (
-    "data/produced_v2/frozen/split/test_question_ids.json"
+    "data/frozen/split/test_question_ids.json"
 )
 
 prediction_path = (
-    "data/produced_v2/selector_experiments/test_winner/"
+    "artifacts/experiments/test/test_winner/"
     "e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl"
 )
 

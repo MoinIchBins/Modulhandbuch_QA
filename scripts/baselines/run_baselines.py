@@ -7,20 +7,20 @@ import sys
 from pathlib import Path
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from scripts.mapping_evaluator import QAMappingEvaluator
 
 
-GOLD_PATH = PROJECT_ROOT / "data/produced_v2/frozen/qa_mapping_merged.jsonl"
+GOLD_PATH = PROJECT_ROOT / "data/frozen/qa_mapping_merged.jsonl"
 CHUNK_IDS_PATH = (
     PROJECT_ROOT
-    / "data/produced_v2/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
+    / "artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json"
 )
-SPLIT_DIR = PROJECT_ROOT / "data/produced_v2/frozen/split"
+SPLIT_DIR = PROJECT_ROOT / "data/frozen/split"
 
-BASELINE_DIR = Path(__file__).parent
+BASELINE_DIR = Path(__file__).resolve().parents[2] / "artifacts/baselines"
 DEFINITIONS_PATH = BASELINE_DIR / "baseline_definitions.json"
 FREQUENT_ANSWER_PATH = BASELINE_DIR / "dev_reference/most_frequent_answer.json"
 
@@ -154,7 +154,7 @@ def main():
     if not FREQUENT_ANSWER_PATH.exists():
         raise FileNotFoundError(
             "Freeze the development-derived baseline first:\n"
-            "python data/produced_v2/baselines/freeze_dev_reference.py"
+            "python scripts/baselines/freeze_dev_reference.py"
         )
 
     print(f"\nRunning baselines on {args.split} split")

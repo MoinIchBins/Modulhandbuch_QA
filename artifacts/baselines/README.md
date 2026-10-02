@@ -30,37 +30,36 @@ All commands below assume they are run from the project root.
 The baseline scripts use the following existing project files:
 
 ```text
-data/produced_v2/frozen/qa_mapping_merged.jsonl
-data/produced_v2/frozen/split/development_question_ids.json
-data/produced_v2/frozen/split/validation_question_ids.json
-data/produced_v2/frozen/split/test_question_ids.json
-data/produced_v2/similarity_matrices/retrieval_bi_encoder/chunk_ids.json
+data/frozen/qa_mapping_merged.jsonl
+data/frozen/split/development_question_ids.json
+data/frozen/split/validation_question_ids.json
+data/frozen/split/test_question_ids.json
+artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json
 ```
 
 The scripts also reuse the existing evaluator:
 
 ```python
-from mapping_evaluator import QAMappingEvaluator
+from scripts.mapping_evaluator import QAMappingEvaluator
 ```
 
 The baseline folder is:
 
 ```text
-data/produced_v2/baselines/
+artifacts/baselines/
 ```
 
-Current structure:
+Programs live in `scripts/baselines/`. Definitions and generated outputs remain here. Both `validation_v1/` and `test_v1/` are already preserved.
+
+Artifact structure (validation expanded):
 
 ```text
-data/produced_v2/baselines/
+artifacts/baselines/
 ├── README.md
 ├── baseline_definitions.json
-├── compare_with_system.py
-├── freeze_dev_reference.py
-├── plot_baselines.py
-├── run_baselines.py
 ├── dev_reference/
 │   └── most_frequent_answer.json
+├── test_v1/
 └── validation_v1/
     ├── always_abstain_evaluation.json
     ├── always_abstain_predictions.jsonl
@@ -82,13 +81,13 @@ This step derives the most-frequent non-empty answer set from the **development 
 Run:
 
 ```bash
-python data/produced_v2/baselines/freeze_dev_reference.py
+python scripts/baselines/freeze_dev_reference.py
 ```
 
 It creates:
 
 ```text
-data/produced_v2/baselines/dev_reference/most_frequent_answer.json
+artifacts/baselines/dev_reference/most_frequent_answer.json
 ```
 
 The script intentionally refuses to overwrite an existing frozen reference.
@@ -102,25 +101,25 @@ If this file already exists, as it currently does, **do not rerun this step** un
 Run:
 
 ```bash
-python data/produced_v2/baselines/run_baselines.py validation
+python scripts/baselines/run_baselines.py validation
 ```
 
 This evaluates all three baselines only against:
 
 ```text
-data/produced_v2/frozen/split/validation_question_ids.json
+data/frozen/split/validation_question_ids.json
 ```
 
 and writes the results to:
 
 ```text
-data/produced_v2/baselines/validation_v1/
+artifacts/baselines/validation_v1/
 ```
 
 Expected outputs:
 
 ```text
-data/produced_v2/baselines/validation_v1/
+artifacts/baselines/validation_v1/
 ├── random_top1_runs.jsonl
 ├── random_top1_summary.json
 ├── most_frequent_dev_answer_predictions.jsonl
@@ -131,23 +130,9 @@ data/produced_v2/baselines/validation_v1/
 └── summary.jsonl
 ```
 
-### Interrupted run
+### Preserving existing runs
 
-The result directory is deliberately created with overwrite protection.
-
-If a run crashes after creating `validation_v1`, delete the incomplete folder before rerunning:
-
-```bash
-rm -rf data/produced_v2/baselines/validation_v1
-```
-
-Then rerun:
-
-```bash
-python data/produced_v2/baselines/run_baselines.py validation
-```
-
-Do this only when the directory comes from an incomplete or failed run.
+Both run directories contain research evidence. Do not delete them to rerun commands. For a new reproduction, redirect the output directory in `scripts/baselines/run_baselines.py` to a new location and update the plotting/comparison input paths accordingly. Preserve definitions, seeds, and the frozen development reference.
 
 ---
 
@@ -156,19 +141,19 @@ Do this only when the directory comes from an incomplete or failed run.
 After the validation baseline run has completed, create the baseline-only F1 plot:
 
 ```bash
-python data/produced_v2/baselines/plot_baselines.py validation
+python scripts/baselines/plot_baselines.py validation
 ```
 
 This reads:
 
 ```text
-data/produced_v2/baselines/validation_v1/summary.csv
+artifacts/baselines/validation_v1/summary.csv
 ```
 
 and creates:
 
 ```text
-data/produced_v2/baselines/validation_v1/baseline_f1_comparison.png
+artifacts/baselines/validation_v1/baseline_f1_comparison.png
 ```
 
 ---
@@ -186,21 +171,21 @@ threshold = 0.83959
 Its validation evaluation file is:
 
 ```text
-data/produced_v2/selector_experiments/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+artifacts/experiments/validation/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
 ```
 
 Run exactly:
 
 ```bash
-python data/produced_v2/baselines/compare_with_system.py \
+python scripts/baselines/compare_with_system.py \
     validation \
-    data/produced_v2/selector_experiments/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+    artifacts/experiments/validation/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
 ```
 
 Do **not** pass the finalist summary file:
 
 ```text
-data/produced_v2/selector_experiments/validation_finalists/summary.jsonl
+artifacts/experiments/validation/validation_finalists/summary.jsonl
 ```
 
 `compare_with_system.py` expects the evaluation JSON of the **single frozen system**, not the combined finalist summary.
@@ -208,8 +193,8 @@ data/produced_v2/selector_experiments/validation_finalists/summary.jsonl
 The comparison command creates:
 
 ```text
-data/produced_v2/baselines/validation_v1/system_vs_baselines.csv
-data/produced_v2/baselines/validation_v1/system_vs_baselines.png
+artifacts/baselines/validation_v1/system_vs_baselines.csv
+artifacts/baselines/validation_v1/system_vs_baselines.png
 ```
 
 The validation baselines are contextual references only. They do not participate in model selection and must not be used to retune the winner.
@@ -240,7 +225,7 @@ Only run this after the final E5 configuration above has been frozen and the tes
 Run:
 
 ```bash
-python data/produced_v2/baselines/run_baselines.py test --confirm-test
+python scripts/baselines/run_baselines.py test --confirm-test
 ```
 
 The explicit `--confirm-test` flag is intentional. It prevents accidental test evaluation.
@@ -248,13 +233,13 @@ The explicit `--confirm-test` flag is intentional. It prevents accidental test e
 This evaluates the baselines only against:
 
 ```text
-data/produced_v2/frozen/split/test_question_ids.json
+data/frozen/split/test_question_ids.json
 ```
 
 and creates:
 
 ```text
-data/produced_v2/baselines/test_v1/
+artifacts/baselines/test_v1/
 ```
 
 with the same output structure as `validation_v1`.
@@ -266,13 +251,13 @@ with the same output structure as `validation_v1`.
 After the test baseline evaluation:
 
 ```bash
-python data/produced_v2/baselines/plot_baselines.py test
+python scripts/baselines/plot_baselines.py test
 ```
 
 This creates:
 
 ```text
-data/produced_v2/baselines/test_v1/baseline_f1_comparison.png
+artifacts/baselines/test_v1/baseline_f1_comparison.png
 ```
 
 ---
@@ -281,14 +266,14 @@ data/produced_v2/baselines/test_v1/baseline_f1_comparison.png
 
 First run the **single frozen final retrieval configuration** on the test split and save its evaluation JSON.
 
-At the moment, the current project structure does not yet contain that final test evaluation file, so there is no existing path to insert here without inventing one.
+The final test evaluation is already preserved in `artifacts/experiments/test/test_winner/`.
 
-Once it exists, run:
+For a new comparison output (redirect output paths first), run:
 
 ```bash
-python data/produced_v2/baselines/compare_with_system.py \
+python scripts/baselines/compare_with_system.py \
     test \
-    <path-to-the-final-e5-test-evaluation.json>
+    artifacts/experiments/test/test_winner/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
 ```
 
 The second argument must be the `_evaluation.json` for:
@@ -300,11 +285,11 @@ E5 + top_k_threshold + top_k=1 + threshold=0.83959
 The command will create:
 
 ```text
-data/produced_v2/baselines/test_v1/system_vs_baselines.csv
-data/produced_v2/baselines/test_v1/system_vs_baselines.png
+artifacts/baselines/test_v1/system_vs_baselines.csv
+artifacts/baselines/test_v1/system_vs_baselines.png
 ```
 
-Once the final test runner has produced its evaluation file, replace the one remaining placeholder above with that actual path.
+The path above identifies the existing frozen test evaluation.
 
 ---
 
@@ -379,39 +364,39 @@ Do not mix the baseline results into the selector hyperparameter-search plots.
 Already frozen if this file exists:
 
 ```text
-data/produced_v2/baselines/dev_reference/most_frequent_answer.json
+artifacts/baselines/dev_reference/most_frequent_answer.json
 ```
 
 To create it from scratch:
 
 ```bash
-python data/produced_v2/baselines/freeze_dev_reference.py
+python scripts/baselines/freeze_dev_reference.py
 ```
 
 ### Validation
 
 ```bash
-python data/produced_v2/baselines/run_baselines.py validation
+python scripts/baselines/run_baselines.py validation
 
-python data/produced_v2/baselines/plot_baselines.py validation
+python scripts/baselines/plot_baselines.py validation
 
-python data/produced_v2/baselines/compare_with_system.py \
+python scripts/baselines/compare_with_system.py \
     validation \
-    data/produced_v2/selector_experiments/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+    artifacts/experiments/validation/validation_finalists/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
 ```
 
 ### Test
 
 ```bash
-python data/produced_v2/baselines/run_baselines.py test --confirm-test
+python scripts/baselines/run_baselines.py test --confirm-test
 
-python data/produced_v2/baselines/plot_baselines.py test
+python scripts/baselines/plot_baselines.py test
 ```
 
-Then compare the final test evaluation after its exact file path exists:
+Then compare the preserved final test evaluation, with outputs redirected:
 
 ```bash
-python data/produced_v2/baselines/compare_with_system.py \
+python scripts/baselines/compare_with_system.py \
     test \
-    <path-to-the-final-e5-test-evaluation.json>
+    artifacts/experiments/test/test_winner/e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
 ```

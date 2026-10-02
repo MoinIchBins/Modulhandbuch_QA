@@ -92,7 +92,7 @@ Questions sharing the same **non-empty required gold-chunk set** are kept togeth
 Canonical split artifacts are stored under:
 
 ```text
-data/produced_v2/frozen/split/
+data/frozen/split/
 ```
 
 with:
@@ -121,21 +121,28 @@ A useful condensed view of the repository is:
 ├── requirements.txt
 ├── python_version.txt
 ├── data/
-│   ├── raw/
-│   ├── processed/
-│   ├── split/
-│   ├── produced_v2/
-│   │   ├── frozen/
-│   │   ├── embeddings/
-│   │   ├── similarity_matrices/
-│   │   ├── similarity_analysis/
-│   │   ├── selector_experiments/
-│   │   └── baselines/
-│   └── visualization/
+│   ├── raw/                         # source documents
+│   ├── processed/                   # prepared questions and chunks
+│   ├── split/                       # retained preparation-era split copy
+│   └── frozen/                      # exact reported inputs and splits
+├── artifacts/
+│   ├── embeddings/
+│   ├── similarity_matrices/
+│   ├── similarity_analysis/
+│   ├── experiments/
+│   │   ├── development/             # dev_* rounds and threshold_analysis
+│   │   ├── validation/              # validation_finalists
+│   │   ├── test/                    # test_winner
+│   │   └── single_gold_only_evaluations/ # shared validation/test diagnostics
+│   └── baselines/                   # definitions, frozen reference, outputs
+├── results/                         # compact reported summaries
 ├── scripts/
-├── results/
+│   ├── baselines/                   # baseline programs
+│   └── visualization/               # auxiliary plotting programs
+├── tools/
+│   └── chunk_browser/               # app, README, local chunks.jsonl
 ├── literature/
-└── metadata/
+└── metadata/                        # includes report/paper
 ```
 
 
@@ -155,10 +162,11 @@ Important files include:
 ```text
 data/processed/PO_25_CL_chunks.jsonl
 data/processed/qSet_PO.jsonl
-data/processed/qamappings/qa_mapping_merged.jsonl
 ```
 
-### `data/produced_v2/frozen/`
+The prepared `qamappings/` directory is absent in this checkout. The surviving experiment gold is `data/frozen/qa_mapping_merged.jsonl`; no missing annotation files were reconstructed.
+
+### `data/frozen/`
 
 The canonical frozen experiment inputs used by later-stage runs:
 
@@ -171,7 +179,7 @@ split/
 
 Treat this directory as the stable experimental snapshot.
 
-### `data/produced_v2/embeddings/`
+### `artifacts/embeddings/`
 
 Precomputed vector representations for:
 
@@ -185,7 +193,7 @@ retrieval_bi_encoder/
 
 Each representation directory contains question and chunk embeddings plus aligned ID files. TF-IDF additionally stores its fitted vectorizer.
 
-### `data/produced_v2/similarity_matrices/`
+### `artifacts/similarity_matrices/`
 
 Precomputed question-by-chunk score matrices for each representation.
 
@@ -202,13 +210,13 @@ metadata.json
 
 Most later retrieval experiments use **cosine similarity**.
 
-### `data/produced_v2/similarity_analysis/`
+### `artifacts/similarity_analysis/`
 
 Diagnostics on the raw similarity spaces before selector tuning.
 
 This contains per-question/per-chunk analyses and plots for rank behavior, MRR, recall/hit/all-gold-at-k, score separation, gold-rank distributions, and frequent top-ranked chunks.
 
-### `data/produced_v2/selector_experiments/`
+### `artifacts/experiments/`
 
 The main experiment-history directory.
 
@@ -224,9 +232,9 @@ It contains:
 
 This directory is intentionally historical. A single current runner configuration does **not** regenerate every versioned directory that is preserved here.
 
-### `data/produced_v2/baselines/`
+### `artifacts/baselines/`
 
-Baseline definitions, baseline runners, and validation/test baseline outputs.
+Baseline definitions, the frozen development reference, and validation/test baseline outputs.
 
 The preserved baselines include:
 
@@ -234,16 +242,25 @@ The preserved baselines include:
 - most-frequent development answer;
 - random top-1.
 
-The directory also contains comparison and plotting utilities.
+The executable baseline, comparison, and plotting programs live in `scripts/baselines/`. See [baseline instructions](artifacts/baselines/README.md).
 
-### `data/visualization/`
+### `scripts/visualization/`
 
-Visualization helpers and the local chunk browser used during manual error review.
+Auxiliary visualization programs. The canonical sweep analyzer is `scripts/analyze_selector_experiments.py`; it retains metric validation and optional plot suppression from the former auxiliary copy.
+
+Run the auxiliary programs from the repository root:
+
+```bash
+python scripts/visualization/visualize_validation_results.py
+python scripts/visualization/visualize_evaluation_optional.py
+```
+
+These write plots beside the configured preserved evaluations, so redirect their output constants before generating new plots.
 
 The chunk browser lives at:
 
 ```text
-data/visualization/chunk_browser/
+tools/chunk_browser/
 ```
 
 
@@ -286,6 +303,30 @@ This directory is separate from the retrieval runtime pipeline.
 ---
 
 
+
+
+### Snapshot provenance and limitations
+
+The prepared question/chunk files and all five files under `data/split/` were byte-identical to their frozen counterparts when this layout was changed. Both copies remain intact. Embedding generation now reads frozen questions/chunks; the integrity and similarity-analysis scripts read frozen gold, consistent with the experiment runners. The missing prepared gold cannot be compared with frozen gold, so its historical equivalence is not asserted.
+
+`scripts/data_splitter.py` is an earlier preparation utility: it still references the absent prepared gold and writes to `data/trash/`. It is not part of reported-run reproduction and was not repointed to or used to regenerate frozen splits.
+
+Historical output files retain embedded source paths exactly as recorded. Resolve those provenance strings using this relocation table; they are not active script paths:
+
+| Historical prefix | Current location |
+| --- | --- |
+| `data/produced_v2/frozen/` | `data/frozen/` |
+| `data/produced_v2/embeddings/` | `artifacts/embeddings/` |
+| `data/produced_v2/similarity_matrices/` | `artifacts/similarity_matrices/` |
+| `data/produced_v2/similarity_analysis/` | `artifacts/similarity_analysis/` |
+| `data/produced_v2/selector_experiments/dev_*/` | `artifacts/experiments/development/dev_*/` |
+| `data/produced_v2/selector_experiments/threshold_analysis/` | `artifacts/experiments/development/threshold_analysis/` |
+| `data/produced_v2/selector_experiments/validation_finalists/` | `artifacts/experiments/validation/validation_finalists/` |
+| `data/produced_v2/selector_experiments/test_winner/` | `artifacts/experiments/test/test_winner/` |
+| `data/produced_v2/selector_experiments/single_gold_only_evaluations/` | `artifacts/experiments/single_gold_only_evaluations/` |
+| `data/produced_v2/baselines/` | `artifacts/baselines/` (programs: `scripts/baselines/`) |
+
+Mixed validation/test single-gold diagnostics remain together to preserve the historical directory. Actual run names such as `dev_threshold_v1` are unchanged. `results/` remains an unchanged compact handoff, not an automatic export destination for every runner.
 
 ## 4. Core implementation modules
 
@@ -414,6 +455,10 @@ Because downstream scripts expect these fields, changes to evaluator output name
 
 Most scripts use fixed repository-relative paths and hard-coded configuration constants. Run them from the **repository root**.
 
+**Preservation first:** the commands below describe the workflow, not a safe batch rerun into the checked-in history. Before executing any generation, analysis, or review command, set its output constants to a new, empty directory and point downstream inputs at that new output. Keep model, selector, seed, split, and metric settings unchanged. Several scripts overwrite files by default; baseline runners instead refuse existing run directories. Do not delete preserved directories to bypass that protection. The read-only integrity check in section 6.5 can run directly against stored artifacts.
+
+`tree.txt` is a tracked layout snapshot, refreshed for this reorganization. Regenerate it from the root with `tree -I '__pycache__' > tree.txt` (hidden files and the local environment are omitted by default).
+
 ### 6.1 Environment setup
 
 Create/activate the intended Python environment and install the project dependencies:
@@ -436,12 +481,12 @@ Before reproducing an old experiment, check that model/library versions still ma
 Before recomputing anything, verify the presence of:
 
 ```text
-data/produced_v2/frozen/PO_25_CL_chunks.jsonl
-data/produced_v2/frozen/qSet_PO.jsonl
-data/produced_v2/frozen/qa_mapping_merged.jsonl
-data/produced_v2/frozen/split/development_question_ids.json
-data/produced_v2/frozen/split/validation_question_ids.json
-data/produced_v2/frozen/split/test_question_ids.json
+data/frozen/PO_25_CL_chunks.jsonl
+data/frozen/qSet_PO.jsonl
+data/frozen/qa_mapping_merged.jsonl
+data/frozen/split/development_question_ids.json
+data/frozen/split/validation_question_ids.json
+data/frozen/split/test_question_ids.json
 ```
 
 For ordinary experiment reproduction, these should be treated as immutable.
@@ -455,7 +500,7 @@ python scripts/compute_embeddings.py
 Expected outputs are written below:
 
 ```text
-data/produced_v2/embeddings/
+artifacts/embeddings/
 ```
 
 with one directory per representation.
@@ -469,7 +514,7 @@ python scripts/compute_similarity_matrices.py
 Expected outputs are written below:
 
 ```text
-data/produced_v2/similarity_matrices/
+artifacts/similarity_matrices/
 ```
 
 
@@ -564,7 +609,7 @@ python scripts/dev_summary_script.py
 This script reads selected versioned development directories and produces combined rankings/plots. The repository already contains consolidated artifacts under:
 
 ```text
-data/produced_v2/selector_experiments/dev_consolidated/
+artifacts/experiments/development/dev_consolidated/
 ```
 
 including:
@@ -605,7 +650,7 @@ python scripts/run_validation_finalists.py
 Outputs are written under:
 
 ```text
-data/produced_v2/selector_experiments/validation_finalists/
+artifacts/experiments/validation/validation_finalists/
 ```
 
 The preserved finalist directory contains E5 and TF-IDF configurations, including the configuration that became the final winner.
@@ -646,7 +691,7 @@ manual-review remainder
 The validation error artifacts are stored under:
 
 ```text
-data/produced_v2/selector_experiments/validation_finalists/error_analysis_of_best/
+artifacts/experiments/validation/validation_finalists/error_analysis_of_best/
 ```
 
 For manual inspection:
@@ -658,7 +703,7 @@ python scripts/manual_error_review_all_groups.py
 This workflow uses the local browser under:
 
 ```text
-data/visualization/chunk_browser/
+tools/chunk_browser/
 ```
 
 The manually reviewed combined CSV is:
@@ -701,7 +746,7 @@ python scripts/run_test_winner.py
 It writes to:
 
 ```text
-data/produced_v2/selector_experiments/test_winner/
+artifacts/experiments/test/test_winner/
 ```
 
 The principal files are:
@@ -715,7 +760,7 @@ summary.jsonl
 Test error-analysis artifacts are also preserved under:
 
 ```text
-data/produced_v2/selector_experiments/test_winner/error_analysis/
+artifacts/experiments/test/test_winner/error_analysis/
 ```
 
 The completed test audit contains **74 non-exact cases**.
@@ -725,7 +770,7 @@ The completed test audit contains **74 non-exact cases**.
 Baseline utilities live under:
 
 ```text
-data/produced_v2/baselines/
+scripts/baselines/
 ```
 
 The directory contains:
@@ -735,23 +780,22 @@ run_baselines.py
 freeze_dev_reference.py
 compare_with_system.py
 plot_baselines.py
-baseline_definitions.json
 ```
 
-Validation and test outputs are already preserved under:
+Definitions remain in `artifacts/baselines/baseline_definitions.json`. Validation and test outputs are already preserved under:
 
 ```text
-validation_v1/
-test_v1/
+artifacts/baselines/validation_v1/
+artifacts/baselines/test_v1/
 ```
 
 When rerunning them from the repository root, the expected entry point is:
 
 ```bash
-python data/produced_v2/baselines/run_baselines.py
+python scripts/baselines/run_baselines.py validation
 ```
 
-Check `data/produced_v2/baselines/README.md` and the hard-coded paths/constants before changing or reproducing baseline runs.
+Check `artifacts/baselines/README.md` and the hard-coded paths/constants before changing or reproducing baseline runs.
 
 The compact baseline result summary is available at:
 
@@ -803,7 +847,7 @@ results/winner_summary.jsonl
 ```text
 scripts/compute_embeddings.py
     │
-    └──> data/produced_v2/embeddings/
+    └──> artifacts/embeddings/
           ├── tf_idf/
           ├── sentence_bert/
           └── retrieval_bi_encoder/
@@ -816,7 +860,7 @@ scripts/compute_embeddings.py
 ```text
 scripts/compute_similarity_matrices.py
     │
-    └──> data/produced_v2/similarity_matrices/
+    └──> artifacts/similarity_matrices/
 ```
 
 
@@ -830,7 +874,7 @@ similarity matrices
 scripts/run_selector_experiments.py
     │
     ▼
-data/produced_v2/selector_experiments/dev_*/
+artifacts/experiments/development/dev_*/
     │
     ├──> scripts/analyze_selector_experiments.py
     └──> scripts/dev_summary_script.py
@@ -1005,7 +1049,7 @@ python scripts/analyze_threshold_regions.py
 and inspect:
 
 ```text
-data/produced_v2/selector_experiments/threshold_analysis/
+artifacts/experiments/development/threshold_analysis/
 ```
 
 
@@ -1015,7 +1059,7 @@ data/produced_v2/selector_experiments/threshold_analysis/
 Inspect:
 
 ```text
-data/produced_v2/selector_experiments/dev_consolidated/
+artifacts/experiments/development/dev_consolidated/
 results/dev_ranking.csv
 ```
 
@@ -1026,7 +1070,7 @@ and verify which historical experiment directories `dev_summary_script.py` is co
 Inspect:
 
 ```text
-data/produced_v2/selector_experiments/validation_finalists/error_analysis_of_best/
+artifacts/experiments/validation/validation_finalists/error_analysis_of_best/
 ```
 
 and use the manual-review script/browser.
@@ -1036,7 +1080,7 @@ and use the manual-review script/browser.
 Inspect:
 
 ```text
-data/produced_v2/selector_experiments/test_winner/error_analysis/
+artifacts/experiments/test/test_winner/error_analysis/
 ```
 
 The test error audit is post-hoc analysis only; it must not feed back into threshold selection for the reported experiment.
@@ -1119,9 +1163,9 @@ Then inspect:
 
 ```text
 results/
-data/produced_v2/selector_experiments/dev_consolidated/
-data/produced_v2/selector_experiments/validation_finalists/
-data/produced_v2/selector_experiments/test_winner/
+artifacts/experiments/development/dev_consolidated/
+artifacts/experiments/validation/validation_finalists/
+artifacts/experiments/test/test_winner/
 ```
 
 This gives the shortest path from implementation to the reported experiment.

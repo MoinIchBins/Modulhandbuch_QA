@@ -18,7 +18,7 @@ The application itself consists of `index.html`, `styles.css`, and `app.js`. It 
 Place a valid JSONL file named `chunks.jsonl` in the same directory as the application files. Then start a static file server from that directory:
 
 ```bash
-cd chunk_browser
+cd tools/chunk_browser
 python -m http.server 8000
 ```
 

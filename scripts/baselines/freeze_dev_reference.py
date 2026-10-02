@@ -3,14 +3,14 @@ from collections import Counter
 from pathlib import Path
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-GOLD_PATH = PROJECT_ROOT / "data/produced_v2/frozen/qa_mapping_merged.jsonl"
+GOLD_PATH = PROJECT_ROOT / "data/frozen/qa_mapping_merged.jsonl"
 DEVELOPMENT_IDS_PATH = (
     PROJECT_ROOT
-    / "data/produced_v2/frozen/split/development_question_ids.json"
+    / "data/frozen/split/development_question_ids.json"
 )
-OUTPUT_PATH = Path(__file__).parent / "dev_reference/most_frequent_answer.json"
+OUTPUT_PATH = PROJECT_ROOT / "artifacts/baselines/dev_reference/most_frequent_answer.json"
 
 
 def load_json(path):

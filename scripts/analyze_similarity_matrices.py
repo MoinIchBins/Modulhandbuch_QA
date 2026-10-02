@@ -13,28 +13,28 @@ import pandas as pd
 MATRICES = [
     (
         "tfidf_cosine",
-        Path("data/produced_v2/similarity_matrices/tf_idf/cosine_similarity_matrix.npy"),
+        Path("artifacts/similarity_matrices/tf_idf/cosine_similarity_matrix.npy"),
     ),
     (
         "sentence_bert",
         Path(
-            "data/produced_v2/similarity_matrices/"
+            "artifacts/similarity_matrices/"
             "sentence_bert/cosine_similarity_matrix.npy"
         ),
     ),
     (
         "retrieval_bi_encoder",
         Path(
-            "data/produced_v2/similarity_matrices/"
+            "artifacts/similarity_matrices/"
             "retrieval_bi_encoder/cosine_similarity_matrix.npy"
         ),
     ),
 ]
 
-GOLD_PATH = Path("data/processed/qamappings/qa_mapping_merged.jsonl")
-QUESTION_IDS_PATH = Path("data/produced_v2/similarity_matrices/tf_idf/question_ids.json")
-CHUNK_IDS_PATH = Path("data/produced_v2/similarity_matrices/tf_idf/chunk_ids.json")
-OUTPUT_DIR = Path("data/produced_v2/similarity_analysis")
+GOLD_PATH = Path("data/frozen/qa_mapping_merged.jsonl")
+QUESTION_IDS_PATH = Path("artifacts/similarity_matrices/tf_idf/question_ids.json")
+CHUNK_IDS_PATH = Path("artifacts/similarity_matrices/tf_idf/chunk_ids.json")
+OUTPUT_DIR = Path("artifacts/similarity_analysis")
 
 K_VALUES = [1, 2, 3, 5, 10]
 TOP_RESULTS_TO_STORE = 10

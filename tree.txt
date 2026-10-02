@@ -1,73 +1,55 @@
 .
 ├── README.md
-├── data
-│   ├── processed
-│   │   ├── PO_25_CL_chunks.jsonl
-│   │   ├── qSet_PO.jsonl
-│   │   └── readme.md
-│   ├── produced_v2
-│   │   ├── baselines
-│   │   │   ├── README.md
-│   │   │   ├── baseline_definitions.json
-│   │   │   ├── compare_with_system.py
-│   │   │   ├── dev_reference
-│   │   │   │   └── most_frequent_answer.json
-│   │   │   ├── freeze_dev_reference.py
-│   │   │   ├── plot_baselines.py
-│   │   │   ├── run_baselines.py
-│   │   │   ├── test_v1
-│   │   │   │   ├── always_abstain_evaluation.json
-│   │   │   │   ├── always_abstain_predictions.jsonl
-│   │   │   │   ├── baseline_f1_comparison.png
-│   │   │   │   ├── most_frequent_dev_answer_evaluation.json
-│   │   │   │   ├── most_frequent_dev_answer_predictions.jsonl
-│   │   │   │   ├── random_top1_runs.jsonl
-│   │   │   │   ├── random_top1_summary.json
-│   │   │   │   ├── summary.csv
-│   │   │   │   └── summary.jsonl
-│   │   │   └── validation_v1
-│   │   │       ├── always_abstain_evaluation.json
-│   │   │       ├── always_abstain_predictions.jsonl
-│   │   │       ├── baseline_f1_comparison.png
-│   │   │       ├── most_frequent_dev_answer_evaluation.json
-│   │   │       ├── most_frequent_dev_answer_predictions.jsonl
-│   │   │       ├── random_top1_runs.jsonl
-│   │   │       ├── random_top1_summary.json
-│   │   │       ├── summary.csv
-│   │   │       ├── summary.jsonl
-│   │   │       ├── system_vs_baselines.csv
-│   │   │       └── system_vs_baselines.png
-│   │   ├── embeddings
-│   │   │   ├── retrieval_bi_encoder
-│   │   │   │   ├── chunk_embeddings.npy
-│   │   │   │   ├── chunk_ids.json
-│   │   │   │   ├── metadata.json
-│   │   │   │   ├── question_embeddings.npy
-│   │   │   │   └── question_ids.json
-│   │   │   ├── sentence_bert
-│   │   │   │   ├── chunk_embeddings.npy
-│   │   │   │   ├── chunk_ids.json
-│   │   │   │   ├── metadata.json
-│   │   │   │   ├── question_embeddings.npy
-│   │   │   │   └── question_ids.json
-│   │   │   └── tf_idf
-│   │   │       ├── chunk_embeddings.npy
-│   │   │       ├── chunk_ids.json
-│   │   │       ├── metadata.json
-│   │   │       ├── question_embeddings.npy
-│   │   │       ├── question_ids.json
-│   │   │       └── tfidf_vectorizer.joblib
-│   │   ├── frozen
-│   │   │   ├── PO_25_CL_chunks.jsonl
-│   │   │   ├── qSet_PO.jsonl
-│   │   │   ├── qa_mapping_merged.jsonl
-│   │   │   └── split
-│   │   │       ├── development_question_ids.json
-│   │   │       ├── gold_with_split.jsonl
-│   │   │       ├── split_groups.json
-│   │   │       ├── test_question_ids.json
-│   │   │       └── validation_question_ids.json
-│   │   ├── selector_experiments
+├── artifacts
+│   ├── baselines
+│   │   ├── README.md
+│   │   ├── baseline_definitions.json
+│   │   ├── dev_reference
+│   │   │   └── most_frequent_answer.json
+│   │   ├── test_v1
+│   │   │   ├── always_abstain_evaluation.json
+│   │   │   ├── always_abstain_predictions.jsonl
+│   │   │   ├── baseline_f1_comparison.png
+│   │   │   ├── most_frequent_dev_answer_evaluation.json
+│   │   │   ├── most_frequent_dev_answer_predictions.jsonl
+│   │   │   ├── random_top1_runs.jsonl
+│   │   │   ├── random_top1_summary.json
+│   │   │   ├── summary.csv
+│   │   │   └── summary.jsonl
+│   │   └── validation_v1
+│   │       ├── always_abstain_evaluation.json
+│   │       ├── always_abstain_predictions.jsonl
+│   │       ├── baseline_f1_comparison.png
+│   │       ├── most_frequent_dev_answer_evaluation.json
+│   │       ├── most_frequent_dev_answer_predictions.jsonl
+│   │       ├── random_top1_runs.jsonl
+│   │       ├── random_top1_summary.json
+│   │       ├── summary.csv
+│   │       ├── summary.jsonl
+│   │       ├── system_vs_baselines.csv
+│   │       └── system_vs_baselines.png
+│   ├── embeddings
+│   │   ├── retrieval_bi_encoder
+│   │   │   ├── chunk_embeddings.npy
+│   │   │   ├── chunk_ids.json
+│   │   │   ├── metadata.json
+│   │   │   ├── question_embeddings.npy
+│   │   │   └── question_ids.json
+│   │   ├── sentence_bert
+│   │   │   ├── chunk_embeddings.npy
+│   │   │   ├── chunk_ids.json
+│   │   │   ├── metadata.json
+│   │   │   ├── question_embeddings.npy
+│   │   │   └── question_ids.json
+│   │   └── tf_idf
+│   │       ├── chunk_embeddings.npy
+│   │       ├── chunk_ids.json
+│   │       ├── metadata.json
+│   │       ├── question_embeddings.npy
+│   │       ├── question_ids.json
+│   │       └── tfidf_vectorizer.joblib
+│   ├── experiments
+│   │   ├── development
 │   │   │   ├── dev_consolidated
 │   │   │   │   ├── best_configs.csv
 │   │   │   │   ├── dev_f1_overview.png
@@ -2602,118 +2584,135 @@
 │   │   │   │   ├── tfidf_top_k_8_predictions.jsonl
 │   │   │   │   ├── tfidf_top_k_9_evaluation.json
 │   │   │   │   └── tfidf_top_k_9_predictions.jsonl
-│   │   │   ├── single_gold_only_evaluations
-│   │   │   │   ├── test_winner__e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation__single_gold_only.json
-│   │   │   │   └── validation_finalists__e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation__single_gold_only.json
-│   │   │   ├── test_winner
-│   │   │   │   ├── e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
-│   │   │   │   ├── e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl
-│   │   │   │   ├── error_analysis
-│   │   │   │   │   ├── category_2_multi_gold_single_prediction.csv
-│   │   │   │   │   ├── category_3_answerable_but_abstained.csv
-│   │   │   │   │   ├── category_4_zero_gold_but_retrieved.csv
-│   │   │   │   │   ├── manual_review.csv
-│   │   │   │   │   ├── manual_review_all_error_groups.csv
-│   │   │   │   │   ├── manual_review_evaluated_v1.csv
-│   │   │   │   │   ├── manual_review_evaluated_v2.csv
-│   │   │   │   │   └── manual_review_evaluated_v3.csv
-│   │   │   │   └── summary.jsonl
-│   │   │   ├── threshold_analysis
-│   │   │   │   ├── all_threshold_scores.csv
-│   │   │   │   ├── e5_threshold_distributions.png
-│   │   │   │   ├── e5_threshold_scores.csv
-│   │   │   │   ├── sentence_bert_threshold_distributions.png
-│   │   │   │   ├── sentence_bert_threshold_scores.csv
-│   │   │   │   ├── tfidf_threshold_distributions.png
-│   │   │   │   ├── tfidf_threshold_scores.csv
-│   │   │   │   └── threshold_summary.csv
-│   │   │   └── validation_finalists
-│   │   │       ├── e5_relative_margin_top_k_1_margin_0.0025_evaluation.json
-│   │   │       ├── e5_relative_margin_top_k_1_margin_0.0025_predictions.jsonl
+│   │   │   └── threshold_analysis
+│   │   │       ├── all_threshold_scores.csv
+│   │   │       ├── e5_threshold_distributions.png
+│   │   │       ├── e5_threshold_scores.csv
+│   │   │       ├── sentence_bert_threshold_distributions.png
+│   │   │       ├── sentence_bert_threshold_scores.csv
+│   │   │       ├── tfidf_threshold_distributions.png
+│   │   │       ├── tfidf_threshold_scores.csv
+│   │   │       └── threshold_summary.csv
+│   │   ├── single_gold_only_evaluations
+│   │   │   ├── test_winner__e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation__single_gold_only.json
+│   │   │   └── validation_finalists__e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation__single_gold_only.json
+│   │   ├── test
+│   │   │   └── test_winner
 │   │   │       ├── e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
 │   │   │       ├── e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl
-│   │   │       ├── e5_top_k_top_k_1_evaluation.json
-│   │   │       ├── e5_top_k_top_k_1_predictions.jsonl
-│   │   │       ├── error_analysis_of_best
+│   │   │       ├── error_analysis
 │   │   │       │   ├── category_2_multi_gold_single_prediction.csv
 │   │   │       │   ├── category_3_answerable_but_abstained.csv
 │   │   │       │   ├── category_4_zero_gold_but_retrieved.csv
 │   │   │       │   ├── manual_review.csv
-│   │   │       │   └── manual_review_all_error_groups.csv
-│   │   │       ├── summary.jsonl
-│   │   │       ├── tfidf_relative_margin_top_k_1_margin_0.235_evaluation.json
-│   │   │       ├── tfidf_relative_margin_top_k_1_margin_0.235_predictions.jsonl
-│   │   │       ├── tfidf_top_k_threshold_top_k_1_threshold_0.0999_evaluation.json
-│   │   │       ├── tfidf_top_k_threshold_top_k_1_threshold_0.0999_predictions.jsonl
-│   │   │       ├── validation_ranking.csv
-│   │   │       └── validation_ranking.png
-│   │   ├── similarity_analysis
-│   │   │   ├── overview.csv
-│   │   │   ├── overview.json
-│   │   │   ├── overview_all_gold_at_k.png
-│   │   │   ├── overview_best_score_medians.png
-│   │   │   ├── overview_complete_gold_margin.png
-│   │   │   ├── overview_hit_at_k.png
-│   │   │   ├── overview_mrr.png
-│   │   │   ├── overview_recall_at_k.png
-│   │   │   ├── retrieval_bi_encoder
-│   │   │   │   ├── all_gold_by_gold_set_size.png
-│   │   │   │   ├── analysis.json
-│   │   │   │   ├── best_gold_vs_best_non_gold_scores.png
-│   │   │   │   ├── best_score_distribution.png
-│   │   │   │   ├── complete_gold_margin_distribution.png
-│   │   │   │   ├── per_chunk.csv
-│   │   │   │   ├── per_question.csv
-│   │   │   │   ├── ranking_metrics_at_k.png
-│   │   │   │   ├── recall_by_gold_set_size.png
-│   │   │   │   ├── top_ranked_chunk_frequency.png
-│   │   │   │   └── worst_gold_rank_distribution.png
-│   │   │   ├── sentence_bert
-│   │   │   │   ├── all_gold_by_gold_set_size.png
-│   │   │   │   ├── analysis.json
-│   │   │   │   ├── best_gold_vs_best_non_gold_scores.png
-│   │   │   │   ├── best_score_distribution.png
-│   │   │   │   ├── complete_gold_margin_distribution.png
-│   │   │   │   ├── per_chunk.csv
-│   │   │   │   ├── per_question.csv
-│   │   │   │   ├── ranking_metrics_at_k.png
-│   │   │   │   ├── recall_by_gold_set_size.png
-│   │   │   │   ├── top_ranked_chunk_frequency.png
-│   │   │   │   └── worst_gold_rank_distribution.png
-│   │   │   └── tfidf_cosine
-│   │   │       ├── all_gold_by_gold_set_size.png
-│   │   │       ├── analysis.json
-│   │   │       ├── best_gold_vs_best_non_gold_scores.png
-│   │   │       ├── best_score_distribution.png
-│   │   │       ├── complete_gold_margin_distribution.png
-│   │   │       ├── per_chunk.csv
-│   │   │       ├── per_question.csv
-│   │   │       ├── ranking_metrics_at_k.png
-│   │   │       ├── recall_by_gold_set_size.png
-│   │   │       ├── top_ranked_chunk_frequency.png
-│   │   │       └── worst_gold_rank_distribution.png
-│   │   └── similarity_matrices
-│   │       ├── retrieval_bi_encoder
-│   │       │   ├── chunk_ids.json
-│   │       │   ├── cosine_similarity_matrix.npy
-│   │       │   ├── dot_similarity_matrix.npy
-│   │       │   ├── euclidean_similarity_matrix.npy
-│   │       │   ├── metadata.json
-│   │       │   └── question_ids.json
-│   │       ├── sentence_bert
-│   │       │   ├── chunk_ids.json
-│   │       │   ├── cosine_similarity_matrix.npy
-│   │       │   ├── dot_similarity_matrix.npy
-│   │       │   ├── euclidean_similarity_matrix.npy
-│   │       │   ├── metadata.json
-│   │       │   └── question_ids.json
-│   │       └── tf_idf
-│   │           ├── chunk_ids.json
-│   │           ├── cosine_similarity_matrix.npy
-│   │           ├── dot_similarity_matrix.npy
-│   │           ├── euclidean_similarity_matrix.npy
-│   │           ├── metadata.json
-│   │           └── question_ids.json
+│   │   │       │   ├── manual_review_all_error_groups.csv
+│   │   │       │   ├── manual_review_evaluated_v1.csv
+│   │   │       │   ├── manual_review_evaluated_v2.csv
+│   │   │       │   └── manual_review_evaluated_v3.csv
+│   │   │       └── summary.jsonl
+│   │   └── validation
+│   │       └── validation_finalists
+│   │           ├── e5_relative_margin_top_k_1_margin_0.0025_evaluation.json
+│   │           ├── e5_relative_margin_top_k_1_margin_0.0025_predictions.jsonl
+│   │           ├── e5_top_k_threshold_top_k_1_threshold_0.83959_evaluation.json
+│   │           ├── e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl
+│   │           ├── e5_top_k_top_k_1_evaluation.json
+│   │           ├── e5_top_k_top_k_1_predictions.jsonl
+│   │           ├── error_analysis_of_best
+│   │           │   ├── category_2_multi_gold_single_prediction.csv
+│   │           │   ├── category_3_answerable_but_abstained.csv
+│   │           │   ├── category_4_zero_gold_but_retrieved.csv
+│   │           │   ├── manual_review.csv
+│   │           │   └── manual_review_all_error_groups.csv
+│   │           ├── summary.jsonl
+│   │           ├── tfidf_relative_margin_top_k_1_margin_0.235_evaluation.json
+│   │           ├── tfidf_relative_margin_top_k_1_margin_0.235_predictions.jsonl
+│   │           ├── tfidf_top_k_threshold_top_k_1_threshold_0.0999_evaluation.json
+│   │           ├── tfidf_top_k_threshold_top_k_1_threshold_0.0999_predictions.jsonl
+│   │           ├── validation_ranking.csv
+│   │           └── validation_ranking.png
+│   ├── similarity_analysis
+│   │   ├── overview.csv
+│   │   ├── overview.json
+│   │   ├── overview_all_gold_at_k.png
+│   │   ├── overview_best_score_medians.png
+│   │   ├── overview_complete_gold_margin.png
+│   │   ├── overview_hit_at_k.png
+│   │   ├── overview_mrr.png
+│   │   ├── overview_recall_at_k.png
+│   │   ├── retrieval_bi_encoder
+│   │   │   ├── all_gold_by_gold_set_size.png
+│   │   │   ├── analysis.json
+│   │   │   ├── best_gold_vs_best_non_gold_scores.png
+│   │   │   ├── best_score_distribution.png
+│   │   │   ├── complete_gold_margin_distribution.png
+│   │   │   ├── per_chunk.csv
+│   │   │   ├── per_question.csv
+│   │   │   ├── ranking_metrics_at_k.png
+│   │   │   ├── recall_by_gold_set_size.png
+│   │   │   ├── top_ranked_chunk_frequency.png
+│   │   │   └── worst_gold_rank_distribution.png
+│   │   ├── sentence_bert
+│   │   │   ├── all_gold_by_gold_set_size.png
+│   │   │   ├── analysis.json
+│   │   │   ├── best_gold_vs_best_non_gold_scores.png
+│   │   │   ├── best_score_distribution.png
+│   │   │   ├── complete_gold_margin_distribution.png
+│   │   │   ├── per_chunk.csv
+│   │   │   ├── per_question.csv
+│   │   │   ├── ranking_metrics_at_k.png
+│   │   │   ├── recall_by_gold_set_size.png
+│   │   │   ├── top_ranked_chunk_frequency.png
+│   │   │   └── worst_gold_rank_distribution.png
+│   │   └── tfidf_cosine
+│   │       ├── all_gold_by_gold_set_size.png
+│   │       ├── analysis.json
+│   │       ├── best_gold_vs_best_non_gold_scores.png
+│   │       ├── best_score_distribution.png
+│   │       ├── complete_gold_margin_distribution.png
+│   │       ├── per_chunk.csv
+│   │       ├── per_question.csv
+│   │       ├── ranking_metrics_at_k.png
+│   │       ├── recall_by_gold_set_size.png
+│   │       ├── top_ranked_chunk_frequency.png
+│   │       └── worst_gold_rank_distribution.png
+│   └── similarity_matrices
+│       ├── retrieval_bi_encoder
+│       │   ├── chunk_ids.json
+│       │   ├── cosine_similarity_matrix.npy
+│       │   ├── dot_similarity_matrix.npy
+│       │   ├── euclidean_similarity_matrix.npy
+│       │   ├── metadata.json
+│       │   └── question_ids.json
+│       ├── sentence_bert
+│       │   ├── chunk_ids.json
+│       │   ├── cosine_similarity_matrix.npy
+│       │   ├── dot_similarity_matrix.npy
+│       │   ├── euclidean_similarity_matrix.npy
+│       │   ├── metadata.json
+│       │   └── question_ids.json
+│       └── tf_idf
+│           ├── chunk_ids.json
+│           ├── cosine_similarity_matrix.npy
+│           ├── dot_similarity_matrix.npy
+│           ├── euclidean_similarity_matrix.npy
+│           ├── metadata.json
+│           └── question_ids.json
+├── data
+│   ├── frozen
+│   │   ├── PO_25_CL_chunks.jsonl
+│   │   ├── qSet_PO.jsonl
+│   │   ├── qa_mapping_merged.jsonl
+│   │   └── split
+│   │       ├── development_question_ids.json
+│   │       ├── gold_with_split.jsonl
+│   │       ├── split_groups.json
+│   │       ├── test_question_ids.json
+│   │       └── validation_question_ids.json
+│   ├── processed
+│   │   ├── PO_25_CL_chunks.jsonl
+│   │   ├── qSet_PO.jsonl
+│   │   └── readme.md
 │   ├── raw
 │   │   ├── Beispiel_Studienverlauf.pdf
 │   │   ├── Modulhandbuch.pdf
@@ -2721,22 +2720,12 @@
 │   │   ├── metadata.txt
 │   │   ├── module_aliases.json
 │   │   └── questions.json
-│   ├── split
-│   │   ├── development_question_ids.json
-│   │   ├── gold_with_split.jsonl
-│   │   ├── split_groups.json
-│   │   ├── test_question_ids.json
-│   │   └── validation_question_ids.json
-│   └── visualization
-│       ├── analyze_selector_experiments.py
-│       ├── chunk_browser
-│       │   ├── README.md
-│       │   ├── app.js
-│       │   ├── chunks.jsonl
-│       │   ├── index.html
-│       │   └── styles.css
-│       ├── visualize_evaluation_optional.py
-│       └── visualize_validation_results.py
+│   └── split
+│       ├── development_question_ids.json
+│       ├── gold_with_split.jsonl
+│       ├── split_groups.json
+│       ├── test_question_ids.json
+│       └── validation_question_ids.json
 ├── literature
 │   ├── Hausarbeit_QA_Model_Agent_Handover_V2_Audited.md
 │   ├── PapersJobs.md
@@ -2862,6 +2851,11 @@
 │   ├── analyze_selector_experiments.py
 │   ├── analyze_similarity_matrices.py
 │   ├── analyze_threshold_regions.py
+│   ├── baselines
+│   │   ├── compare_with_system.py
+│   │   ├── freeze_dev_reference.py
+│   │   ├── plot_baselines.py
+│   │   └── run_baselines.py
 │   ├── check_empty_jsonl_in_predictions.py
 │   ├── chunk_selector.py
 │   ├── compute_embeddings.py
@@ -2877,7 +2871,17 @@
 │   ├── run_test_winner.py
 │   ├── run_validation_finalists.py
 │   ├── similarity_calculator.py
-│   └── text_embedder.py
+│   ├── text_embedder.py
+│   └── visualization
+│       ├── visualize_evaluation_optional.py
+│       └── visualize_validation_results.py
+├── tools
+│   └── chunk_browser
+│       ├── README.md
+│       ├── app.js
+│       ├── chunks.jsonl
+│       ├── index.html
+│       └── styles.css
 └── tree.txt
 
-68 directories, 2813 files
+73 directories, 2812 files

@@ -2,15 +2,15 @@ import csv
 import json
 from pathlib import Path
 
-GOLD_PATH = Path("data/produced_v2/frozen/split/gold_with_split.jsonl")
+GOLD_PATH = Path("data/frozen/split/gold_with_split.jsonl")
 PREDICTIONS_PATH = Path(
-    "data/produced_v2/selector_experiments/validation_finalists/"
+    "artifacts/experiments/validation/validation_finalists/"
     "e5_top_k_threshold_top_k_1_threshold_0.83959_predictions.jsonl"
 )
-CHUNKS_PATH = Path("data/produced_v2/frozen/PO_25_CL_chunks.jsonl")
+CHUNKS_PATH = Path("data/frozen/PO_25_CL_chunks.jsonl")
 
 OUTPUT_DIR = Path(
-    "data/produced_v2/selector_experiments/validation_finalists/error_analysis_of_best"
+    "artifacts/experiments/validation/validation_finalists/error_analysis_of_best"
 )
 
 SPLIT = "validation"
