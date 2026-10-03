@@ -2,7 +2,7 @@
 
 Retrieve evidence passages for questions about a German examination regulation, with an option to return no evidence. The project compares TF-IDF, multilingual Sentence-BERT and multilingual E5 using four chunk-selection rules. It evaluates evidence sets; it does not generate answers.
 
-The primary evaluation uses **`configs/base.json`** and the frozen dataset: **720 questions** (600 answerable, 120 zero-gold), **201 chunks**, and grouped development/validation/test partitions of **432/144/144**. Its frozen winner is **E5 top-1 with absolute threshold `0.84`**. These results are produced by the current configuration-driven pipeline.
+The primary evaluation uses **`configs/base.json`** and the frozen dataset: **720 questions** (600 answerable, 120 zero-gold), **201 chunks**, and grouped development/validation/test partitions of **432/144/144**. Its frozen winner is **E5 top-1 with absolute threshold `0.84`**.
 
 | Dataset / protocol | Validation-selected winner | Validation Q-F1 | Test Q-F1 | Test exact match | Test micro-F1 |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -11,7 +11,7 @@ The primary evaluation uses **`configs/base.json`** and the frozen dataset: **72
 
 The frozen winner achieves development Q-F1 **0.647377** and 69 exact matches among 144 test questions. Its saved results are under [`artifacts/experiments/base/`](artifacts/experiments/base/); selection is recorded in [`validation/frozen_winner.json`](artifacts/experiments/base/validation/frozen_winner.json) and test metrics in [`test/summary.jsonl`](artifacts/experiments/base/test/summary.jsonl).
 
-The follow-up excludes ten questions and uses a question-level split of 426/142/142. Dataset membership and splitting differ, so its higher test score is not a controlled improvement over the frozen evaluation. The paper reports both protocols separately.
+The follow-up excludes ten questions and uses a question-level split of 426/142/142. Dataset membership and splitting differ, so its higher test score is not a controlled improvement over the frozen evaluation. The paper reports both protocols separately. The finished paper is [paper/build/paper.pdf](paper/build/paper.pdf).
 
 ## Contents
 
@@ -26,10 +26,9 @@ The follow-up excludes ten questions and uses a question-level split of 426/142/
 - [Diagnostics](#diagnostics)
 - [Manual review](#manual-review)
 - [Prepare new representations](#prepare-new-representations)
-- [Representation and data provenance](#representation-and-data-provenance)
+- [Data and model sources](#data-and-model-sources)
 - [Files](#files)
-- [Tests and code style](#tests-and-code-style)
-- [Build the paper](#build-the-paper)
+- [Tests](#tests)
 
 ## Setup
 
@@ -71,7 +70,7 @@ python -m pip install --requirement requirements.txt
 python -m scripts.run_experiment --config configs/base.json --stage check
 ```
 
-The single requirements file includes experiment, model-preparation and style-check dependencies. Installing the packages does not download model weights; model preparation may download weights if the requested snapshot is not cached. Experiments use the retained cosine matrices.
+The single requirements file includes experiment and model-preparation dependencies. Installing the packages does not download model weights; model preparation may download weights if the requested snapshot is not cached. Experiments use the retained cosine matrices.
 
 ## Reproduce the paper's pipeline
 
@@ -290,7 +289,7 @@ To regenerate reports for a run produced by the current code/environment:
 python -m scripts.report_experiment --config configs/manual_review_v1_rerun.json
 ```
 
-Completed stages cannot be overwritten. A continued run must retain the same configuration and recorded environment. Use a new output directory for an interrupted stage or changes to source code or input data; the experiment manifest no longer detects content changes to those files.
+Completed stages cannot be overwritten. A continued run must retain the same configuration and recorded environment. Use a new output directory for an interrupted stage or changes to source code or input data; the experiment manifest records file paths, not their contents.
 
 ## Describe the saved test result
 
@@ -329,7 +328,7 @@ python -m scripts.manual_review.review --config configs/manual_review_v1_rerun.j
 
 Prefiltering writes four category CSVs under `manual_review/<split>/`, including headers for empty categories. Groups are based on predicted/gold set relationships; they are not semantic explanations by themselves. Interactive review opens source passages, resumes earlier labels and saves decisions atomically. It stops the local browser server on exit. Review annotations do not modify the experiment gold or winner.
 
-The browser in `tools/chunk_browser/` is an AI-generated auxiliary tool, excluded from assessment of the Python code's authorship style. It supports inspection, not numerical retrieval or evaluation.
+The optional browser in `tools/chunk_browser/` was AI-generated. It displays evidence passages during manual review; retrieval and scoring are performed by the Python scripts.
 
 ## Prepare new representations
 
@@ -349,7 +348,7 @@ Both examples encode the frozen source questions. Experiments select their own q
 
 Changing chunks, questions, annotations or representations requires a new config and output directory. Such a change is a new experiment, not reproduction of the reported result.
 
-## Representation and data provenance
+## Data and model sources
 
 The reproducible experiment inputs are the three retained cosine matrices and their explicit question/chunk ID arrays. Experiment manifests record their paths. Regenerating neural representations is a separate operation and may not reproduce them bit for bit.
 
@@ -358,17 +357,17 @@ The reproducible experiment inputs are the three retained cosine matrices and th
 | `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | `e8f8c211226b894fcb81acc59f3b34ba3efd5f42` | 128 tokens |
 | `intfloat/multilingual-e5-base` | `d128750597153bb5987e10b1c3493a34e5a4502a` | 512 tokens |
 
-These identifiers and limits were read from locally cached model snapshots. Their presence now does not prove that the historical cached matrices were created from these exact snapshots. The retained historical artifacts do not record immutable model revisions or per-text truncation logs. Do not label these values as established retrospective provenance without additional records or vector regeneration and comparison.
+These identifiers and limits were read from locally cached model snapshots. Their presence now does not prove that the historical cached matrices were created from these exact snapshots. The retained historical artifacts do not record immutable model revisions or per-text truncation logs. The reconstruction below checks whether these snapshots reproduce the retained matrices.
 
 The preparation code fits TF-IDF only on the chunk collection, using lowercase word unigrams, bigrams and trigrams with no sublinear term-frequency scaling. Questions are transformed using that fitted vocabulary. E5 prefixes question text with `query: ` and evidence text with `passage: `. Neural embeddings are not normalized in advance; cosine similarity handles vector norms.
 
 For future neural preparation, provide `model_name_or_path` and an immutable `revision` in the model config. New preparation outputs record the requested revision and effective maximum sequence length. Passing a preserved local snapshot directory is also supported. Archive the model files and preparation outputs if future regeneration must be independent of model-host changes.
 
-Questions and gold evidence sets were created with GPT-5.5 Sol support and manually reviewed by the author; no independent second annotation was conducted. Frozen questions, annotations and split IDs can be replayed, but a complete generation-prompt log, independently documented review protocol and original revised random-split source are not retained. The new replay utility makes no claim to recreate those missing steps.
+Questions and gold evidence sets were created with GPT-5.5 Sol support and manually reviewed by the author; no independent second annotation was conducted. Frozen questions, annotations and split IDs can be replayed, but a complete generation-prompt log, independently documented review protocol and original revised random-split source are not retained. Dataset replay uses the saved records and split assignments.
 
 ### Verified reconstruction
 
-The local snapshots above were used offline to encode all 720 questions and 201 chunks. TF-IDF reproduced its cached cosine matrix exactly. Sentence-BERT differed by at most 6.855e-7 and E5 by at most 1.312e-6 in absolute cosine similarity. The selected-setting summaries checked during that separate reconstruction remained unchanged. This demonstrates a usable pinned reconstruction, while preserving the distinction from an unavailable historical preparation log.
+The local snapshots above were used offline to encode all 720 questions and 201 chunks. TF-IDF reproduced its cached cosine matrix exactly. Sentence-BERT differed by at most 6.855e-7 and E5 by at most 1.312e-6 in absolute cosine similarity. The selected-setting summaries checked during that separate reconstruction remained unchanged. These snapshots provide a verified reconstruction; the original preparation record remains unavailable.
 
 The current token audit includes special tokens and E5 prefixes. All questions fit the respective limits (maximum 38 tokens for Sentence-BERT and 41 for E5). Sentence-BERT truncates 35 of 201 chunks (maximum untruncated length 347 tokens); E5 truncates none (maximum 349 tokens). This is a plausible influence on model comparison, not an isolated causal explanation.
 
@@ -388,29 +387,22 @@ data/                            # source documents, chunks, questions and split
 artifacts/                        # cached matrices, runs and assessment exports
 tests/                            # twelve focused unittest checks
 tools/chunk_browser/               # optional AI-generated inspection tool
-paper/                            # LaTeX source, bibliography and ACL style
+paper/                            # submitted PDF and accompanying LaTeX source
 literature/                       # reference papers and reading notes
 ```
 
-The scripts use Python namespace packages, so empty `__init__.py` files are not needed. Use the module commands above rather than executing nested script files directly.
-
-## Tests and code style
+## Tests
 
 ```bash
 python -m unittest discover -s tests -v
-python -m black --check --line-length 79 scripts tests
-python -m pycodestyle scripts tests
 ```
 
-The twelve tests cover the core workflow, scoring, ranking, refinement, input validation and dataset membership. Browser simulation and peripheral utility tests are outside this suite.
+The twelve tests use small synthetic datasets in temporary directories. They check:
 
-## Build the paper
+- Development, validation and test execution, the fixed five validation candidates, expected scores and overwrite protection.
+- Rejection of overlapping splits, inconsistent split labels, duplicate IDs, invalid parameters, incorrectly shaped matrices and non-finite scores.
+- Consistent run configuration, unchanged validation-winner files, completed validation before test, and explicit test confirmation.
+- The distinction between an empty prediction and a missing prediction, ranking ties and fine-search interval boundaries.
+- Rejection of overlapping dataset-replay assignments before writing output.
 
-Build the multi-file LaTeX project with `latexmk` from `paper/`:
-
-```bash
-cd paper
-latexmk -pdf -outdir=build paper.tex
-```
-
-The PDF is `paper/build/paper.pdf`. LaTeX tooling is separate from the Python requirements.
+The tests do not modify published results or run the full parameter search. They check implementation behavior; use the reproduction walkthrough to compare complete experiment results.
