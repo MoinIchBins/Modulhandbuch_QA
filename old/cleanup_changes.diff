@@ -1,0 +1,2691 @@
+--- a/scripts/analyze_gold.py
++++ b/scripts/analyze_gold.py
+@@ -20,8 +20,7 @@
+         gold_set = tuple(sorted(gold_chunks))
+         gold_set_counts[gold_set] += 1
+ 
+-        for chunk_id in gold_chunks:
+-            chunk_counts[chunk_id] += 1
++        chunk_counts.update(gold_chunks)
+ 
+     single_sets = {
+         gold_set: count
+@@ -29,7 +28,7 @@
+         if len(gold_set) == 1
+     }
+ 
+-    multi_sets = {
++    two_chunk_sets = {
+         gold_set: count
+         for gold_set, count in gold_set_counts.items()
+         if len(gold_set) == 2
+@@ -44,8 +43,8 @@
+     print(f"Unique 1-chunk gold sets: {len(single_sets)}")
+     print()
+ 
+-    print(f"2-chunk questions: {sum(multi_sets.values())}")
+-    print(f"Unique 2-chunk gold sets: {len(multi_sets)}")
++    print(f"2-chunk questions: {sum(two_chunk_sets.values())}")
++    print(f"Unique 2-chunk gold sets: {len(two_chunk_sets)}")
+ 
+     gold_size_counts = Counter(
+         len(row["all_required_chunk_ids"])
+@@ -66,7 +65,7 @@
+ 
+     print("\n=== Two-chunk gold sets ===")
+     for gold_set, count in sorted(
+-        multi_sets.items(),
++        two_chunk_sets.items(),
+         key=lambda x: (-x[1], x[0])
+     ):
+         print(f"{count:3d} questions | {list(gold_set)}")
+--- a/scripts/analyze_selector_experiments.py
++++ b/scripts/analyze_selector_experiments.py
+@@ -36,11 +36,17 @@
+     return rows
+ 
+ 
+-def make_suggestions(rows):
+-    suggestions = []
++def group_results(rows):
+     groups = {}
+     for row in rows:
+         groups.setdefault((row["representation"], row["method"]), []).append(row)
++
++    return groups
++
++
++def make_suggestions(rows):
++    suggestions = []
++    groups = group_results(rows)
+ 
+     for (representation, method), group in sorted(groups.items()):
+         best = max(group, key=rank_key)
+@@ -55,6 +61,7 @@
+         })
+         if len(values) < 3:
+             continue
++        # Report observed neighbors; the runner additionally extends edge intervals.
+         index = values.index(best[parameter])
+         suggestions.append({
+             "representation": representation,
+@@ -121,11 +128,10 @@
+     plot_numeric_results(rows, output_dir)
+ 
+     print("\nBest coarse configuration per representation and selector")
+-    best_rows = {}
+-    for row in rows:
+-        key = (row["representation"], row["method"])
+-        if key not in best_rows or rank_key(row) > rank_key(best_rows[key]):
+-            best_rows[key] = row
++    best_rows = {
++        key: max(group, key=rank_key)
++        for key, group in group_results(rows).items()
++    }
+     for key, row in sorted(best_rows.items()):
+         parameter = next((name for name in ("top_k", "threshold", "margin") if row[name] is not None), None)
+         setting = f"{parameter}={row[parameter]}" if parameter else "default"
+--- a/scripts/analyze_similarity_matrices.py
++++ b/scripts/analyze_similarity_matrices.py
+@@ -111,169 +111,112 @@
+     return "1" if size == 1 else "2" if size == 2 else "3+"
+ 
+ 
+-def analyze_matrix(matrix, question_ids, chunk_ids, gold):
+-    chunk_index = {
+-        chunk_id: index
+-        for index, chunk_id in enumerate(chunk_ids)
++def analyze_question(scores, question_id, chunk_ids, chunk_index, gold):
++    scores = np.asarray(scores, dtype=float)
++    order = np.lexsort((np.arange(len(scores)), -scores))
++
++    gold_row = gold[question_id]
++    gold_chunk_ids = list(gold_row.get("all_required_chunk_ids", []))
++    gold_size = len(gold_chunk_ids)
++
++    top_indices = order[:min(TOP_RESULTS_TO_STORE, len(chunk_ids))]
++    best_score = float(scores[order[0]])
++    second_score = float(scores[order[1]]) if len(order) > 1 else None
++    top1_gap = best_score - second_score if second_score is not None else None
++
++    record = {
++        "question_id": question_id,
++        "question": gold_row.get("question", ""),
++        "mapping_status": gold_row.get("mapping_status"),
++        "gold_size": gold_size,
++        "gold_chunk_ids": json.dumps(gold_chunk_ids, ensure_ascii=False),
++        "best_score": best_score,
++        "second_best_score": second_score,
++        "top1_gap": top1_gap,
++        "top_chunk_ids": json.dumps([chunk_ids[i] for i in top_indices], ensure_ascii=False),
++        "top_scores": json.dumps([float(scores[i]) for i in top_indices]),
+     }
+ 
+-    per_question_rows = []
+-    top1_indices = np.empty(matrix.shape[0], dtype=int)
+-
+-    pooled_gold_ranks = []
+-    best_ranks = []
+-    worst_ranks = []
+-    mean_ranks = []
+-    reciprocal_ranks = []
+-
+-    answerable_best_scores = []
+-    answerable_second_scores = []
+-    best_gold_scores = []
+-    worst_gold_scores = []
+-    best_non_gold_scores = []
+-    best_gold_margins = []
+-    complete_gold_margins = []
+-
+-    zero_gold_best_scores = []
+-    zero_gold_second_scores = []
+-    zero_gold_top1_gaps = []
+-
+-    ranking_values = {
+-        metric_name(metric, k): []
+-        for metric in ("recall", "hit", "all_gold")
+-        for k in K_VALUES
+-    }
+-    grouped_rows = {"1": [], "2": [], "3+": []}
+-
+-    for row_index, question_id in enumerate(question_ids):
+-        scores = np.asarray(matrix[row_index], dtype=float)
+-        order = np.lexsort((np.arange(len(scores)), -scores))
+-        top1_indices[row_index] = order[0]
+-
+-        gold_row = gold[question_id]
+-        gold_chunk_ids = list(gold_row.get("all_required_chunk_ids", []))
+-        gold_size = len(gold_chunk_ids)
+-
+-        top_indices = order[:min(TOP_RESULTS_TO_STORE, len(chunk_ids))]
+-        best_score = float(scores[order[0]])
+-        second_score = float(scores[order[1]]) if len(order) > 1 else None
+-        top1_gap = best_score - second_score if second_score is not None else None
+-
+-        record = {
+-            "question_id": question_id,
+-            "question": gold_row.get("question", ""),
+-            "mapping_status": gold_row.get("mapping_status"),
+-            "gold_size": gold_size,
+-            "gold_chunk_ids": json.dumps(gold_chunk_ids, ensure_ascii=False),
+-            "best_score": best_score,
+-            "second_best_score": second_score,
+-            "top1_gap": top1_gap,
+-            "top_chunk_ids": json.dumps([chunk_ids[i] for i in top_indices], ensure_ascii=False),
+-            "top_scores": json.dumps([float(scores[i]) for i in top_indices]),
+-        }
+-
+-        if gold_size == 0:
+-            zero_gold_best_scores.append(best_score)
+-            if second_score is not None:
+-                zero_gold_second_scores.append(second_score)
+-                zero_gold_top1_gaps.append(top1_gap)
+-
+-            record.update(
+-                {
+-                    "gold_chunk_ranks": "[]",
+-                    "best_gold_rank": np.nan,
+-                    "worst_gold_rank": np.nan,
+-                    "mean_gold_rank": np.nan,
+-                    "mrr": np.nan,
+-                    "best_gold_score": np.nan,
+-                    "worst_gold_score": np.nan,
+-                    "best_non_gold_score": np.nan,
+-                    "best_gold_margin": np.nan,
+-                    "complete_gold_margin": np.nan,
+-                }
+-            )
+-            for k in K_VALUES:
+-                record[metric_name("recall", k)] = np.nan
+-                record[metric_name("hit", k)] = np.nan
+-                record[metric_name("all_gold", k)] = np.nan
+-
+-            per_question_rows.append(record)
+-            continue
+-
+-        gold_indices = np.array(
+-            [chunk_index[chunk_id] for chunk_id in gold_chunk_ids],
+-            dtype=int,
+-        )
+-        inverse_ranks = np.empty(len(chunk_ids), dtype=int)
+-        inverse_ranks[order] = np.arange(1, len(chunk_ids) + 1)
+-        gold_ranks = inverse_ranks[gold_indices]
+-
+-        gold_scores = scores[gold_indices]
+-        non_gold_mask = np.ones(len(chunk_ids), dtype=bool)
+-        non_gold_mask[gold_indices] = False
+-        best_non_gold = float(np.max(scores[non_gold_mask]))
+-
+-        best_gold_rank = int(np.min(gold_ranks))
+-        worst_gold_rank = int(np.max(gold_ranks))
+-        mean_gold_rank = float(np.mean(gold_ranks))
+-        best_gold_score = float(np.max(gold_scores))
+-        worst_gold_score = float(np.min(gold_scores))
+-        best_margin = best_gold_score - best_non_gold
+-        complete_margin = worst_gold_score - best_non_gold
+-        mrr = 1.0 / best_gold_rank
+-
+-        pooled_gold_ranks.extend(gold_ranks.tolist())
+-        best_ranks.append(best_gold_rank)
+-        worst_ranks.append(worst_gold_rank)
+-        mean_ranks.append(mean_gold_rank)
+-        reciprocal_ranks.append(mrr)
+-
+-        answerable_best_scores.append(best_score)
+-        if second_score is not None:
+-            answerable_second_scores.append(second_score)
+-        best_gold_scores.append(best_gold_score)
+-        worst_gold_scores.append(worst_gold_score)
+-        best_non_gold_scores.append(best_non_gold)
+-        best_gold_margins.append(best_margin)
+-        complete_gold_margins.append(complete_margin)
+-
+-        metrics = {}
+-        for k in K_VALUES:
+-            top_k = set(order[:min(k, len(chunk_ids))].tolist())
+-            gold_in_top_k = sum(int(index in top_k) for index in gold_indices)
+-            recall = gold_in_top_k / gold_size
+-            hit = float(gold_in_top_k > 0)
+-            all_gold = float(gold_in_top_k == gold_size)
+-
+-            for prefix, value in (
+-                ("recall", recall),
+-                ("hit", hit),
+-                ("all_gold", all_gold),
+-            ):
+-                key = metric_name(prefix, k)
+-                metrics[key] = value
+-                ranking_values[key].append(value)
+-
++    if gold_size == 0:
+         record.update(
+             {
+-                "gold_chunk_ranks": json.dumps(gold_ranks.tolist()),
+-                "best_gold_rank": best_gold_rank,
+-                "worst_gold_rank": worst_gold_rank,
+-                "mean_gold_rank": mean_gold_rank,
+-                "mrr": mrr,
+-                "best_gold_score": best_gold_score,
+-                "worst_gold_score": worst_gold_score,
+-                "best_non_gold_score": best_non_gold,
+-                "best_gold_margin": best_margin,
+-                "complete_gold_margin": complete_margin,
+-                **metrics,
++                "gold_chunk_ranks": "[]",
++                "best_gold_rank": np.nan,
++                "worst_gold_rank": np.nan,
++                "mean_gold_rank": np.nan,
++                "mrr": np.nan,
++                "best_gold_score": np.nan,
++                "worst_gold_score": np.nan,
++                "best_non_gold_score": np.nan,
++                "best_gold_margin": np.nan,
++                "complete_gold_margin": np.nan,
+             }
+         )
+-        grouped_rows[gold_group(gold_size)].append(record)
+-        per_question_rows.append(record)
+-
+-    per_question = pd.DataFrame(per_question_rows)
+-
++        for k in K_VALUES:
++            record[metric_name("recall", k)] = np.nan
++            record[metric_name("hit", k)] = np.nan
++            record[metric_name("all_gold", k)] = np.nan
++
++        return record, int(order[0])
++
++    gold_indices = np.array(
++        [chunk_index[chunk_id] for chunk_id in gold_chunk_ids],
++        dtype=int,
++    )
++    inverse_ranks = np.empty(len(chunk_ids), dtype=int)
++    inverse_ranks[order] = np.arange(1, len(chunk_ids) + 1)
++    gold_ranks = inverse_ranks[gold_indices]
++
++    gold_scores = scores[gold_indices]
++    non_gold_mask = np.ones(len(chunk_ids), dtype=bool)
++    non_gold_mask[gold_indices] = False
++    best_non_gold = float(np.max(scores[non_gold_mask]))
++
++    best_gold_rank = int(np.min(gold_ranks))
++    worst_gold_rank = int(np.max(gold_ranks))
++    mean_gold_rank = float(np.mean(gold_ranks))
++    best_gold_score = float(np.max(gold_scores))
++    worst_gold_score = float(np.min(gold_scores))
++    best_margin = best_gold_score - best_non_gold
++    complete_margin = worst_gold_score - best_non_gold
++    mrr = 1.0 / best_gold_rank
++
++
++    metrics = {}
++    for k in K_VALUES:
++        top_k = set(order[:min(k, len(chunk_ids))].tolist())
++        gold_in_top_k = sum(int(index in top_k) for index in gold_indices)
++        recall = gold_in_top_k / gold_size
++        hit = float(gold_in_top_k > 0)
++        all_gold = float(gold_in_top_k == gold_size)
++
++        for prefix, value in (
++            ("recall", recall),
++            ("hit", hit),
++            ("all_gold", all_gold),
++        ):
++            key = metric_name(prefix, k)
++            metrics[key] = value
++
++    record.update(
++        {
++            "gold_chunk_ranks": json.dumps(gold_ranks.tolist()),
++            "best_gold_rank": best_gold_rank,
++            "worst_gold_rank": worst_gold_rank,
++            "mean_gold_rank": mean_gold_rank,
++            "mrr": mrr,
++            "best_gold_score": best_gold_score,
++            "worst_gold_score": worst_gold_score,
++            "best_non_gold_score": best_non_gold,
++            "best_gold_margin": best_margin,
++            "complete_gold_margin": complete_margin,
++            **metrics,
++        }
++    )
++    return record, int(order[0])
++
++
++def chunk_statistics(matrix, chunk_ids, top1_indices):
+     top1_counts = np.bincount(top1_indices, minlength=len(chunk_ids))
+     per_chunk = pd.DataFrame(
+         [
+@@ -285,12 +228,32 @@
+                 "similarity_min": float(np.min(matrix[:, index])),
+                 "similarity_max": float(np.max(matrix[:, index])),
+                 "top1_count": int(top1_counts[index]),
+-                "top1_share": float(top1_counts[index] / len(question_ids)),
++                "top1_share": float(top1_counts[index] / matrix.shape[0]),
+             }
+             for index, chunk_id in enumerate(chunk_ids)
+         ]
+     )
+ 
++    return per_chunk
++
++
++def summarize_matrix(matrix, records, per_question, per_chunk):
++    answerable = [row for row in records if row["gold_size"] > 0]
++    zero_gold = [row for row in records if row["gold_size"] == 0]
++    # Pool individual gold ranks; other summaries weight each question equally.
++    pooled_gold_ranks = [rank for row in answerable for rank in json.loads(row["gold_chunk_ranks"])]
++    grouped_rows = {
++        group: [row for row in answerable if gold_group(row["gold_size"]) == group]
++        for group in ("1", "2", "3+")
++    }
++    ranking_values = {
++        metric_name(metric, k): [row[metric_name(metric, k)] for row in answerable]
++        for metric in ("recall", "hit", "all_gold")
++        for k in K_VALUES
++    }
++    reciprocal_ranks = [row["mrr"] for row in answerable]
++    best_gold_margins = [row["best_gold_margin"] for row in answerable]
++    complete_gold_margins = [row["complete_gold_margin"] for row in answerable]
+     ranking_metrics = {
+         key: float(np.mean(values)) if values else None
+         for key, values in ranking_values.items()
+@@ -328,16 +291,16 @@
+ 
+     analysis = {
+         "question_counts": {
+-            "total": len(question_ids),
++            "total": len(records),
+             "answerable": answerable_count,
+             "zero_gold": zero_gold_count,
+         },
+         "ranking_metrics": ranking_metrics,
+         "gold_rank_summary": {
+             "pooled_gold_rank": summarize(pooled_gold_ranks),
+-            "best_gold_rank_per_question": summarize(best_ranks),
+-            "worst_gold_rank_per_question": summarize(worst_ranks),
+-            "mean_gold_rank_per_question": summarize(mean_ranks),
++            "best_gold_rank_per_question": summarize([row["best_gold_rank"] for row in answerable]),
++            "worst_gold_rank_per_question": summarize([row["worst_gold_rank"] for row in answerable]),
++            "mean_gold_rank_per_question": summarize([row["mean_gold_rank"] for row in answerable]),
+         },
+         "score_summary": {
+             "all_matrix_values": summarize(matrix.ravel()),
+@@ -346,16 +309,16 @@
+             "row_score_std": summarize(np.std(matrix, axis=1)),
+             "column_mean_score": summarize(np.mean(matrix, axis=0)),
+             "column_max_score": summarize(np.max(matrix, axis=0)),
+-            "answerable_best_score": summarize(answerable_best_scores),
+-            "answerable_second_best_score": summarize(answerable_second_scores),
+-            "best_gold_score": summarize(best_gold_scores),
+-            "worst_gold_score": summarize(worst_gold_scores),
+-            "best_non_gold_score": summarize(best_non_gold_scores),
++            "answerable_best_score": summarize([row["best_score"] for row in answerable]),
++            "answerable_second_best_score": summarize([row["second_best_score"] for row in answerable if row["second_best_score"] is not None]),
++            "best_gold_score": summarize([row["best_gold_score"] for row in answerable]),
++            "worst_gold_score": summarize([row["worst_gold_score"] for row in answerable]),
++            "best_non_gold_score": summarize([row["best_non_gold_score"] for row in answerable]),
+             "best_gold_minus_best_non_gold": summarize(best_gold_margins),
+             "worst_gold_minus_best_non_gold": summarize(complete_gold_margins),
+-            "zero_gold_best_score": summarize(zero_gold_best_scores),
+-            "zero_gold_second_best_score": summarize(zero_gold_second_scores),
+-            "zero_gold_top1_gap": summarize(zero_gold_top1_gaps),
++            "zero_gold_best_score": summarize([row["best_score"] for row in zero_gold]),
++            "zero_gold_second_best_score": summarize([row["second_best_score"] for row in zero_gold if row["second_best_score"] is not None]),
++            "zero_gold_top1_gap": summarize([row["top1_gap"] for row in zero_gold if row["top1_gap"] is not None]),
+         },
+         "by_gold_set_size": grouped_metrics,
+         "notable_observations": {
+@@ -389,6 +352,21 @@
+         },
+     }
+ 
++    return analysis
++
++
++def analyze_matrix(matrix, question_ids, chunk_ids, gold):
++    chunk_index = {chunk_id: index for index, chunk_id in enumerate(chunk_ids)}
++    records = []
++    top1_indices = np.empty(matrix.shape[0], dtype=int)
++    for row_index, question_id in enumerate(question_ids):
++        record, top1_index = analyze_question(matrix[row_index], question_id, chunk_ids, chunk_index, gold)
++        records.append(record)
++        top1_indices[row_index] = top1_index
++
++    per_question = pd.DataFrame(records)
++    per_chunk = chunk_statistics(matrix, chunk_ids, top1_indices)
++    analysis = summarize_matrix(matrix, records, per_question, per_chunk)
+     return analysis, per_question, per_chunk
+ 
+ 
+--- a/scripts/analyze_threshold_regions.py
++++ b/scripts/analyze_threshold_regions.py
+@@ -12,44 +12,16 @@
+ )
+ 
+ REPRESENTATIONS = {
+-    "e5": {
+-        "matrix": Path(
+-            "artifacts/similarity_matrices/retrieval_bi_encoder/"
+-            "cosine_similarity_matrix.npy"
+-        ),
+-        "question_ids": Path(
+-            "artifacts/similarity_matrices/retrieval_bi_encoder/"
+-            "question_ids.json"
+-        ),
+-        "chunk_ids": Path(
+-            "artifacts/similarity_matrices/retrieval_bi_encoder/"
+-            "chunk_ids.json"
+-        ),
+-    },
+-    "tfidf": {
+-        "matrix": Path(
+-            "artifacts/similarity_matrices/tf_idf/"
+-            "cosine_similarity_matrix.npy"
+-        ),
+-        "question_ids": Path(
+-            "artifacts/similarity_matrices/tf_idf/question_ids.json"
+-        ),
+-        "chunk_ids": Path(
+-            "artifacts/similarity_matrices/tf_idf/chunk_ids.json"
+-        ),
+-    },
+-    "sentence_bert": {
+-        "matrix": Path(
+-            "artifacts/similarity_matrices/sentence_bert/"
+-            "cosine_similarity_matrix.npy"
+-        ),
+-        "question_ids": Path(
+-            "artifacts/similarity_matrices/sentence_bert/question_ids.json"
+-        ),
+-        "chunk_ids": Path(
+-            "artifacts/similarity_matrices/sentence_bert/chunk_ids.json"
+-        ),
+-    },
++    name: {
++        "matrix": Path("artifacts/similarity_matrices") / folder / "cosine_similarity_matrix.npy",
++        "question_ids": Path("artifacts/similarity_matrices") / folder / "question_ids.json",
++        "chunk_ids": Path("artifacts/similarity_matrices") / folder / "chunk_ids.json",
++    }
++    for name, folder in (
++        ("e5", "retrieval_bi_encoder"),
++        ("tfidf", "tf_idf"),
++        ("sentence_bert", "sentence_bert"),
++    )
+ }
+ 
+ OUTPUT_DIR = Path(
+@@ -88,6 +60,76 @@
+     }
+ 
+ 
++def question_scores(name, question_id, scores, gold_chunks, chunk_ids, column_by_chunk):
++    sorted_scores = np.sort(scores)[::-1]
++
++    row = {
++        "representation": name,
++        "question_id": question_id,
++        "gold_size": len(gold_chunks),
++        "top_score": float(sorted_scores[0]),
++        "second_score": float(sorted_scores[1]),
++        "top1_top2_gap": float(sorted_scores[0] - sorted_scores[1]),
++        "best_gold_score": None,
++        "worst_gold_score": None,
++        "best_non_gold_score": None,
++        "best_gold_margin": None,
++        "worst_gold_margin": None,
++    }
++
++    if gold_chunks:
++        gold_indices = [column_by_chunk[chunk_id] for chunk_id in gold_chunks]
++        gold_scores = scores[gold_indices]
++
++        non_gold_mask = np.ones(len(chunk_ids), dtype=bool)
++        non_gold_mask[gold_indices] = False
++        best_non_gold = float(np.max(scores[non_gold_mask]))
++        best_gold = float(np.max(gold_scores))
++        worst_gold = float(np.min(gold_scores))
++
++        row.update(
++            {
++                "best_gold_score": best_gold,
++                "worst_gold_score": worst_gold,
++                "best_non_gold_score": best_non_gold,
++                "best_gold_margin": best_gold - best_non_gold,
++                "worst_gold_margin": worst_gold - best_non_gold,
++            }
++        )
++
++    return row
++
++
++def plot_representation(name, answerable, zero_gold):
++    fig, ax = plt.subplots(figsize=(8, 5))
++    ax.hist(
++        answerable["worst_gold_score"].dropna(),
++        bins=25,
++        alpha=0.6,
++        label="Worst required gold score",
++    )
++    ax.hist(
++        answerable["best_non_gold_score"].dropna(),
++        bins=25,
++        alpha=0.6,
++        label="Best non-gold score",
++    )
++    if not zero_gold.empty:
++        ax.hist(
++            zero_gold["top_score"].dropna(),
++            bins=25,
++            alpha=0.6,
++            label="Zero-gold top score",
++        )
++    ax.set_xlabel("Similarity score")
++    ax.set_ylabel("Questions")
++    ax.set_title(f"{name}: threshold-relevant score distributions")
++    ax.legend()
++    fig.tight_layout()
++    fig.savefig(OUTPUT_DIR / f"{name}_threshold_distributions.png", dpi=300)
++    plt.close(fig)
++
++
+ def main():
+     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+ 
+@@ -120,44 +162,7 @@
+         rows = []
+         for question_id in development_ids:
+             scores = matrix[row_by_question[question_id]]
+-            gold_chunks = gold[question_id]
+-            sorted_scores = np.sort(scores)[::-1]
+-
+-            row = {
+-                "representation": name,
+-                "question_id": question_id,
+-                "gold_size": len(gold_chunks),
+-                "top_score": float(sorted_scores[0]),
+-                "second_score": float(sorted_scores[1]),
+-                "top1_top2_gap": float(sorted_scores[0] - sorted_scores[1]),
+-                "best_gold_score": None,
+-                "worst_gold_score": None,
+-                "best_non_gold_score": None,
+-                "best_gold_margin": None,
+-                "worst_gold_margin": None,
+-            }
+-
+-            if gold_chunks:
+-                gold_indices = [column_by_chunk[chunk_id] for chunk_id in gold_chunks]
+-                gold_scores = scores[gold_indices]
+-
+-                non_gold_mask = np.ones(len(chunk_ids), dtype=bool)
+-                non_gold_mask[gold_indices] = False
+-                best_non_gold = float(np.max(scores[non_gold_mask]))
+-                best_gold = float(np.max(gold_scores))
+-                worst_gold = float(np.min(gold_scores))
+-
+-                row.update(
+-                    {
+-                        "best_gold_score": best_gold,
+-                        "worst_gold_score": worst_gold,
+-                        "best_non_gold_score": best_non_gold,
+-                        "best_gold_margin": best_gold - best_non_gold,
+-                        "worst_gold_margin": worst_gold - best_non_gold,
+-                    }
+-                )
+-
+-            rows.append(row)
++            rows.append(question_scores(name, question_id, scores, gold[question_id], chunk_ids, column_by_chunk))
+ 
+         df = pd.DataFrame(rows)
+         df.to_csv(OUTPUT_DIR / f"{name}_threshold_scores.csv", index=False)
+@@ -196,33 +201,7 @@
+         upper = max(gold_boundary, unwanted_boundary)
+         threshold_suggestions[name] = np.linspace(lower, upper, 7).tolist()
+ 
+-        fig, ax = plt.subplots(figsize=(8, 5))
+-        ax.hist(
+-            answerable["worst_gold_score"].dropna(),
+-            bins=25,
+-            alpha=0.6,
+-            label="Worst required gold score",
+-        )
+-        ax.hist(
+-            answerable["best_non_gold_score"].dropna(),
+-            bins=25,
+-            alpha=0.6,
+-            label="Best non-gold score",
+-        )
+-        if not zero_gold.empty:
+-            ax.hist(
+-                zero_gold["top_score"].dropna(),
+-                bins=25,
+-                alpha=0.6,
+-                label="Zero-gold top score",
+-            )
+-        ax.set_xlabel("Similarity score")
+-        ax.set_ylabel("Questions")
+-        ax.set_title(f"{name}: threshold-relevant score distributions")
+-        ax.legend()
+-        fig.tight_layout()
+-        fig.savefig(OUTPUT_DIR / f"{name}_threshold_distributions.png", dpi=300)
+-        plt.close(fig)
++        plot_representation(name, answerable, zero_gold)
+ 
+     combined_questions = pd.concat(all_question_rows, ignore_index=True)
+     combined_summary = pd.concat(all_summary_rows, ignore_index=True)
+--- a/scripts/baselines/compare_with_system.py
++++ b/scripts/baselines/compare_with_system.py
+@@ -50,42 +50,23 @@
+ 
+     print(f"Loaded {len(baseline_rows)} baselines")
+ 
+-    rows = [
+-        {
+-            "system": "final_retrieval_system",
+-            "mean_question_f1": float(system["mean_question_f1"]),
+-            "mean_question_f1_std": 0.0,
+-            "exact_match_rate": float(system["exact_match_rate"]),
+-            "mean_question_precision": float(system["mean_question_precision"]),
+-            "mean_question_recall": float(system["mean_question_recall"]),
+-            "zero_gold_abstention_rate": float(
+-                system["zero_gold_abstention_rate"]
+-            ),
+-            "average_selected_chunks": float(system["average_selected_chunks"]),
+-        }
+-    ]
+-
++    metrics = (
++        "exact_match_rate", "mean_question_precision", "mean_question_recall",
++        "zero_gold_abstention_rate", "average_selected_chunks",
++    )
++    rows = [{
++        "system": "final_retrieval_system",
++        "mean_question_f1": float(system["mean_question_f1"]),
++        "mean_question_f1_std": 0.0,
++        **{metric: float(system[metric]) for metric in metrics},
++    }]
+     for row in baseline_rows:
+-        rows.append(
+-            {
+-                "system": row["baseline"],
+-                "mean_question_f1": float(row["mean_question_f1"]),
+-                "mean_question_f1_std": float(
+-                    row["mean_question_f1_std"]
+-                ),
+-                "exact_match_rate": float(row["exact_match_rate"]),
+-                "mean_question_precision": float(
+-                    row["mean_question_precision"]
+-                ),
+-                "mean_question_recall": float(row["mean_question_recall"]),
+-                "zero_gold_abstention_rate": float(
+-                    row["zero_gold_abstention_rate"]
+-                ),
+-                "average_selected_chunks": float(
+-                    row["average_selected_chunks"]
+-                ),
+-            }
+-        )
++        rows.append({
++            "system": row["baseline"],
++            "mean_question_f1": float(row["mean_question_f1"]),
++            "mean_question_f1_std": float(row["mean_question_f1_std"]),
++            **{metric: float(row[metric]) for metric in metrics},
++        })
+ 
+     rows.sort(
+         key=lambda row: row["mean_question_f1"],
+--- a/scripts/baselines/run_baselines.py
++++ b/scripts/baselines/run_baselines.py
+@@ -131,6 +131,45 @@
+     return result["summary"]
+ 
+ 
++def run_random_baseline(seeds, split_ids, chunk_ids, evaluator, output_dir):
++    random_runs = []
++
++    print(f"\n[1/3] Random top-1 ({len(seeds)} runs)")
++
++    for run_number, seed in enumerate(seeds, start=1):
++        predictions = make_random_predictions(split_ids, chunk_ids, seed)
++        result = evaluator.eval(predictions, question_ids=split_ids)
++
++        random_runs.append(
++            {
++                "baseline": "random_top1",
++                "seed": seed,
++                **result["summary"],
++            }
++        )
++
++        if run_number == 1 or run_number % 10 == 0 or run_number == len(seeds):
++            print(f"  completed {run_number}/{len(seeds)} runs")
++
++    random_summary = aggregate_random_runs(random_runs)
++    print(
++        "  random top-1 mean F1: "
++        f"{random_summary['mean_question_f1']:.4f} "
++        f"± {random_summary['mean_question_f1_std']:.4f}"
++    )
++
++    save_jsonl(
++        output_dir / "random_top1_runs.jsonl",
++        random_runs,
++    )
++    save_json(
++        output_dir / "random_top1_summary.json",
++        random_summary,
++    )
++
++    return random_summary
++
++
+ def main():
+     parser = argparse.ArgumentParser()
+     parser.add_argument(
+@@ -181,40 +220,7 @@
+ 
+     # 1. Random top-1: evaluate the same fixed set of seeds every time.
+     seeds = definitions["random_top1"]["seeds"]
+-    random_runs = []
+-
+-    print(f"\n[1/3] Random top-1 ({len(seeds)} runs)")
+-
+-    for run_number, seed in enumerate(seeds, start=1):
+-        predictions = make_random_predictions(split_ids, chunk_ids, seed)
+-        result = evaluator.eval(predictions, question_ids=split_ids)
+-
+-        random_runs.append(
+-            {
+-                "baseline": "random_top1",
+-                "seed": seed,
+-                **result["summary"],
+-            }
+-        )
+-
+-        if run_number == 1 or run_number % 10 == 0 or run_number == len(seeds):
+-            print(f"  completed {run_number}/{len(seeds)} runs")
+-
+-    random_summary = aggregate_random_runs(random_runs)
+-    print(
+-        "  random top-1 mean F1: "
+-        f"{random_summary['mean_question_f1']:.4f} "
+-        f"± {random_summary['mean_question_f1_std']:.4f}"
+-    )
+-
+-    save_jsonl(
+-        output_dir / "random_top1_runs.jsonl",
+-        random_runs,
+-    )
+-    save_json(
+-        output_dir / "random_top1_summary.json",
+-        random_summary,
+-    )
++    random_summary = run_random_baseline(seeds, split_ids, chunk_ids, evaluator, output_dir)
+ 
+     # 2. Always return the frozen most-frequent non-empty dev answer set.
+     print("\n[2/3] Most-frequent development answer")
+--- a/scripts/check_empty_jsonl_in_predictions.py
++++ b/scripts/check_empty_jsonl_in_predictions.py
+@@ -1,51 +1,6 @@
+-import json
+-from collections import Counter
++"""Compatibility entry point for the renamed prediction-ID check."""
++from check_prediction_ids import main
+ 
+-split_path = (
+-    "data/frozen/split/test_question_ids.json"
+-)
+ 
+-prediction_path = (
+-    "artifacts/experiments/base/outputs/test/winner/"
+-    "e5_top_k_threshold_top_k_1_threshold_0.84_predictions.jsonl"
+-)
+-
+-with open(split_path, encoding="utf-8") as file:
+-    split_ids = [str(x).strip() for x in json.load(file)]
+-
+-with open(prediction_path, encoding="utf-8") as file:
+-    rows = [
+-        json.loads(line)
+-        for line in file
+-        if line.strip()
+-    ]
+-
+-prediction_ids = [
+-    str(row["question_id"]).strip()
+-    for row in rows
+-]
+-
+-counts = Counter(prediction_ids)
+-
+-missing = sorted(set(split_ids) - set(prediction_ids))
+-extra = sorted(set(prediction_ids) - set(split_ids))
+-duplicates = sorted(
+-    question_id
+-    for question_id, count in counts.items()
+-    if count > 1
+-)
+-
+-print("Split questions:       ", len(split_ids))
+-print("Prediction rows:       ", len(rows))
+-print("Unique prediction IDs: ", len(set(prediction_ids)))
+-print("Missing:               ", missing)
+-print("Extra:                 ", extra)
+-print("Duplicates:            ", duplicates)
+-
+-print("\nZugangsprüfung check:")
+-for question_id in ("Q0157", "Q0160"):
+-    matches = [
+-        row for row in rows
+-        if row["question_id"] == question_id
+-    ]
+-    print(question_id, matches)+if __name__ == "__main__":
++    main()
+--- a/scripts/check_prediction_ids.py
++++ b/scripts/check_prediction_ids.py
+@@ -0,0 +1,59 @@
++import json
++from collections import Counter
++
++split_path = (
++    "data/frozen/split/test_question_ids.json"
++)
++
++prediction_path = (
++    "artifacts/experiments/base/outputs/test/winner/"
++    "e5_top_k_threshold_top_k_1_threshold_0.84_predictions.jsonl"
++)
++
++SPOT_CHECK_QUESTION_IDS = ("Q0157", "Q0160")
++
++
++def main():
++    with open(split_path, encoding="utf-8") as file:
++        split_ids = [str(x).strip() for x in json.load(file)]
++
++    with open(prediction_path, encoding="utf-8") as file:
++        rows = [
++            json.loads(line)
++            for line in file
++            if line.strip()
++        ]
++
++    prediction_ids = [
++        str(row["question_id"]).strip()
++        for row in rows
++    ]
++
++    counts = Counter(prediction_ids)
++
++    missing = sorted(set(split_ids) - set(prediction_ids))
++    extra = sorted(set(prediction_ids) - set(split_ids))
++    duplicates = sorted(
++        question_id
++        for question_id, count in counts.items()
++        if count > 1
++    )
++
++    print("Split questions:       ", len(split_ids))
++    print("Prediction rows:       ", len(rows))
++    print("Unique prediction IDs: ", len(set(prediction_ids)))
++    print("Missing:               ", missing)
++    print("Extra:                 ", extra)
++    print("Duplicates:            ", duplicates)
++
++    print("\nZugangsprüfung check:")
++    for question_id in SPOT_CHECK_QUESTION_IDS:
++        matches = [
++            row for row in rows
++            if row["question_id"] == question_id
++        ]
++        print(question_id, matches)
++
++
++if __name__ == "__main__":
++    main()
+--- a/scripts/chunk_selector.py
++++ b/scripts/chunk_selector.py
+@@ -31,25 +31,13 @@
+             if self.method == "top_k":
+                 chosen = ranked[:self.top_k]
+ 
+-            elif self.method == "threshold":
+-                chosen = [
+-                    i for i in ranked
+-                    if (
+-                        row[i] >= self.threshold
+-                        if self.higher_is_better
+-                        else row[i] <= self.threshold
+-                    )
+-                ]
+-
+-            elif self.method == "top_k_threshold":
+-                chosen = [
+-                    i for i in ranked
+-                    if (
+-                        row[i] >= self.threshold
+-                        if self.higher_is_better
+-                        else row[i] <= self.threshold
+-                    )
+-                ][:self.top_k]
++            elif self.method in ("threshold", "top_k_threshold"):
++                if self.higher_is_better:
++                    chosen = [i for i in ranked if row[i] >= self.threshold]
++                else:
++                    chosen = [i for i in ranked if row[i] <= self.threshold]
++                if self.method == "top_k_threshold":
++                    chosen = chosen[:self.top_k]
+ 
+             elif self.method == "relative_margin":
+                 selected = ranked[self.top_k - 1]
+--- a/scripts/data_splitter.py
++++ b/scripts/data_splitter.py
+@@ -14,10 +14,7 @@
+ RANDOM_SEED = 42
+ 
+ 
+-def main():
+-    with GOLD_FILE.open("r", encoding="utf-8") as file:
+-        rows = [json.loads(line) for line in file if line.strip()]
+-
++def group_questions(rows):
+     grouped_questions = defaultdict(list)
+     for row in rows:
+         question_id = row["question_id"]
+@@ -33,9 +30,14 @@
+         )
+     }
+ 
++    return groups
++
++
++def assign_splits(groups):
+     rng = random.Random(RANDOM_SEED)
+     group_ids = list(groups)
+     rng.shuffle(group_ids)
++    # Stable size sorting retains the shuffled order among equally sized groups.
+     group_ids.sort(key=lambda group_id: len(groups[group_id]), reverse=True)
+ 
+     total_questions = sum(len(ids) for ids in groups.values())
+@@ -55,6 +57,10 @@
+         group_to_split[group_id] = split
+         split_counts[split] += group_size
+ 
++    return group_to_split, split_counts
++
++
++def write_splits(rows, groups, group_to_split):
+     question_to_group = {}
+     question_to_split = {}
+     for group_id, ids in groups.items():
+@@ -91,17 +97,24 @@
+     with (OUTPUT_DIR / "split_groups.json").open("w", encoding="utf-8") as file:
+         json.dump(groups, file, ensure_ascii=False, indent=2)
+ 
++
++def main():
++    with GOLD_FILE.open("r", encoding="utf-8") as file:
++        rows = [json.loads(line) for line in file if line.strip()]
++
++    groups = group_questions(rows)
++    group_to_split, split_counts = assign_splits(groups)
++    total_questions = sum(split_counts.values())
++
++    write_splits(rows, groups, group_to_split)
++
+     print("\nQuestion split summary")
+     print(f"Questions: {total_questions}")
+     print(f"Groups:    {len(groups)}")
+     print(f"Largest group: {max(len(ids) for ids in groups.values())}")
+ 
+     for split in SPLIT_RATIOS:
+-        question_count = sum(
+-            len(groups[group_id])
+-            for group_id, assigned_split in group_to_split.items()
+-            if assigned_split == split
+-        )
++        question_count = split_counts[split]
+         print(
+             f"{split:12} "
+             f"{question_count:3} "
+--- a/scripts/dev_summary_script.py
++++ b/scripts/dev_summary_script.py
+@@ -6,7 +6,7 @@
+ import pandas as pd
+ 
+ 
+-DEFAULT_RUN_SET = Path("configs/manual_review_v1_dev_round_1.json")
++DEFAULT_RUN_SET = Path("artifacts/experiments/manual_review_v1/configs/manual_review_v1_dev_round_1.json")
+ 
+ 
+ def rank_results(df):
+@@ -16,43 +16,11 @@
+     )
+ 
+ 
+-def main():
+-    parser = argparse.ArgumentParser(description="Summarize configured development runs.")
+-    parser.add_argument("--run-set", type=Path, default=DEFAULT_RUN_SET)
+-    parser.add_argument("--output-dir", type=Path)
+-    args = parser.parse_args()
+-
+-    with args.run_set.open("r", encoding="utf-8") as file:
+-        run_set = json.load(file)
+-    output_dir = args.output_dir or Path(run_set["output_dir"])
+-
+-    rows = []
+-    for run in run_set["runs"]:
+-        folder = Path(run["path"])
+-        summary_file = folder / "summary.jsonl"
+-        if not summary_file.is_file():
+-            raise FileNotFoundError(f"No summary.jsonl found in {folder}")
+-        with summary_file.open("r", encoding="utf-8") as file:
+-            for line in file:
+-                row = json.loads(line)
+-                row["selector"] = run.get("selector", row.get("method"))
+-                rows.append(row)
+-
+-    if not rows:
+-        raise ValueError("The configured development runs contain no summary rows.")
+-    results = pd.DataFrame(rows)
+-    best_configs = (
+-        rank_results(results)
+-        .groupby(["representation", "selector"], as_index=False, sort=False)
+-        .first()
+-    )
+-    selector_winners = rank_results(best_configs).groupby("selector", as_index=False, sort=False).first()
+-    overall_ranking = rank_results(best_configs)
+-
++def export_candidates(run_set, overall_ranking, output_dir):
+     candidate_limit = run_set.get("validation_candidate_limit")
+     if candidate_limit is not None and (not isinstance(candidate_limit, int) or candidate_limit < 1):
+         raise ValueError("validation_candidate_limit must be a positive integer")
+-    candidate_rows = rank_results(best_configs)
++    candidate_rows = overall_ranking
+     if candidate_limit is not None:
+         candidate_rows = candidate_rows.head(candidate_limit)
+ 
+@@ -90,10 +58,8 @@
+         encoding="utf-8",
+     )
+ 
+-    best_configs.to_csv(output_dir / "best_configs.csv", index=False)
+-    selector_winners.to_csv(output_dir / "selector_winners.csv", index=False)
+-    overall_ranking.to_csv(output_dir / "overall_ranking.csv", index=False)
+ 
++def plot_development_results(best_configs, selector_winners, overall_ranking, output_dir):
+     table = best_configs.pivot(index="selector", columns="representation", values="mean_question_f1")
+     ax = table.plot(kind="bar", figsize=(9, 5))
+     ax.set_title("Development Performance")
+@@ -130,6 +96,48 @@
+     plt.savefig(output_dir / "dev_full_ranking.png", dpi=200)
+     plt.close()
+ 
++
++def main():
++    parser = argparse.ArgumentParser(description="Summarize configured development runs.")
++    parser.add_argument("--run-set", type=Path, default=DEFAULT_RUN_SET)
++    parser.add_argument("--output-dir", type=Path)
++    args = parser.parse_args()
++
++    with args.run_set.open("r", encoding="utf-8") as file:
++        run_set = json.load(file)
++    output_dir = args.output_dir or Path(run_set["output_dir"])
++
++    rows = []
++    for run in run_set["runs"]:
++        folder = Path(run["path"])
++        summary_file = folder / "summary.jsonl"
++        if not summary_file.is_file():
++            raise FileNotFoundError(f"No summary.jsonl found in {folder}")
++        with summary_file.open("r", encoding="utf-8") as file:
++            for line in file:
++                row = json.loads(line)
++                row["selector"] = run.get("selector", row.get("method"))
++                rows.append(row)
++
++    if not rows:
++        raise ValueError("The configured development runs contain no summary rows.")
++    results = pd.DataFrame(rows)
++    best_configs = (
++        rank_results(results)
++        .groupby(["representation", "selector"], as_index=False, sort=False)
++        .first()
++    )
++    overall_ranking = rank_results(best_configs)
++    selector_winners = overall_ranking.groupby("selector", as_index=False, sort=False).first()
++
++    export_candidates(run_set, overall_ranking, output_dir)
++
++    best_configs.to_csv(output_dir / "best_configs.csv", index=False)
++    selector_winners.to_csv(output_dir / "selector_winners.csv", index=False)
++    overall_ranking.to_csv(output_dir / "overall_ranking.csv", index=False)
++
++    plot_development_results(best_configs, selector_winners, overall_ranking, output_dir)
++
+     columns = [
+         "representation", "selector", "top_k", "threshold", "margin",
+         "mean_question_f1", "exact_match_rate", "mean_question_precision",
+--- a/scripts/embeddings_similarity_integrity_check.py
++++ b/scripts/embeddings_similarity_integrity_check.py
+@@ -31,146 +31,139 @@
+     return ok
+ 
+ 
+-def main():
+-    print("qa retrieval embedding and similarity check")
+-
+-    all_ok = True
+-    rng = np.random.default_rng(RANDOM_SEED)
+-    method_question_ids = {}
+-    method_chunk_ids = {}
+-
+-    with GOLD_FILE.open("r", encoding="utf-8") as file:
+-        gold_rows = [json.loads(line) for line in file if line.strip()]
+-
+-    for method in EMBEDDING_METHODS:
+-        print(f"method: {method}")
+-
+-        embedding_dir = EMBEDDINGS_DIR / method
+-        similarity_dir = SIMILARITIES_DIR / method
+-
+-        required_files = [
+-            embedding_dir / "question_embeddings.npy",
+-            embedding_dir / "chunk_embeddings.npy",
+-            embedding_dir / "question_ids.json",
+-            embedding_dir / "chunk_ids.json",
+-            similarity_dir / "cosine_similarity_matrix.npy",
+-            similarity_dir / "question_ids.json",
+-            similarity_dir / "chunk_ids.json",
+-        ]
+-        missing_files = [path for path in required_files if not path.exists()]
+-        if missing_files:
+-            for path in missing_files:
+-                all_ok &= report(False, f"Missing file: {path}")
+-            continue
+-
+-        question_embeddings = np.load(embedding_dir / "question_embeddings.npy")
+-        chunk_embeddings = np.load(embedding_dir / "chunk_embeddings.npy")
+-        similarity_matrix = np.load(similarity_dir / "cosine_similarity_matrix.npy")
+-
+-        embedding_question_ids = read_json(embedding_dir / "question_ids.json")
+-        embedding_chunk_ids = read_json(embedding_dir / "chunk_ids.json")
+-        similarity_question_ids = read_json(similarity_dir / "question_ids.json")
+-        similarity_chunk_ids = read_json(similarity_dir / "chunk_ids.json")
+-
+-        method_question_ids[method] = embedding_question_ids
+-        method_chunk_ids[method] = embedding_chunk_ids
+-
+-        checks = [
+-            (
+-                len(embedding_question_ids) == EXPECTED_QUESTION_COUNT,
+-                f"{EXPECTED_QUESTION_COUNT} question IDs "
+-                f"(found {len(embedding_question_ids)})",
+-            ),
+-            (
+-                len(embedding_chunk_ids) == EXPECTED_CHUNK_COUNT,
+-                f"{EXPECTED_CHUNK_COUNT} chunk IDs "
+-                f"(found {len(embedding_chunk_ids)})",
+-            ),
+-            (
+-                question_embeddings.shape[0] == len(embedding_question_ids),
+-                "Question embedding rows match question IDs",
+-            ),
+-            (
+-                chunk_embeddings.shape[0] == len(embedding_chunk_ids),
+-                "Chunk embedding rows match chunk IDs",
+-            ),
+-            (
+-                question_embeddings.shape[1] == chunk_embeddings.shape[1],
+-                "Question and chunk embedding dimensions match",
+-            ),
+-            (
+-                similarity_matrix.shape
+-                == (len(embedding_question_ids), len(embedding_chunk_ids)),
+-                f"Cosine matrix shape is correct {similarity_matrix.shape}",
+-            ),
+-            (
+-                embedding_question_ids == similarity_question_ids,
+-                "Embedding and similarity question order matches",
+-            ),
+-            (
+-                embedding_chunk_ids == similarity_chunk_ids,
+-                "Embedding and similarity chunk order matches",
+-            ),
+-            (
+-                not np.isnan(question_embeddings).any()
+-                and not np.isnan(chunk_embeddings).any()
+-                and not np.isnan(similarity_matrix).any(),
+-                "No NaN values in embeddings or matrix",
+-            ),
+-            (
+-                not np.isinf(question_embeddings).any()
+-                and not np.isinf(chunk_embeddings).any()
+-                and not np.isinf(similarity_matrix).any(),
+-                "No infinite values in embeddings or matrix",
+-            ),
+-        ]
+-        for ok, message in checks:
+-            all_ok &= report(ok, message)
+-
+-        minimum = float(similarity_matrix.min())
+-        maximum = float(similarity_matrix.max())
+-        print(f"\n  Cosine score range: {minimum:.6f} to {maximum:.6f}")
+-        all_ok &= report(
+-            minimum >= -1.000001 and maximum <= 1.000001,
+-            "Cosine scores are within [-1, 1]",
+-        )
+-
+-        print("\n  Cosine spot checks:")
+-        for _ in range(SPOT_CHECKS):
+-            q_index = rng.integers(0, question_embeddings.shape[0])
+-            c_index = rng.integers(0, chunk_embeddings.shape[0])
+-            recalculated = cosine_similarity(
+-                question_embeddings[q_index:q_index + 1],
+-                chunk_embeddings[c_index:c_index + 1],
+-            )[0, 0]
+-            stored = similarity_matrix[q_index, c_index]
+-            ok = np.isclose(recalculated, stored, rtol=1e-5, atol=1e-7)
+-            q_id = embedding_question_ids[q_index]
+-            c_id = embedding_chunk_ids[c_index]
+-
+-            if ok:
+-                print(f"    [PASS] {q_id} x {c_id}: {stored:.6f}")
+-            else:
+-                print(
+-                    f"    [FAIL] {q_id} x {c_id}: "
+-                    f"stored={stored:.6f}, recalculated={recalculated:.6f}"
+-                )
+-            all_ok &= ok
+-
+-        print("\n  Example top-5 retrievals:")
+-        sample_indices = np.linspace(
+-            0,
+-            len(embedding_question_ids) - 1,
+-            num=min(4, len(embedding_question_ids)),
+-            dtype=int,
+-        )
+-        for q_index in sample_indices:
+-            scores = similarity_matrix[q_index]
+-            top_indices = np.argsort(scores)[::-1][:5]
+-            print(f"\n    {embedding_question_ids[q_index]}")
+-            for rank, c_index in enumerate(top_indices, start=1):
+-                print(f"      {rank}. {embedding_chunk_ids[c_index]} {scores[c_index]:.6f}")
+-
++def check_representation(method, rng):
++    all_ok = True
++    print(f"method: {method}")
++
++    embedding_dir = EMBEDDINGS_DIR / method
++    similarity_dir = SIMILARITIES_DIR / method
++
++    required_files = [
++        embedding_dir / "question_embeddings.npy",
++        embedding_dir / "chunk_embeddings.npy",
++        embedding_dir / "question_ids.json",
++        embedding_dir / "chunk_ids.json",
++        similarity_dir / "cosine_similarity_matrix.npy",
++        similarity_dir / "question_ids.json",
++        similarity_dir / "chunk_ids.json",
++    ]
++    missing_files = [path for path in required_files if not path.exists()]
++    if missing_files:
++        for path in missing_files:
++            all_ok &= report(False, f"Missing file: {path}")
++        return False, None, None
++
++    question_embeddings = np.load(embedding_dir / "question_embeddings.npy")
++    chunk_embeddings = np.load(embedding_dir / "chunk_embeddings.npy")
++    similarity_matrix = np.load(similarity_dir / "cosine_similarity_matrix.npy")
++
++    embedding_question_ids = read_json(embedding_dir / "question_ids.json")
++    embedding_chunk_ids = read_json(embedding_dir / "chunk_ids.json")
++    similarity_question_ids = read_json(similarity_dir / "question_ids.json")
++    similarity_chunk_ids = read_json(similarity_dir / "chunk_ids.json")
++
++
++    checks = [
++        (
++            len(embedding_question_ids) == EXPECTED_QUESTION_COUNT,
++            f"{EXPECTED_QUESTION_COUNT} question IDs "
++            f"(found {len(embedding_question_ids)})",
++        ),
++        (
++            len(embedding_chunk_ids) == EXPECTED_CHUNK_COUNT,
++            f"{EXPECTED_CHUNK_COUNT} chunk IDs "
++            f"(found {len(embedding_chunk_ids)})",
++        ),
++        (
++            question_embeddings.shape[0] == len(embedding_question_ids),
++            "Question embedding rows match question IDs",
++        ),
++        (
++            chunk_embeddings.shape[0] == len(embedding_chunk_ids),
++            "Chunk embedding rows match chunk IDs",
++        ),
++        (
++            question_embeddings.shape[1] == chunk_embeddings.shape[1],
++            "Question and chunk embedding dimensions match",
++        ),
++        (
++            similarity_matrix.shape
++            == (len(embedding_question_ids), len(embedding_chunk_ids)),
++            f"Cosine matrix shape is correct {similarity_matrix.shape}",
++        ),
++        (
++            embedding_question_ids == similarity_question_ids,
++            "Embedding and similarity question order matches",
++        ),
++        (
++            embedding_chunk_ids == similarity_chunk_ids,
++            "Embedding and similarity chunk order matches",
++        ),
++        (
++            not np.isnan(question_embeddings).any()
++            and not np.isnan(chunk_embeddings).any()
++            and not np.isnan(similarity_matrix).any(),
++            "No NaN values in embeddings or matrix",
++        ),
++        (
++            not np.isinf(question_embeddings).any()
++            and not np.isinf(chunk_embeddings).any()
++            and not np.isinf(similarity_matrix).any(),
++            "No infinite values in embeddings or matrix",
++        ),
++    ]
++    for ok, message in checks:
++        all_ok &= report(ok, message)
++
++    minimum = float(similarity_matrix.min())
++    maximum = float(similarity_matrix.max())
++    print(f"\n  Cosine score range: {minimum:.6f} to {maximum:.6f}")
++    all_ok &= report(
++        minimum >= -1.000001 and maximum <= 1.000001,
++        "Cosine scores are within [-1, 1]",
++    )
++
++    print("\n  Cosine spot checks:")
++    for _ in range(SPOT_CHECKS):
++        q_index = rng.integers(0, question_embeddings.shape[0])
++        c_index = rng.integers(0, chunk_embeddings.shape[0])
++        recalculated = cosine_similarity(
++            question_embeddings[q_index:q_index + 1],
++            chunk_embeddings[c_index:c_index + 1],
++        )[0, 0]
++        stored = similarity_matrix[q_index, c_index]
++        ok = np.isclose(recalculated, stored, rtol=1e-5, atol=1e-7)
++        q_id = embedding_question_ids[q_index]
++        c_id = embedding_chunk_ids[c_index]
++
++        if ok:
++            print(f"    [PASS] {q_id} x {c_id}: {stored:.6f}")
++        else:
++            print(
++                f"    [FAIL] {q_id} x {c_id}: "
++                f"stored={stored:.6f}, recalculated={recalculated:.6f}"
++            )
++        all_ok &= ok
++
++    print("\n  Example top-5 retrievals:")
++    sample_indices = np.linspace(
++        0,
++        len(embedding_question_ids) - 1,
++        num=min(4, len(embedding_question_ids)),
++        dtype=int,
++    )
++    for q_index in sample_indices:
++        scores = similarity_matrix[q_index]
++        top_indices = np.argsort(scores)[::-1][:5]
++        print(f"\n    {embedding_question_ids[q_index]}")
++        for rank, c_index in enumerate(top_indices, start=1):
++            print(f"      {rank}. {embedding_chunk_ids[c_index]} {scores[c_index]:.6f}")
++
++    return all_ok, embedding_question_ids, embedding_chunk_ids
++
++
++def compare_id_order(method_question_ids, method_chunk_ids):
++    all_ok = True
+     print("cross-method order")
+     loaded_methods = list(method_question_ids)
+     if loaded_methods:
+@@ -188,6 +181,12 @@
+         all_ok = False
+         print("[FAIL] No embedding method was successfully loaded.")
+ 
++    return all_ok
++
++
++def check_gold_labels(gold_rows, method_question_ids, method_chunk_ids):
++    all_ok = True
++    loaded_methods = list(method_question_ids)
+     print("gold label checks")
+     if loaded_methods:
+         question_ids = set(method_question_ids[loaded_methods[0]])
+@@ -225,6 +224,31 @@
+             for chunk_id in sorted(missing_chunks):
+                 print(f"    {chunk_id}")
+ 
++    return all_ok
++
++
++def main():
++    print("qa retrieval embedding and similarity check")
++
++    all_ok = True
++    rng = np.random.default_rng(RANDOM_SEED)
++    method_question_ids = {}
++    method_chunk_ids = {}
++
++    with GOLD_FILE.open("r", encoding="utf-8") as file:
++        gold_rows = [json.loads(line) for line in file if line.strip()]
++
++    for method in EMBEDDING_METHODS:
++        ok, question_ids, chunk_ids = check_representation(method, rng)
++        all_ok &= ok
++        if question_ids is not None:
++            method_question_ids[method] = question_ids
++            method_chunk_ids[method] = chunk_ids
++
++    all_ok &= compare_id_order(method_question_ids, method_chunk_ids)
++    loaded_methods = list(method_question_ids)
++    all_ok &= check_gold_labels(gold_rows, method_question_ids, method_chunk_ids)
++
+     if all_ok:
+         print("READY TO RESUME: YES")
+         print("\nAll automatic integrity checks passed.")
+--- a/scripts/evaluate_single_gold_only.py
++++ b/scripts/evaluate_single_gold_only.py
+@@ -16,6 +16,11 @@
+     return numerator / denominator if denominator else 0.0
+ 
+ 
++def average(values):
++    values = list(values)
++    return sum(values) / len(values) if values else 0.0
++
++
+ def main():
+     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+ 
+@@ -28,14 +33,8 @@
+             row for row in all_rows
+             if len(row["gold_chunk_ids"]) == 1
+         ]
+-        zero_gold_rows = [
+-            row for row in all_rows
+-            if len(row["gold_chunk_ids"]) == 0
+-        ]
+-        multi_gold_rows = [
+-            row for row in all_rows
+-            if len(row["gold_chunk_ids"]) > 1
+-        ]
++        zero_gold_count = sum(len(row["gold_chunk_ids"]) == 0 for row in all_rows)
++        multi_gold_count = sum(len(row["gold_chunk_ids"]) > 1 for row in all_rows)
+ 
+         question_count = len(single_gold_rows)
+         total_tp = sum(row["tp"] for row in single_gold_rows)
+@@ -49,10 +48,6 @@
+ 
+         micro_precision = ratio(total_tp, total_tp + total_fp)
+         micro_recall = ratio(total_tp, total_tp + total_fn)
+-
+-        def average(values):
+-            values = list(values)
+-            return sum(values) / len(values) if values else 0.0
+ 
+         summary = {
+             "evaluated_question_count": question_count,
+@@ -83,8 +78,8 @@
+             "source_file": str(path),
+             "filter": {
+                 "included": "questions with exactly one gold chunk",
+-                "excluded_zero_gold_count": len(zero_gold_rows),
+-                "excluded_multi_gold_count": len(multi_gold_rows),
++                "excluded_zero_gold_count": zero_gold_count,
++                "excluded_multi_gold_count": multi_gold_count,
+                 "original_question_count": len(all_rows),
+                 "included_question_count": len(single_gold_rows),
+             },
+@@ -105,8 +100,8 @@
+         print(path)
+         print(f"  original questions: {len(all_rows)}")
+         print(f"  single-gold kept:   {len(single_gold_rows)}")
+-        print(f"  zero-gold removed:  {len(zero_gold_rows)}")
+-        print(f"  multi-gold removed: {len(multi_gold_rows)}")
++        print(f"  zero-gold removed:  {zero_gold_count}")
++        print(f"  multi-gold removed: {multi_gold_count}")
+         print(f"  mean question F1:   {summary['mean_question_f1']:.4f}")
+         print(f"  exact match:        {summary['exact_match_rate']:.4f}")
+         print(f"  micro F1:           {summary['micro_f1']:.4f}")
+--- a/scripts/experiment_pipeline.py
++++ b/scripts/experiment_pipeline.py
+@@ -0,0 +1,43 @@
++"""Shared input and prediction steps for the three experiment runners."""
++import json
++from pathlib import Path
++
++import numpy as np
++
++from chunk_selector import ChunkSelector
++
++
++def read_json(path):
++    with Path(path).open("r", encoding="utf-8") as file:
++        return json.load(file)
++
++
++def load_scores(files, question_ids, representation):
++    matrix_question_ids = read_json(files["question_ids"])
++    chunk_ids = read_json(files["chunk_ids"])
++    row_by_question_id = {question_id: row for row, question_id in enumerate(matrix_question_ids)}
++    missing = [question_id for question_id in question_ids if question_id not in row_by_question_id]
++    if missing:
++        raise ValueError(f"Questions missing from {representation} matrix: {missing[:5]}")
++    rows = [row_by_question_id[question_id] for question_id in question_ids]
++    return np.load(files["matrix"], mmap_mode="r")[rows], chunk_ids
++
++
++def make_predictions(experiment, scores, chunk_ids, question_ids):
++    selector = ChunkSelector(
++        method=experiment["method"],
++        top_k=experiment.get("top_k"),
++        threshold=experiment.get("threshold"),
++        margin=experiment.get("margin"),
++    )
++    selections = selector.select(scores, chunk_ids)
++    return [
++        {"question_id": question_id, "chunk_ids": selection["chunk_ids"], "scores": selection["scores"]}
++        for question_id, selection in zip(question_ids, selections)
++    ]
++
++
++def write_jsonl(path, rows):
++    with path.open("w", encoding="utf-8") as file:
++        for row in rows:
++            file.write(json.dumps(row, ensure_ascii=False) + "\n")
+--- a/scripts/manual_error_review_all_groups.py
++++ b/scripts/manual_error_review_all_groups.py
+@@ -231,45 +231,7 @@
+ 
+     return normalized
+ 
+-def main():
+-    if not CHUNKS_PATH.exists():
+-        raise FileNotFoundError(f"Chunk file not found: {CHUNKS_PATH}")
+-
+-    if not (CHUNK_BROWSER_DIR / "index.html").exists():
+-        raise FileNotFoundError(
+-            f"Chunk browser not found: {CHUNK_BROWSER_DIR}"
+-        )
+-
+-    missing_files = [
+-        str(path)
+-        for path in REVIEW_FILES.values()
+-        if not path.exists()
+-    ]
+-
+-    if missing_files:
+-        raise FileNotFoundError(
+-            "Missing review input file(s):\n  "
+-            + "\n  ".join(missing_files)
+-        )
+-    shutil.copyfile(
+-        CHUNKS_PATH,
+-        CHUNK_BROWSER_DIR / "chunks.jsonl",
+-    )
+-
+-    server = subprocess.Popen(
+-        [sys.executable, "-m", "http.server", str(PORT)],
+-        cwd=CHUNK_BROWSER_DIR,
+-        stdout=subprocess.DEVNULL,
+-        stderr=subprocess.DEVNULL,
+-    )
+-
+-    time.sleep(0.7)
+-
+-    if server.poll() is not None:
+-        raise RuntimeError(
+-            f"Could not start the chunk browser server on port {PORT}."
+-        )
+-
++def load_reviews():
+     rows = []
+ 
+     for error_group, path in REVIEW_FILES.items():
+@@ -343,104 +305,144 @@
+             row["manual_category"] = old_label
+             row["manual_note"] = old.get("manual_note", "")
+ 
+-    print(f"Loaded {len(rows)} review cases.")
+-    print()
+-    print("Browser commands:")
+-    print("  p  open predicted chunk(s)")
+-    print("  g  open gold chunk(s)")
+-    print("  a  open predicted and gold chunk(s)")
+-    print("  ?  show category descriptions")
+-    print("  q  save and quit")
+-    print()
+-    print("Enter the category number directly, exactly like the old script.")
+-    print("For an already reviewed case, press Enter to keep it.")
++    return rows
++
++
++def review_case(row, index, total, rows):
++    error_group = row["source_error_group"]
++    gold_ids = split_ids(row.get("gold_chunk_ids", ""))
++    predicted_ids = split_ids(row.get("predicted_chunk_ids", ""))
++
++    print("=" * 76)
++    print(
++        f"[{index}/{total}] "
++        f"{row['question_id']}  [{error_group}]"
++    )
++    print()
++    print(row.get("question", ""))
++    print()
++    print(f"Gold:      {', '.join(gold_ids) or '[]'}")
++    print(f"Predicted: {', '.join(predicted_ids) or '[]'}")
++
++    if row["manual_category"]:
++        print()
++        print(
++            "Current category: "
++            f"{row['manual_category_code']} "
++            f"{row['manual_category']}"
++        )
++        if row["manual_note"]:
++            print(f"Current note: {row['manual_note']}")
++
++    print()
++
++    if predicted_ids:
++        open_chunk(predicted_ids[0])
++    elif gold_ids:
++        open_chunk(gold_ids[0])
++
++    while True:
++        choice = input(
++            "Category, p/g/a, ?, q"
++            + (", or Enter to keep" if row["manual_category"] else "")
++            + ": "
++        ).strip().lower()
++
++        if choice == "?":
++            print_categories(error_group)
++            continue
++
++        if choice in ("p", "g", "a"):
++            chunk_ids = {"p": predicted_ids, "g": gold_ids, "a": predicted_ids + gold_ids}[choice]
++            for chunk_id in chunk_ids:
++                open_chunk(chunk_id)
++            continue
++
++        if choice == "q":
++            return False
++
++        if choice == "" and row["manual_category"]:
++            print("Kept existing category.")
++            break
++
++        if choice not in CATEGORIES:
++            print("Unknown category. Enter ? to see the options.")
++            continue
++
++        category_label = CATEGORIES[choice]
++        note = input("Short note: ").strip()
++
++        row["manual_category_code"] = choice
++        row["manual_category"] = category_label
++        row["manual_note"] = note
++
++        save_rows(rows)
++
++        print(f"Saved: {choice} {category_label}")
++        break
++
++    return True
++
++
++def main():
++    if not CHUNKS_PATH.exists():
++        raise FileNotFoundError(f"Chunk file not found: {CHUNKS_PATH}")
++
++    if not (CHUNK_BROWSER_DIR / "index.html").exists():
++        raise FileNotFoundError(
++            f"Chunk browser not found: {CHUNK_BROWSER_DIR}"
++        )
++
++    missing_files = [
++        str(path)
++        for path in REVIEW_FILES.values()
++        if not path.exists()
++    ]
++
++    if missing_files:
++        raise FileNotFoundError(
++            "Missing review input file(s):\n  "
++            + "\n  ".join(missing_files)
++        )
++    rows = load_reviews()
++    shutil.copyfile(
++        CHUNKS_PATH,
++        CHUNK_BROWSER_DIR / "chunks.jsonl",
++    )
++
++    server = subprocess.Popen(
++        [sys.executable, "-m", "http.server", str(PORT)],
++        cwd=CHUNK_BROWSER_DIR,
++        stdout=subprocess.DEVNULL,
++        stderr=subprocess.DEVNULL,
++    )
+ 
+     try:
++        time.sleep(0.7)
++
++        if server.poll() is not None:
++            raise RuntimeError(
++                f"Could not start the chunk browser server on port {PORT}."
++            )
++
++        print(f"Loaded {len(rows)} review cases.")
++        print()
++        print("Browser commands:")
++        print("  p  open predicted chunk(s)")
++        print("  g  open gold chunk(s)")
++        print("  a  open predicted and gold chunk(s)")
++        print("  ?  show category descriptions")
++        print("  q  save and quit")
++        print()
++        print("Enter the category number directly, exactly like the old script.")
++        print("For an already reviewed case, press Enter to keep it.")
++
+         for index, row in enumerate(rows, start=1):
+-            error_group = row["source_error_group"]
+-            gold_ids = split_ids(row.get("gold_chunk_ids", ""))
+-            predicted_ids = split_ids(row.get("predicted_chunk_ids", ""))
+-
+-            print("=" * 76)
+-            print(
+-                f"[{index}/{len(rows)}] "
+-                f"{row['question_id']}  [{error_group}]"
+-            )
+-            print()
+-            print(row.get("question", ""))
+-            print()
+-            print(f"Gold:      {', '.join(gold_ids) or '[]'}")
+-            print(f"Predicted: {', '.join(predicted_ids) or '[]'}")
+-
+-            if row["manual_category"]:
+-                print()
+-                print(
+-                    "Current category: "
+-                    f"{row['manual_category_code']} "
+-                    f"{row['manual_category']}"
+-                )
+-                if row["manual_note"]:
+-                    print(f"Current note: {row['manual_note']}")
+-
+-            print()
+-
+-            if predicted_ids:
+-                open_chunk(predicted_ids[0])
+-            elif gold_ids:
+-                open_chunk(gold_ids[0])
+-
+-            while True:
+-                choice = input(
+-                    "Category, p/g/a, ?, q"
+-                    + (", or Enter to keep" if row["manual_category"] else "")
+-                    + ": "
+-                ).strip().lower()
+-
+-                if choice == "?":
+-                    print_categories(error_group)
+-                    continue
+-
+-                if choice == "p":
+-                    for chunk_id in predicted_ids:
+-                        open_chunk(chunk_id)
+-                    continue
+-
+-                if choice == "g":
+-                    for chunk_id in gold_ids:
+-                        open_chunk(chunk_id)
+-                    continue
+-
+-                if choice == "a":
+-                    for chunk_id in predicted_ids + gold_ids:
+-                        open_chunk(chunk_id)
+-                    continue
+-
+-                if choice == "q":
+-                    save_rows(rows)
+-                    print_summary(rows)
+-                    print(f"Saved to: {OUTPUT_PATH}")
+-                    return
+-
+-                if choice == "" and row["manual_category"]:
+-                    print("Kept existing category.")
+-                    break
+-
+-                if choice not in CATEGORIES:
+-                    print("Unknown category. Enter ? to see the options.")
+-                    continue
+-
+-                category_label = CATEGORIES[choice]
+-                note = input("Short note: ").strip()
+-
+-                row["manual_category_code"] = choice
+-                row["manual_category"] = category_label
+-                row["manual_note"] = note
+-
++            if not review_case(row, index, len(rows), rows):
+                 save_rows(rows)
+-
+-                print(f"Saved: {choice} {category_label}")
+-                break
+-
++                print_summary(rows)
++                print(f"Saved to: {OUTPUT_PATH}")
++                return
+     finally:
+         if server.poll() is None:
+             server.terminate()
+--- a/scripts/mapping_evaluator.py
++++ b/scripts/mapping_evaluator.py
+@@ -6,6 +6,7 @@
+ 
+ 
+ def score_counts(tp, fp, fn):
++    """An empty prediction against empty gold receives perfect scores."""
+     if tp == fp == fn == 0:
+         return 1.0, 1.0, 1.0, 1.0
+ 
+@@ -20,6 +21,91 @@
+ def mean(values):
+     values = list(values)
+     return sum(values) / len(values) if values else 0.0
++
++
++def score_question(question_id, gold_chunks, predicted_chunks):
++    true_positive_chunks = gold_chunks & predicted_chunks
++    false_positive_chunks = predicted_chunks - gold_chunks
++    false_negative_chunks = gold_chunks - predicted_chunks
++
++    tp = len(true_positive_chunks)
++    fp = len(false_positive_chunks)
++    fn = len(false_negative_chunks)
++    precision, recall, f1, jaccard = score_counts(tp, fp, fn)
++
++    return {
++        "question_id": question_id,
++        "gold_chunk_ids": sorted(gold_chunks),
++        "predicted_chunk_ids": sorted(predicted_chunks),
++        "true_positive_chunk_ids": sorted(true_positive_chunks),
++        "false_positive_chunk_ids": sorted(false_positive_chunks),
++        "false_negative_chunk_ids": sorted(false_negative_chunks),
++        "tp": tp,
++        "fp": fp,
++        "fn": fn,
++        "precision": precision,
++        "recall": recall,
++        "f1": f1,
++        "jaccard": jaccard,
++        "exact_match": gold_chunks == predicted_chunks,
++    }
++
++
++def summarize_questions(per_question, scope_ids, prediction_ids, unanswered_ids, unknown_prediction_ids):
++    selected_counts = [len(row["predicted_chunk_ids"]) for row in per_question]
++    total_tp = sum(row["tp"] for row in per_question)
++    total_fp = sum(row["fp"] for row in per_question)
++    total_fn = sum(row["fn"] for row in per_question)
++    if per_question:
++        micro_precision, micro_recall, micro_f1, micro_jaccard = score_counts(
++            total_tp,
++            total_fp,
++            total_fn,
++        )
++    else:
++        micro_precision = micro_recall = micro_f1 = micro_jaccard = 0.0
++
++    zero_gold_rows = [
++        row for row in per_question
++        if not row["gold_chunk_ids"]
++    ]
++    correct_abstentions = sum(
++        not row["predicted_chunk_ids"]
++        for row in zero_gold_rows
++    )
++
++    return {
++        "total_gold_questions": len(scope_ids),
++        "submitted_prediction_count": len(prediction_ids & scope_ids),
++        "evaluated_question_count": len(per_question),
++        "unanswered_question_count": len(unanswered_ids),
++        "answer_coverage": len(per_question) / len(scope_ids) if scope_ids else 0.0,
++        "unknown_prediction_count": len(unknown_prediction_ids),
++        "exact_match_count": sum(row["exact_match"] for row in per_question),
++        "exact_match_rate": mean(row["exact_match"] for row in per_question),
++        "mean_question_precision": mean(row["precision"] for row in per_question),
++        "mean_question_recall": mean(row["recall"] for row in per_question),
++        "mean_question_f1": mean(row["f1"] for row in per_question),
++        "mean_question_jaccard": mean(row["jaccard"] for row in per_question),
++        "micro_precision": micro_precision,
++        "micro_recall": micro_recall,
++        "micro_f1": micro_f1,
++        "micro_jaccard": micro_jaccard,
++        "average_selected_chunks": mean(selected_counts),
++        "empty_selection_rate": mean(count == 0 for count in selected_counts),
++        "zero_gold_question_count": len(zero_gold_rows),
++        "correct_abstention_count": correct_abstentions,
++        "zero_gold_abstention_rate": (
++            correct_abstentions / len(zero_gold_rows)
++            if zero_gold_rows
++            else 0.0
++        ),
++        "total_tp": total_tp,
++        "total_fp": total_fp,
++        "total_fn": total_fn,
++        "unanswered_question_ids": unanswered_ids,
++        "unknown_prediction_question_ids": unknown_prediction_ids,
++    }
+ 
+ 
+ class QAMappingEvaluator:
+@@ -66,93 +152,12 @@
+         unanswered_ids = sorted(scope_ids - prediction_ids)
+         unknown_prediction_ids = sorted(prediction_ids - set(self.gold))
+ 
++        # Missing predictions are reported separately; they are not scored.
+         per_question = []
+         for question_id in evaluated_ids:
+-            gold_chunks = self.gold[question_id]
+-            predicted_chunks = predictions[question_id]
++            per_question.append(score_question(question_id, self.gold[question_id], predictions[question_id]))
+ 
+-            true_positive_chunks = gold_chunks & predicted_chunks
+-            false_positive_chunks = predicted_chunks - gold_chunks
+-            false_negative_chunks = gold_chunks - predicted_chunks
+-
+-            tp = len(true_positive_chunks)
+-            fp = len(false_positive_chunks)
+-            fn = len(false_negative_chunks)
+-            precision, recall, f1, jaccard = score_counts(tp, fp, fn)
+-
+-            per_question.append(
+-                {
+-                    "question_id": question_id,
+-                    "gold_chunk_ids": sorted(gold_chunks),
+-                    "predicted_chunk_ids": sorted(predicted_chunks),
+-                    "true_positive_chunk_ids": sorted(true_positive_chunks),
+-                    "false_positive_chunk_ids": sorted(false_positive_chunks),
+-                    "false_negative_chunk_ids": sorted(false_negative_chunks),
+-                    "tp": tp,
+-                    "fp": fp,
+-                    "fn": fn,
+-                    "precision": precision,
+-                    "recall": recall,
+-                    "f1": f1,
+-                    "jaccard": jaccard,
+-                    "exact_match": gold_chunks == predicted_chunks,
+-                }
+-            )
+-
+-        selected_counts = [len(row["predicted_chunk_ids"]) for row in per_question]
+-        total_tp = sum(row["tp"] for row in per_question)
+-        total_fp = sum(row["fp"] for row in per_question)
+-        total_fn = sum(row["fn"] for row in per_question)
+-        if per_question:
+-            micro_precision, micro_recall, micro_f1, micro_jaccard = score_counts(
+-                total_tp,
+-                total_fp,
+-                total_fn,
+-            )
+-        else:
+-            micro_precision = micro_recall = micro_f1 = micro_jaccard = 0.0
+-
+-        zero_gold_rows = [
+-            row for row in per_question
+-            if not row["gold_chunk_ids"]
+-        ]
+-        correct_abstentions = sum(
+-            not row["predicted_chunk_ids"]
+-            for row in zero_gold_rows
+-        )
+-
+-        summary = {
+-            "total_gold_questions": len(scope_ids),
+-            "submitted_prediction_count": len(prediction_ids & scope_ids),
+-            "evaluated_question_count": len(per_question),
+-            "unanswered_question_count": len(unanswered_ids),
+-            "answer_coverage": len(per_question) / len(scope_ids) if scope_ids else 0.0,
+-            "unknown_prediction_count": len(unknown_prediction_ids),
+-            "exact_match_count": sum(row["exact_match"] for row in per_question),
+-            "exact_match_rate": mean(row["exact_match"] for row in per_question),
+-            "mean_question_precision": mean(row["precision"] for row in per_question),
+-            "mean_question_recall": mean(row["recall"] for row in per_question),
+-            "mean_question_f1": mean(row["f1"] for row in per_question),
+-            "mean_question_jaccard": mean(row["jaccard"] for row in per_question),
+-            "micro_precision": micro_precision,
+-            "micro_recall": micro_recall,
+-            "micro_f1": micro_f1,
+-            "micro_jaccard": micro_jaccard,
+-            "average_selected_chunks": mean(selected_counts),
+-            "empty_selection_rate": mean(count == 0 for count in selected_counts),
+-            "zero_gold_question_count": len(zero_gold_rows),
+-            "correct_abstention_count": correct_abstentions,
+-            "zero_gold_abstention_rate": (
+-                correct_abstentions / len(zero_gold_rows)
+-                if zero_gold_rows
+-                else 0.0
+-            ),
+-            "total_tp": total_tp,
+-            "total_fp": total_fp,
+-            "total_fn": total_fn,
+-            "unanswered_question_ids": unanswered_ids,
+-            "unknown_prediction_question_ids": unknown_prediction_ids,
+-        }
++        summary = summarize_questions(per_question, scope_ids, prediction_ids, unanswered_ids, unknown_prediction_ids)
+ 
+         return {
+             "summary": summary,
+--- a/scripts/prefilter_errors.py
++++ b/scripts/prefilter_errors.py
+@@ -14,13 +14,6 @@
+ )
+ 
+ SPLIT = "validation"
+-
+-GOLD_FIELD = "all_required_chunk_ids"
+-PREDICTION_FIELD = "chunk_ids"
+-
+-CHUNK_ID_FIELD = "chunk_id"
+-CHUNK_TEXT_FIELD = "text"
+-
+ 
+ def load_jsonl(path):
+     with path.open(encoding="utf-8") as file:
+@@ -61,12 +54,12 @@
+     gold_rows = [row for row in gold_rows if row.get("split") == SPLIT]
+ 
+     predictions = {
+-        row["question_id"]: row[PREDICTION_FIELD]
++        row["question_id"]: row["chunk_ids"]
+         for row in prediction_rows
+     }
+ 
+     chunk_text = {
+-        row[CHUNK_ID_FIELD]: row.get(CHUNK_TEXT_FIELD, "")
++        row["chunk_id"]: row["chunk_text"]
+         for row in chunks
+     }
+ 
+@@ -81,7 +74,7 @@
+ 
+     for row in gold_rows:
+         question_id = row["question_id"]
+-        gold = row[GOLD_FIELD]
++        gold = row["all_required_chunk_ids"]
+         prediction = predictions[question_id]
+ 
+         category = classify(gold, prediction)
+--- a/scripts/run_selector_experiments.py
++++ b/scripts/run_selector_experiments.py
+@@ -4,16 +4,11 @@
+ 
+ import numpy as np
+ 
+-from chunk_selector import ChunkSelector
++from experiment_pipeline import load_scores, make_predictions, read_json, write_jsonl
+ from mapping_evaluator import QAMappingEvaluator
+ 
+ 
+-DEFAULT_CONFIG = Path("configs/manual_review_v1_coarse.json")
+-
+-
+-def read_json(path):
+-    with Path(path).open("r", encoding="utf-8") as file:
+-        return json.load(file)
++DEFAULT_CONFIG = Path("artifacts/experiments/manual_review_v1/configs/manual_review_v1_coarse.json")
+ 
+ 
+ def experiment_name(experiment):
+@@ -83,6 +78,22 @@
+     return experiments
+ 
+ 
++def neighboring_interval(coarse_values, best_value, search_lower, search_upper):
++    best_index = coarse_values.index(best_value)
++    if best_index > 0:
++        lower = coarse_values[best_index - 1]
++    else:
++        lower = best_value - (coarse_values[1] - best_value)
++    if best_index < len(coarse_values) - 1:
++        upper = coarse_values[best_index + 1]
++    else:
++        upper = best_value + (best_value - coarse_values[-2])
++
++    lower = max(lower, search_lower)
++    upper = min(upper, search_upper)
++    return lower, upper
++
++
+ def expand_fine_search(config, coarse_dir):
+     coarse_manifest = read_json(coarse_dir / "run_manifest.json")
+     for key in ("split", "gold_path", "split_ids_path", "representations"):
+@@ -92,7 +103,6 @@
+     evaluations = []
+     for path in coarse_dir.glob("*_evaluation.json"):
+         result = read_json(path)
+-        result["_path"] = str(path)
+         evaluations.append(result)
+     if not evaluations:
+         raise ValueError(f"No evaluations found in coarse run: {coarse_dir}")
+@@ -152,18 +162,7 @@
+                     f"Need at least two coarse {parameter} values for {representation}/{method}, top_k={top_k}"
+                 )
+ 
+-            best_index = coarse_values.index(best_value)
+-            if best_index > 0:
+-                lower = coarse_values[best_index - 1]
+-            else:
+-                lower = best_value - (coarse_values[1] - best_value)
+-            if best_index < len(coarse_values) - 1:
+-                upper = coarse_values[best_index + 1]
+-            else:
+-                upper = best_value + (best_value - coarse_values[-2])
+-
+-            lower = max(lower, search_lower)
+-            upper = min(upper, search_upper)
++            lower, upper = neighboring_interval(coarse_values, best_value, search_lower, search_upper)
+             if lower >= upper:
+                 raise ValueError(
+                     f"Could not form a local fine-search range for {representation}/{method}, "
+@@ -232,35 +231,16 @@
+     summaries = []
+     for representation, representation_experiments in by_representation.items():
+         files = config["representations"][representation]
+-        matrix_question_ids = read_json(files["question_ids"])
+-        chunk_ids = read_json(files["chunk_ids"])
+-        row_by_question_id = {question_id: row for row, question_id in enumerate(matrix_question_ids)}
+-        missing = [question_id for question_id in development_ids if question_id not in row_by_question_id]
+-        if missing:
+-            raise ValueError(f"Questions missing from {representation} matrix: {missing[:5]}")
+-        rows = [row_by_question_id[question_id] for question_id in development_ids]
+-        scores = np.load(files["matrix"], mmap_mode="r")[rows]
++        scores, chunk_ids = load_scores(files, development_ids, representation)
+ 
+         for experiment in representation_experiments:
+-            selector = ChunkSelector(
+-                method=experiment["method"],
+-                top_k=experiment.get("top_k"),
+-                threshold=experiment.get("threshold"),
+-                margin=experiment.get("margin"),
+-            )
+-            selections = selector.select(scores, chunk_ids)
+-            predictions = [
+-                {"question_id": question_id, "chunk_ids": selection["chunk_ids"], "scores": selection["scores"]}
+-                for question_id, selection in zip(development_ids, selections)
+-            ]
++            predictions = make_predictions(experiment, scores, chunk_ids, development_ids)
+             result = evaluator.eval(
+-                [{"question_id": row["question_id"], "chunk_ids": row["chunk_ids"]} for row in predictions],
++                predictions,
+                 question_ids=development_ids,
+             )
+             name = experiment_name(experiment)
+-            with (output_dir / f"{name}_predictions.jsonl").open("w", encoding="utf-8") as file:
+-                for row in predictions:
+-                    file.write(json.dumps(row, ensure_ascii=False) + "\n")
++            write_jsonl(output_dir / f"{name}_predictions.jsonl", predictions)
+             with (output_dir / f"{name}_evaluation.json").open("w", encoding="utf-8") as file:
+                 json.dump({"experiment": experiment, "split": config["split"], **result}, file, ensure_ascii=False, indent=2)
+ 
+--- a/scripts/run_test_winner.py
++++ b/scripts/run_test_winner.py
+@@ -2,15 +2,8 @@
+ import json
+ from pathlib import Path
+ 
+-import numpy as np
+-
+-from chunk_selector import ChunkSelector
++from experiment_pipeline import load_scores, make_predictions, read_json, write_jsonl
+ from mapping_evaluator import QAMappingEvaluator
+-
+-
+-def read_json(path):
+-    with Path(path).open("r", encoding="utf-8") as file:
+-        return json.load(file)
+ 
+ 
+ def main():
+@@ -35,29 +28,11 @@
+ 
+     test_ids = read_json(config["split_ids_path"])
+     files = {key: Path(value) for key, value in config["representation_artifacts"].items()}
+-    matrix_question_ids = read_json(files["question_ids"])
+-    chunk_ids = read_json(files["chunk_ids"])
+-    row_by_question_id = {question_id: row for row, question_id in enumerate(matrix_question_ids)}
+-    missing = [question_id for question_id in test_ids if question_id not in row_by_question_id]
+-    if missing:
+-        raise ValueError(f"Questions missing from winner matrix: {missing[:5]}")
+-    test_rows = [row_by_question_id[question_id] for question_id in test_ids]
+-    test_scores = np.load(files["matrix"], mmap_mode="r")[test_rows]
+-
+-    selector = ChunkSelector(
+-        method=winner["method"],
+-        top_k=winner.get("top_k"),
+-        threshold=winner.get("threshold"),
+-        margin=winner.get("margin"),
+-    )
+-    selections = selector.select(test_scores, chunk_ids)
+-    predictions = [
+-        {"question_id": question_id, "chunk_ids": selection["chunk_ids"], "scores": selection["scores"]}
+-        for question_id, selection in zip(test_ids, selections)
+-    ]
++    test_scores, chunk_ids = load_scores(files, test_ids, "winner")
++    predictions = make_predictions(winner, test_scores, chunk_ids, test_ids)
+     evaluator = QAMappingEvaluator(config["gold_path"])
+     result = evaluator.eval(
+-        [{"question_id": row["question_id"], "chunk_ids": row["chunk_ids"]} for row in predictions],
++        predictions,
+         question_ids=test_ids,
+     )
+ 
+@@ -82,9 +57,7 @@
+         if key in winner:
+             name_parts.append(f"{key}_{winner[key]}")
+     name = "_".join(name_parts)
+-    with (output_dir / f"{name}_predictions.jsonl").open("w", encoding="utf-8") as file:
+-        for row in predictions:
+-            file.write(json.dumps(row, ensure_ascii=False) + "\n")
++    write_jsonl(output_dir / f"{name}_predictions.jsonl", predictions)
+     with (output_dir / f"{name}_evaluation.json").open("w", encoding="utf-8") as file:
+         json.dump({"experiment": winner, "split": "test", **result}, file, ensure_ascii=False, indent=2)
+     summary = {"experiment": name, **winner, **result["summary"]}
+--- a/scripts/run_validation_finalists.py
++++ b/scripts/run_validation_finalists.py
+@@ -3,18 +3,11 @@
+ import json
+ from pathlib import Path
+ 
+-import numpy as np
+-
+-from chunk_selector import ChunkSelector
++from experiment_pipeline import load_scores, make_predictions, read_json, write_jsonl
+ from mapping_evaluator import QAMappingEvaluator
+ 
+ 
+-DEFAULT_CONFIG = Path("configs/manual_review_v1_validation.json")
+-
+-
+-def read_json(path):
+-    with Path(path).open("r", encoding="utf-8") as file:
+-        return json.load(file)
++DEFAULT_CONFIG = Path("artifacts/experiments/manual_review_v1/configs/manual_review_v1_validation.json")
+ 
+ 
+ def experiment_name(representation, method, parameters):
+@@ -34,16 +27,7 @@
+     )
+ 
+ 
+-def main():
+-    parser = argparse.ArgumentParser(description="Evaluate development-selected configurations on validation.")
+-    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+-    parser.add_argument("--output-dir", type=Path)
+-    args = parser.parse_args()
+-
+-    config = read_json(args.config)
+-    candidate_file = Path(config["candidates_path"])
+-    candidate_document = read_json(candidate_file)
+-    candidates = candidate_document["candidates"]
++def validate_candidates(candidates, config, candidate_file):
+     if not candidates:
+         raise ValueError(f"No development candidates found in {candidate_file}")
+     actual = [(candidate["representation"], candidate["method"]) for candidate in candidates]
+@@ -63,6 +47,77 @@
+         }
+         if set(actual) != expected or len(actual) != len(expected):
+             raise ValueError(f"Unexpected validation candidates; expected {sorted(expected)}, got {actual}")
++
++
++def export_winner(summaries, representations, config, output_dir):
++    ranked = sorted(summaries, key=rank_row, reverse=True)
++    with (output_dir / "summary.jsonl").open("w", encoding="utf-8") as file:
++        for row in ranked:
++            file.write(json.dumps(row, ensure_ascii=False) + "\n")
++    with (output_dir / "validation_ranking.csv").open("w", encoding="utf-8", newline="") as file:
++        columns = ["representation", "method", "top_k", "threshold", "margin", "mean_question_f1", "exact_match_rate", "mean_question_precision", "average_selected_chunks"]
++        writer = csv.DictWriter(file, fieldnames=columns, extrasaction="ignore")
++        writer.writeheader()
++        writer.writerows(ranked)
++
++    winner = ranked[0]
++    winner_files = representations[winner["representation"]]
++    frozen_winner = {
++        "selected_by": "validation ranking",
++        "validation_run_dir": str(output_dir),
++        "validation_metrics": {key: winner[key] for key in ("mean_question_f1", "exact_match_rate", "mean_question_precision", "average_selected_chunks")},
++        "winner": {
++            "representation": winner["representation"],
++            "method": winner["method"],
++            **{key: winner[key] for key in ("top_k", "threshold", "margin") if key in winner and winner[key] is not None},
++        },
++        "gold_path": config["test_gold_path"],
++        "split_ids_path": config["test_split_ids_path"],
++        "representation_artifacts": {key: str(path) for key, path in winner_files.items()},
++        "test_output_dir": config["test_output_dir"],
++    }
++    (output_dir / "frozen_winner.json").write_text(
++        json.dumps(frozen_winner, ensure_ascii=False, indent=2), encoding="utf-8"
++    )
++    print("\nValidation winner:")
++    print(json.dumps(frozen_winner["winner"] | frozen_winner["validation_metrics"], ensure_ascii=False, indent=2))
++    print(f"Validation outputs saved to: {output_dir}")
++
++
++def evaluate_candidate(candidate, predictions, evaluator, validation_ids, output_dir):
++    representation = candidate["representation"]
++    method = candidate["method"]
++    parameters = candidate["parameters"]
++    result = evaluator.eval(
++        predictions,
++        question_ids=validation_ids,
++    )
++    name = experiment_name(representation, method, parameters)
++    write_jsonl(output_dir / f"{name}_predictions.jsonl", predictions)
++    with (output_dir / f"{name}_evaluation.json").open("w", encoding="utf-8") as file:
++        json.dump({"experiment": {"representation": representation, "method": method, **parameters}, "split": "validation", **result}, file, ensure_ascii=False, indent=2)
++
++    summary = {
++        "experiment": name,
++        "representation": representation,
++        "method": method,
++        **parameters,
++        **result["summary"],
++    }
++    return summary
++
++
++def main():
++    parser = argparse.ArgumentParser(description="Evaluate development-selected configurations on validation.")
++    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
++    parser.add_argument("--output-dir", type=Path)
++    args = parser.parse_args()
++
++    config = read_json(args.config)
++    candidate_file = Path(config["candidates_path"])
++    candidate_document = read_json(candidate_file)
++    candidates = candidate_document["candidates"]
++    validate_candidates(candidates, config, candidate_file)
+ 
+     validation_ids = read_json(config["split_ids_path"])
+     output_dir = args.output_dir or Path(config["output_dir"])
+@@ -100,46 +155,13 @@
+             raise ValueError(f"No artifacts configured for representation: {representation}")
+         if representation not in cache:
+             files = representations[representation]
+-            matrix_question_ids = read_json(files["question_ids"])
+-            chunk_ids = read_json(files["chunk_ids"])
+-            row_by_question_id = {question_id: row for row, question_id in enumerate(matrix_question_ids)}
+-            missing = [question_id for question_id in validation_ids if question_id not in row_by_question_id]
+-            if missing:
+-                raise ValueError(f"Questions missing from {representation} matrix: {missing[:5]}")
+-            rows = [row_by_question_id[question_id] for question_id in validation_ids]
+-            cache[representation] = (np.load(files["matrix"], mmap_mode="r")[rows], chunk_ids)
++            cache[representation] = load_scores(files, validation_ids, representation)
+ 
+         scores, chunk_ids = cache[representation]
+-        selector = ChunkSelector(
+-            method=method,
+-            top_k=parameters.get("top_k"),
+-            threshold=parameters.get("threshold"),
+-            margin=parameters.get("margin"),
+-        )
+-        selections = selector.select(scores, chunk_ids)
+-        predictions = [
+-            {"question_id": question_id, "chunk_ids": selection["chunk_ids"], "scores": selection["scores"]}
+-            for question_id, selection in zip(validation_ids, selections)
+-        ]
+-        result = evaluator.eval(
+-            [{"question_id": row["question_id"], "chunk_ids": row["chunk_ids"]} for row in predictions],
+-            question_ids=validation_ids,
+-        )
+-        name = experiment_name(representation, method, parameters)
+-        with (output_dir / f"{name}_predictions.jsonl").open("w", encoding="utf-8") as file:
+-            for row in predictions:
+-                file.write(json.dumps(row, ensure_ascii=False) + "\n")
+-        with (output_dir / f"{name}_evaluation.json").open("w", encoding="utf-8") as file:
+-            json.dump({"experiment": {"representation": representation, "method": method, **parameters}, "split": "validation", **result}, file, ensure_ascii=False, indent=2)
+-
+-        summary = {
+-            "experiment": name,
+-            "representation": representation,
+-            "method": method,
+-            **parameters,
+-            **result["summary"],
+-        }
++        predictions = make_predictions({"method": method, **parameters}, scores, chunk_ids, validation_ids)
++        summary = evaluate_candidate(candidate, predictions, evaluator, validation_ids, output_dir)
+         summaries.append(summary)
++        name = summary["experiment"]
+         print(
+             f"{name}: F1={summary['mean_question_f1']:.4f}, "
+             f"exact={summary['exact_match_rate']:.4f}, "
+@@ -147,38 +169,7 @@
+             f"avg_chunks={summary['average_selected_chunks']:.2f}"
+         )
+ 
+-    ranked = sorted(summaries, key=rank_row, reverse=True)
+-    with (output_dir / "summary.jsonl").open("w", encoding="utf-8") as file:
+-        for row in ranked:
+-            file.write(json.dumps(row, ensure_ascii=False) + "\n")
+-    with (output_dir / "validation_ranking.csv").open("w", encoding="utf-8", newline="") as file:
+-        columns = ["representation", "method", "top_k", "threshold", "margin", "mean_question_f1", "exact_match_rate", "mean_question_precision", "average_selected_chunks"]
+-        writer = csv.DictWriter(file, fieldnames=columns, extrasaction="ignore")
+-        writer.writeheader()
+-        writer.writerows(ranked)
+-
+-    winner = ranked[0]
+-    winner_files = representations[winner["representation"]]
+-    frozen_winner = {
+-        "selected_by": "validation ranking",
+-        "validation_run_dir": str(output_dir),
+-        "validation_metrics": {key: winner[key] for key in ("mean_question_f1", "exact_match_rate", "mean_question_precision", "average_selected_chunks")},
+-        "winner": {
+-            "representation": winner["representation"],
+-            "method": winner["method"],
+-            **{key: winner[key] for key in ("top_k", "threshold", "margin") if key in winner and winner[key] is not None},
+-        },
+-        "gold_path": config["test_gold_path"],
+-        "split_ids_path": config["test_split_ids_path"],
+-        "representation_artifacts": {key: str(path) for key, path in winner_files.items()},
+-        "test_output_dir": config["test_output_dir"],
+-    }
+-    (output_dir / "frozen_winner.json").write_text(
+-        json.dumps(frozen_winner, ensure_ascii=False, indent=2), encoding="utf-8"
+-    )
+-    print("\nValidation winner:")
+-    print(json.dumps(frozen_winner["winner"] | frozen_winner["validation_metrics"], ensure_ascii=False, indent=2))
+-    print(f"Validation outputs saved to: {output_dir}")
++    export_winner(summaries, representations, config, output_dir)
+ 
+ 
+ if __name__ == "__main__":
+--- a/scripts/text_embedder.py
++++ b/scripts/text_embedder.py
+@@ -24,8 +24,6 @@
+             self.model_name_or_path = None
+             return
+ 
+-        from sentence_transformers import SentenceTransformer
+-
+         if self.method == "SENTENCE_BERT":
+             self.model_name_or_path = (
+                 model_name_or_path or self.default_sentence_model
+@@ -34,6 +32,8 @@
+             self.model_name_or_path = model_name_or_path or self.default_e5_model
+         else:
+             raise ValueError(f"Unknown embedding method: {method}")
++
++        from sentence_transformers import SentenceTransformer
+ 
+         self.model = SentenceTransformer(self.model_name_or_path)
+         self.vectorizer = None
+--- a/scripts/visualization/visualize_evaluation_optional.py
++++ b/scripts/visualization/visualize_evaluation_optional.py
+@@ -5,68 +5,6 @@
+ import pandas as pd
+ 
+ 
+-# ============================================================
+-# Configuration
+-# ============================================================
+-
+-# ------------------------------------------------------------
+-# Recommended settings: dev_top_k_v1
+-# ------------------------------------------------------------
+-#
+-# RESULTS_DIR = Path(
+-#     "artifacts/experiments/archive/first_run/outputs/development/dev_top_k_v1"
+-# )
+-# METHOD = "top_k"
+-# X_PARAMETER = "top_k"
+-# GROUP_PARAMETER = None
+-#
+-# TABLE_METRICS = [
+-#     "overall_f1",
+-#     "answerable_precision",
+-#     "answerable_recall",
+-#     "answerable_f1",
+-#     "micro_f1",
+-# ]
+-#
+-# PLOT_METRICS = [
+-#     "answerable_precision",
+-#     "answerable_recall",
+-#     "answerable_f1",
+-# ]
+-
+-
+-# ------------------------------------------------------------
+-# Recommended settings: dev_threshold_v1
+-# / dev_threshold_refined_v1
+-# ------------------------------------------------------------
+-#
+-# RESULTS_DIR = Path(
+-#     "artifacts/experiments/archive/first_run/outputs/development/dev_threshold_v1"
+-# )
+-# METHOD = "threshold"
+-# X_PARAMETER = "threshold"
+-# GROUP_PARAMETER = None
+-#
+-# TABLE_METRICS = [
+-#     "overall_f1",
+-#     "answerable_precision",
+-#     "answerable_recall",
+-#     "answerable_f1",
+-#     "zero_gold_abstention_rate",
+-#     "empty_selection_rate",
+-#     "average_selected_chunks",
+-# ]
+-#
+-# PLOT_METRICS = [
+-#     "overall_f1",
+-#     "zero_gold_abstention_rate",
+-#     "answerable_recall",
+-# ]
+-
+-
+-# ------------------------------------------------------------
+-# Active settings: base validation relative-margin candidates
+-# ------------------------------------------------------------
+ RESULTS_DIR = Path(
+     "artifacts/experiments/base/outputs/validation/finalists"
+ )
+@@ -114,29 +52,6 @@
+ COMBINED_X_MODE = "raw"         # raw or normalized
+ 
+ 
+-# ------------------------------------------------------------
+-# Best-config selection
+-# ------------------------------------------------------------
+-
+-BEST_CONFIG_SORT = [
+-    "overall_f1",
+-    "exact_match",
+-    "overall_precision",
+-    "average_selected_chunks",
+-]
+-
+-BEST_CONFIG_ASCENDING = [
+-    False,
+-    False,
+-    False,
+-    True,
+-]
+-
+-
+-# ============================================================
+-# Helpers
+-# ============================================================
+-
+ def mean_metric(rows, metric):
+     if not rows:
+         return None
+@@ -297,37 +212,21 @@
+     for representation, representation_df in df.groupby("representation"):
+         fig, ax = plt.subplots(figsize=(8, 5))
+ 
+-        if GROUP_PARAMETER is None:
+-            group = representation_df.sort_values(X_PARAMETER)
+-
++        groups = (
++            [(None, representation_df)]
++            if GROUP_PARAMETER is None
++            else representation_df.groupby(GROUP_PARAMETER)
++        )
++        for group_value, group in groups:
++            group = group.sort_values(X_PARAMETER)
+             for metric in PLOT_METRICS:
+-                ax.plot(
+-                    group[X_PARAMETER],
+-                    group[metric],
+-                    marker="o",
+-                    label=metric,
+-                )
+-
+-        else:
+-            for group_value, group in representation_df.groupby(
+-                GROUP_PARAMETER
+-            ):
+-                group = group.sort_values(X_PARAMETER)
+-
+-                for metric in PLOT_METRICS:
+-                    if len(PLOT_METRICS) == 1:
+-                        label = f"{GROUP_PARAMETER}={group_value}"
+-                    else:
+-                        label = (
+-                            f"{GROUP_PARAMETER}={group_value} - {metric}"
+-                        )
+-
+-                    ax.plot(
+-                        group[X_PARAMETER],
+-                        group[metric],
+-                        marker="o",
+-                        label=label,
+-                    )
++                if GROUP_PARAMETER is None:
++                    label = metric
++                elif len(PLOT_METRICS) == 1:
++                    label = f"{GROUP_PARAMETER}={group_value}"
++                else:
++                    label = f"{GROUP_PARAMETER}={group_value} - {metric}"
++                ax.plot(group[X_PARAMETER], group[metric], marker="o", label=label)
+ 
+         ax.set_xlabel(
+             X_PARAMETER.replace("_", " ").title()

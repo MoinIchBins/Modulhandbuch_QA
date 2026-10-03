@@ -38,20 +38,19 @@ Frozen inputs are in `data/frozen/`; shared embeddings and similarity matrices a
 
 ## Pipeline
 
-Use one complete JSON config per experiment. From the repository root:
+From the repository root, with dependencies from `requirements.txt` installed:
 
 ```bash
-.venv/bin/python -m scripts.run_experiment --config configs/manual_review_v1.json --stage check
-.venv/bin/python -m scripts.run_experiment --config configs/manual_review_v1.json --confirm-test
+.venv/bin/python scripts/run_selector_experiments.py --config artifacts/experiments/base/configs/coarse.json
+.venv/bin/python scripts/run_selector_experiments.py --config artifacts/experiments/base/configs/fine.json --coarse-run artifacts/experiments/base/outputs/development/coarse_all
+.venv/bin/python scripts/dev_summary_script.py --run-set artifacts/experiments/base/configs/dev_summary.json
+.venv/bin/python scripts/run_validation_finalists.py --config artifacts/experiments/base/configs/validation.json
+.venv/bin/python scripts/run_test_winner.py --validation-dir artifacts/experiments/base/outputs/validation/finalists
 ```
 
-Use `configs/base.json` for the original base protocol. Both write fresh `reproduced/` folders, leaving the completed historical outputs intact. The command runs coarse/fine development search, candidate selection, validation, frozen-winner testing, optional baselines and reports. To stop before test, run `--stage development` and then `--stage validation`; test requires `--stage test --confirm-test`.
+These commands document the completed run. Its output folders already exist, and runners refuse to overwrite them. For another experiment, copy the configs, choose fresh output directories, and update downstream references together; do not clear the canonical outputs.
 
-The JSON owns split/gold paths, representation matrices, selector settings, baseline seeds and output root. Runs record input/source hashes and environment versions, and refuse to overwrite a completed stage. To try a new configuration, choose a new output directory.
-
-See [the pipeline guide](docs/experiment_pipeline.md) for configuration details, manual review, optional diagnostics/preparation, the architecture diagram, and the complete old-to-new script mapping. Manual-review commands live under `scripts/manual_review/`. Obsolete launchers and preparation-era utilities are archived under `old/pre_config_pipeline/scripts/`; no compatibility wrappers remain active.
-
-The base config reproduces the 157-setting coarse search, 4,227-setting fine search, twelve representation/selector winners and five validation candidates. The revised config reproduces its separate protocol and forwards all twelve candidates. Both rank by question F1, exact match, precision, then fewer selected chunks.
+The coarse stage evaluates 157 settings. The fine stage automatically brackets each best coarse parameter by its neighboring values, evaluates 201 points per interval, retains the best coarse point, and deduplicates settings (4,227 configurations). At grid edges it extends one neighboring step within the configured bounds. Development ranks the best setting for each of 12 representation/selector pairs and forwards the top five. Ranking uses question F1, exact match, precision, then fewer selected chunks. Validation freezes the winner, and test evaluates only that configuration.
 
 ## Results and interpretation
 

@@ -1,0 +1,10 @@
+{
+  "project_root": "..",
+  "questions_path": "data/frozen/qSet_PO.jsonl",
+  "chunks_path": "data/frozen/PO_25_CL_chunks.jsonl",
+  "output_dir": "artifacts/representations/new_tfidf",
+  "batch_size": 32,
+  "models": {
+    "tfidf": {"method": "TF_IDF", "similarity": "cosine"}
+  }
+}
