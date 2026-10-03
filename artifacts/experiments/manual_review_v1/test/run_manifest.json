@@ -1,0 +1,12 @@
+{
+  "split": "test",
+  "experiments": [
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.003025
+    }
+  ],
+  "experiment_manifest": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/experiments/manual_review_v1/experiment.json"
+}

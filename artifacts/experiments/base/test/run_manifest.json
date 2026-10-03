@@ -1,0 +1,12 @@
+{
+  "split": "test",
+  "experiments": [
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.84
+    }
+  ],
+  "experiment_manifest": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/experiments/base/experiment.json"
+}

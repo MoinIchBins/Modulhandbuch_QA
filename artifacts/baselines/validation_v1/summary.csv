@@ -1,4 +1,0 @@
-baseline,run_count,mean_question_f1,mean_question_f1_std,exact_match_rate,exact_match_rate_std,mean_question_precision,mean_question_precision_std,mean_question_recall,mean_question_recall_std,micro_f1,micro_f1_std,average_selected_chunks,average_selected_chunks_std,empty_selection_rate,empty_selection_rate_std,zero_gold_abstention_rate,zero_gold_abstention_rate_std
-random_top1,100,0.003587962962962963,0.004269258562120771,0.0034027777777777776,0.004244847341922787,0.0036805555555555554,0.004353620064875373,0.0035416666666666665,0.004244847341922787,0.0039552238805970145,0.004678517084642192,1.0,0.0,0.0,0.0,0.0,0.0
-most_frequent_dev_answer,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0
-always_abstain,,0.16666666666666666,0.0,0.16666666666666666,0.0,0.16666666666666666,0.0,0.16666666666666666,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0

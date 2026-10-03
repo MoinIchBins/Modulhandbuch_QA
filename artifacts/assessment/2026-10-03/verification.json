@@ -1,0 +1,21 @@
+{
+  "experiments": {
+    "base": {
+      "development/coarse": 157,
+      "development/fine": 4227,
+      "development": 12,
+      "validation": 5,
+      "test": 1
+    },
+    "manual_review_v1": {
+      "development/coarse": 157,
+      "development/fine": 4227,
+      "development": 12,
+      "validation": 5,
+      "test": 1
+    }
+  },
+  "tests_passed": 12,
+  "style_checks": "passed",
+  "test_predictions_unchanged": true
+}

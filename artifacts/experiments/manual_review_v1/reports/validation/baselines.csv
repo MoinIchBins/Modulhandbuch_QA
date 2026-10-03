@@ -1,0 +1,4 @@
+baseline,run_count,mean_question_f1,mean_question_f1_std,exact_match_rate,exact_match_rate_std,mean_question_precision,mean_question_precision_std,mean_question_recall,mean_question_recall_std,micro_f1,micro_f1_std,average_selected_chunks,average_selected_chunks_std,empty_selection_rate,empty_selection_rate_std,zero_gold_abstention_rate,zero_gold_abstention_rate_std
+random_top1,100.0,0.0041314553990610325,0.004766840068882531,0.0036619718309859155,0.004639019463634643,0.0043661971830985915,0.004982642260324255,0.004014084507042254,0.0046953691544965185,0.0045925925925925926,0.005241001488637364,1.0,0.0,0.0,0.0,0.0,0.0
+most_frequent_dev_answer,,0.02112676056338028,0.0,0.02112676056338028,0.0,0.02112676056338028,0.0,0.02112676056338028,0.0,0.022222222222222223,0.0,1.0,0.0,0.0,0.0,0.0,0.0
+always_abstain,,0.15492957746478872,0.0,0.15492957746478872,0.0,0.15492957746478872,0.0,0.15492957746478872,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0

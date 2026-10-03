@@ -2,6 +2,7 @@ from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 
 
 def compare_embeddings(method, question_embeddings, chunk_embeddings):
+    """Calculate cosine, dot-product or Euclidean question/chunk scores."""
     if method == "cosine":
         return cosine_similarity(question_embeddings, chunk_embeddings)
 

@@ -1,0 +1,52 @@
+{
+  "experiment": "manual_review_v1",
+  "winner": {
+    "representation": "e5",
+    "method": "relative_margin",
+    "top_k": 1,
+    "margin": 0.003025
+  },
+  "source_evaluation": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/experiments/manual_review_v1/test/e5_relative_margin_top_k_1_margin_0.003025_evaluation.json",
+  "subsets": {
+    "all": {
+      "question_count": 142,
+      "mean_question_f1": 0.6502347417840375,
+      "exact_match_rate": 0.6408450704225352,
+      "abstention_count": 34
+    },
+    "answerable": {
+      "question_count": 122,
+      "mean_question_f1": 0.674863387978142,
+      "exact_match_rate": 0.6639344262295082,
+      "abstention_count": 24
+    },
+    "zero_gold": {
+      "question_count": 20,
+      "mean_question_f1": 0.5,
+      "exact_match_rate": 0.5,
+      "abstention_count": 10
+    },
+    "single_gold": {
+      "question_count": 116,
+      "mean_question_f1": 0.6982758620689655,
+      "exact_match_rate": 0.6982758620689655,
+      "abstention_count": 22
+    },
+    "multi_gold": {
+      "question_count": 6,
+      "mean_question_f1": 0.2222222222222222,
+      "exact_match_rate": 0.0,
+      "abstention_count": 2
+    }
+  },
+  "q_f1_cluster_interval": {
+    "method": "percentile_gold_set_cluster_bootstrap",
+    "draws": 10000,
+    "seed": 20261003,
+    "cluster_count": 99,
+    "confidence_level": 0.95,
+    "lower": 0.564098532494759,
+    "upper": 0.7333431952662721,
+    "interpretation": "Conditional on the frozen winner and annotated test collection; not a new held-out evaluation or a paired protocol comparison."
+  }
+}

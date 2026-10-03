@@ -1,0 +1,923 @@
+{
+  "split": "development",
+  "experiments": [
+    {
+      "representation": "tfidf",
+      "method": "top_k",
+      "top_k": 1
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k",
+      "top_k": 2
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k",
+      "top_k": 3
+    },
+    {
+      "representation": "e5",
+      "method": "top_k",
+      "top_k": 1
+    },
+    {
+      "representation": "e5",
+      "method": "top_k",
+      "top_k": 2
+    },
+    {
+      "representation": "e5",
+      "method": "top_k",
+      "top_k": 3
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k",
+      "top_k": 1
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k",
+      "top_k": 2
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k",
+      "top_k": 3
+    },
+    {
+      "representation": "tfidf",
+      "method": "threshold",
+      "threshold": 0.04
+    },
+    {
+      "representation": "tfidf",
+      "method": "threshold",
+      "threshold": 0.07
+    },
+    {
+      "representation": "tfidf",
+      "method": "threshold",
+      "threshold": 0.1
+    },
+    {
+      "representation": "tfidf",
+      "method": "threshold",
+      "threshold": 0.13
+    },
+    {
+      "representation": "tfidf",
+      "method": "threshold",
+      "threshold": 0.16
+    },
+    {
+      "representation": "tfidf",
+      "method": "threshold",
+      "threshold": 0.19
+    },
+    {
+      "representation": "e5",
+      "method": "threshold",
+      "threshold": 0.8
+    },
+    {
+      "representation": "e5",
+      "method": "threshold",
+      "threshold": 0.82
+    },
+    {
+      "representation": "e5",
+      "method": "threshold",
+      "threshold": 0.84
+    },
+    {
+      "representation": "e5",
+      "method": "threshold",
+      "threshold": 0.86
+    },
+    {
+      "representation": "e5",
+      "method": "threshold",
+      "threshold": 0.88
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "threshold",
+      "threshold": 0.55
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "threshold",
+      "threshold": 0.6
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "threshold",
+      "threshold": 0.65
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "threshold",
+      "threshold": 0.7
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "threshold",
+      "threshold": 0.75
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.04
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.06
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.08
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.1
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.12
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.14
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.16
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.04
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.06
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.08
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.1
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.12
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.14
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.16
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.04
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.06
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.08
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.1
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.12
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.14
+    },
+    {
+      "representation": "tfidf",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.16
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.82
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.83
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.84
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.85
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.86
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.82
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.83
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.84
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.85
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.86
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.82
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.83
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.84
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.85
+    },
+    {
+      "representation": "e5",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.86
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.55
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.6
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.65
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.7
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 1,
+      "threshold": 0.75
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.55
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.6
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.65
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.7
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 2,
+      "threshold": 0.75
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.55
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.6
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.65
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.7
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "top_k_threshold",
+      "top_k": 3,
+      "threshold": 0.75
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.0
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.05
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.1
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.15
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.2
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.25
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.3
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.35
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.4
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.0
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.05
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.1
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.15
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.2
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.25
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.3
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.35
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.4
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.0
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.05
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.1
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.15
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.2
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.25
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.3
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.35
+    },
+    {
+      "representation": "tfidf",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.4
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.0
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.00125
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.0025
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.005
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.01
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.02
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.04
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.06
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.08
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.0
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.00125
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.0025
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.005
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.01
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.02
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.04
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.06
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.08
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.0
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.00125
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.0025
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.005
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.01
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.02
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.04
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.06
+    },
+    {
+      "representation": "e5",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.08
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.0
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.00125
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.0025
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.005
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.01
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.02
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.04
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.06
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 1,
+      "margin": 0.08
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.0
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.00125
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.0025
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.005
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.01
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.02
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.04
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.06
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 2,
+      "margin": 0.08
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.0
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.00125
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.0025
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.005
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.01
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.02
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.04
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.06
+    },
+    {
+      "representation": "sentence_bert",
+      "method": "relative_margin",
+      "top_k": 3,
+      "margin": 0.08
+    }
+  ],
+  "experiment_manifest": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/experiments/manual_review_v1/experiment.json"
+}

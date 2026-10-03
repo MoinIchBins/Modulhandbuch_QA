@@ -1,9 +1,0 @@
-{
-  "output_dir": "artifacts/experiments/original_frozen_new_pipeline/outputs/development/fine_summary",
-  "validation_candidate_limit": 5,
-  "runs": [
-    {
-      "path": "artifacts/experiments/original_frozen_new_pipeline/outputs/development/fine_all"
-    }
-  ]
-}

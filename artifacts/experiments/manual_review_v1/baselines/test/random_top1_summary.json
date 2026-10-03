@@ -1,0 +1,20 @@
+{
+  "baseline": "random_top1",
+  "run_count": 100,
+  "mean_question_f1": 0.0038262910798122067,
+  "mean_question_f1_std": 0.004496881874407614,
+  "exact_match_rate": 0.003591549295774648,
+  "exact_match_rate_std": 0.004419474942796389,
+  "mean_question_precision": 0.003943661971830986,
+  "mean_question_precision_std": 0.004621709629152902,
+  "mean_question_recall": 0.003767605633802817,
+  "mean_question_recall_std": 0.004455458426315096,
+  "micro_f1": 0.004148148148148148,
+  "micro_f1_std": 0.004861353832146015,
+  "average_selected_chunks": 1.0,
+  "average_selected_chunks_std": 0.0,
+  "empty_selection_rate": 0.0,
+  "empty_selection_rate_std": 0.0,
+  "zero_gold_abstention_rate": 0.0,
+  "zero_gold_abstention_rate_std": 0.0
+}

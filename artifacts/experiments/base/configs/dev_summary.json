@@ -1,9 +1,0 @@
-{
-  "output_dir": "artifacts/experiments/base/outputs/development/fine_summary",
-  "validation_candidate_limit": 5,
-  "runs": [
-    {
-      "path": "artifacts/experiments/base/outputs/development/fine_all"
-    }
-  ]
-}

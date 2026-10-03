@@ -1,6 +1,0 @@
-{
-  "output_dir": "artifacts/experiments/manual_review_v1/outputs/development/fine_summary_v2",
-  "runs": [
-    {"path": "artifacts/experiments/manual_review_v1/outputs/development/fine_all_v2"}
-  ]
-}

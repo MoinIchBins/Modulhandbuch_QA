@@ -1,5 +1,0 @@
-valid alternative evidence: Q0015, Q0042
-similar but wrong retrieval: Q0111, Q0043
-answerable question where the model abstained: Q0287, Q0292
-multi-gold/top-1 limitation case: Q0546, Q0327
-Zugangsprüfung group: Q153-Q158

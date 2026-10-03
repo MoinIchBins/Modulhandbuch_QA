@@ -1,1 +1,0 @@
-See README.md for the current repository layout. The historical full listing is in artifacts/experiments/archive/first_run/documentation/tree.txt.

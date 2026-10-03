@@ -1,0 +1,52 @@
+{
+  "experiment": "base",
+  "winner": {
+    "representation": "e5",
+    "method": "top_k_threshold",
+    "top_k": 1,
+    "threshold": 0.84
+  },
+  "source_evaluation": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/experiments/base/test/e5_top_k_threshold_top_k_1_threshold_0.84_evaluation.json",
+  "subsets": {
+    "all": {
+      "question_count": 144,
+      "mean_question_f1": 0.4837962962962962,
+      "exact_match_rate": 0.4791666666666667,
+      "abstention_count": 32
+    },
+    "answerable": {
+      "question_count": 122,
+      "mean_question_f1": 0.4972677595628416,
+      "exact_match_rate": 0.4918032786885246,
+      "abstention_count": 23
+    },
+    "zero_gold": {
+      "question_count": 22,
+      "mean_question_f1": 0.4090909090909091,
+      "exact_match_rate": 0.4090909090909091,
+      "abstention_count": 9
+    },
+    "single_gold": {
+      "question_count": 112,
+      "mean_question_f1": 0.5357142857142857,
+      "exact_match_rate": 0.5357142857142857,
+      "abstention_count": 22
+    },
+    "multi_gold": {
+      "question_count": 10,
+      "mean_question_f1": 0.06666666666666667,
+      "exact_match_rate": 0.0,
+      "abstention_count": 1
+    }
+  },
+  "q_f1_cluster_interval": {
+    "method": "percentile_gold_set_cluster_bootstrap",
+    "draws": 10000,
+    "seed": 20261003,
+    "cluster_count": 64,
+    "confidence_level": 0.95,
+    "lower": 0.36831239747906414,
+    "upper": 0.5972245525727069,
+    "interpretation": "Conditional on the frozen winner and annotated test collection; not a new held-out evaluation or a paired protocol comparison."
+  }
+}

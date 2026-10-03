@@ -1,4 +1,0 @@
-question_id,question,gold_chunk_ids,predicted_chunk_ids,gold_chunk_text,predicted_chunk_text
-Q0577,Welche Prüfungsnummer hat Einführung in die computationelle Logik?,PO25CL-PLAN-S01-M01 | PO25CL-PLAN-LEGEND,PO25CL-PLAN-S01-M01, || ,
-Q0592,Welche Prüfungsnummer hat das Parsing-Seminar?,PO25CL-PLAN-S04-M02 | PO25CL-PLAN-LEGEND,PO25CL-PLAN-S04-M02, || ,
-Q0595,Welche Prüfungsnummer hat das Orientierungsseminar?,PO25CL-PLAN-S04-M05 | PO25CL-PLAN-LEGEND,PO25CL-PLAN-S04-M05, || ,

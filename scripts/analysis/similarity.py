@@ -1,14 +1,13 @@
-from pathlib import Path
 import json
 
 import matplotlib
 
-matplotlib.use("Agg")
-
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+# Select the file-only backend before importing pyplot.
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
 
 K_VALUES = [1, 2, 3, 5, 10]
 TOP_RESULTS_TO_STORE = 10
@@ -16,6 +15,10 @@ TOP_CHUNKS_TO_REPORT = 20
 
 
 def summarize(values):
+    """
+    Summarize finite numeric values; absent observations have null
+    statistics.
+    """
     values = np.asarray(values, dtype=float)
     values = values[np.isfinite(values)]
     if values.size == 0:
@@ -47,6 +50,7 @@ def summarize(values):
 
 
 def jsonable(value):
+    """Convert NumPy values and non-finite statistics into JSON-safe values."""
     if isinstance(value, dict):
         return {str(key): jsonable(item) for key, item in value.items()}
     if isinstance(value, list):
@@ -62,14 +66,81 @@ def jsonable(value):
 
 
 def metric_name(prefix, k):
+    """Build an at-k metric column name."""
     return f"{prefix}_at_{k}"
 
 
 def gold_group(size):
+    """Assign evidence sets to the 1, 2 or 3+ chunk group."""
     return "1" if size == 1 else "2" if size == 2 else "3+"
 
 
+def gold_ranking_metrics(
+    scores, order, gold_chunk_ids, chunk_ids, chunk_index
+):
+    """
+    Measure gold ranks and score separation using the stable candidate
+    order.
+    """
+    gold_size = len(gold_chunk_ids)
+    gold_indices = np.array(
+        [chunk_index[chunk_id] for chunk_id in gold_chunk_ids],
+        dtype=int,
+    )
+    inverse_ranks = np.empty(len(chunk_ids), dtype=int)
+    inverse_ranks[order] = np.arange(1, len(chunk_ids) + 1)
+    gold_ranks = inverse_ranks[gold_indices]
+
+    gold_scores = scores[gold_indices]
+    non_gold_mask = np.ones(len(chunk_ids), dtype=bool)
+    non_gold_mask[gold_indices] = False
+    best_non_gold = float(np.max(scores[non_gold_mask]))
+
+    best_gold_rank = int(np.min(gold_ranks))
+    worst_gold_rank = int(np.max(gold_ranks))
+    mean_gold_rank = float(np.mean(gold_ranks))
+    best_gold_score = float(np.max(gold_scores))
+    worst_gold_score = float(np.min(gold_scores))
+    best_margin = best_gold_score - best_non_gold
+    complete_margin = worst_gold_score - best_non_gold
+    mrr = 1.0 / best_gold_rank
+
+    metrics = {}
+    for k in K_VALUES:
+        top_k = set(order[: min(k, len(chunk_ids))].tolist())
+        gold_in_top_k = sum(int(index in top_k) for index in gold_indices)
+        recall = gold_in_top_k / gold_size
+        hit = float(gold_in_top_k > 0)
+        all_gold = float(gold_in_top_k == gold_size)
+
+        for prefix, value in (
+            ("recall", recall),
+            ("hit", hit),
+            ("all_gold", all_gold),
+        ):
+            key = metric_name(prefix, k)
+            metrics[key] = value
+
+    return {
+        "gold_chunk_ranks": json.dumps(gold_ranks.tolist()),
+        "best_gold_rank": best_gold_rank,
+        "worst_gold_rank": worst_gold_rank,
+        "mean_gold_rank": mean_gold_rank,
+        "mrr": mrr,
+        "best_gold_score": best_gold_score,
+        "worst_gold_score": worst_gold_score,
+        "best_non_gold_score": best_non_gold,
+        "best_gold_margin": best_margin,
+        "complete_gold_margin": complete_margin,
+        **metrics,
+    }
+
+
 def analyze_question(scores, question_id, chunk_ids, chunk_index, gold):
+    """
+    Build one diagnostic record; unanswerable questions have no gold
+    ranks.
+    """
     scores = np.asarray(scores, dtype=float)
     order = np.lexsort((np.arange(len(scores)), -scores))
 
@@ -77,7 +148,7 @@ def analyze_question(scores, question_id, chunk_ids, chunk_index, gold):
     gold_chunk_ids = list(gold_row.get("all_required_chunk_ids", []))
     gold_size = len(gold_chunk_ids)
 
-    top_indices = order[:min(TOP_RESULTS_TO_STORE, len(chunk_ids))]
+    top_indices = order[: min(TOP_RESULTS_TO_STORE, len(chunk_ids))]
     best_score = float(scores[order[0]])
     second_score = float(scores[order[1]]) if len(order) > 1 else None
     top1_gap = best_score - second_score if second_score is not None else None
@@ -91,7 +162,9 @@ def analyze_question(scores, question_id, chunk_ids, chunk_index, gold):
         "best_score": best_score,
         "second_best_score": second_score,
         "top1_gap": top1_gap,
-        "top_chunk_ids": json.dumps([chunk_ids[i] for i in top_indices], ensure_ascii=False),
+        "top_chunk_ids": json.dumps(
+            [chunk_ids[i] for i in top_indices], ensure_ascii=False
+        ),
         "top_scores": json.dumps([float(scores[i]) for i in top_indices]),
     }
 
@@ -117,64 +190,16 @@ def analyze_question(scores, question_id, chunk_ids, chunk_index, gold):
 
         return record, int(order[0])
 
-    gold_indices = np.array(
-        [chunk_index[chunk_id] for chunk_id in gold_chunk_ids],
-        dtype=int,
-    )
-    inverse_ranks = np.empty(len(chunk_ids), dtype=int)
-    inverse_ranks[order] = np.arange(1, len(chunk_ids) + 1)
-    gold_ranks = inverse_ranks[gold_indices]
-
-    gold_scores = scores[gold_indices]
-    non_gold_mask = np.ones(len(chunk_ids), dtype=bool)
-    non_gold_mask[gold_indices] = False
-    best_non_gold = float(np.max(scores[non_gold_mask]))
-
-    best_gold_rank = int(np.min(gold_ranks))
-    worst_gold_rank = int(np.max(gold_ranks))
-    mean_gold_rank = float(np.mean(gold_ranks))
-    best_gold_score = float(np.max(gold_scores))
-    worst_gold_score = float(np.min(gold_scores))
-    best_margin = best_gold_score - best_non_gold
-    complete_margin = worst_gold_score - best_non_gold
-    mrr = 1.0 / best_gold_rank
-
-
-    metrics = {}
-    for k in K_VALUES:
-        top_k = set(order[:min(k, len(chunk_ids))].tolist())
-        gold_in_top_k = sum(int(index in top_k) for index in gold_indices)
-        recall = gold_in_top_k / gold_size
-        hit = float(gold_in_top_k > 0)
-        all_gold = float(gold_in_top_k == gold_size)
-
-        for prefix, value in (
-            ("recall", recall),
-            ("hit", hit),
-            ("all_gold", all_gold),
-        ):
-            key = metric_name(prefix, k)
-            metrics[key] = value
-
     record.update(
-        {
-            "gold_chunk_ranks": json.dumps(gold_ranks.tolist()),
-            "best_gold_rank": best_gold_rank,
-            "worst_gold_rank": worst_gold_rank,
-            "mean_gold_rank": mean_gold_rank,
-            "mrr": mrr,
-            "best_gold_score": best_gold_score,
-            "worst_gold_score": worst_gold_score,
-            "best_non_gold_score": best_non_gold,
-            "best_gold_margin": best_margin,
-            "complete_gold_margin": complete_margin,
-            **metrics,
-        }
+        gold_ranking_metrics(
+            scores, order, gold_chunk_ids, chunk_ids, chunk_index
+        )
     )
     return record, int(order[0])
 
 
 def chunk_statistics(matrix, chunk_ids, top1_indices):
+    """Summarize each candidate's scores and frequency of ranking first."""
     top1_counts = np.bincount(top1_indices, minlength=len(chunk_ids))
     per_chunk = pd.DataFrame(
         [
@@ -195,33 +220,8 @@ def chunk_statistics(matrix, chunk_ids, top1_indices):
     return per_chunk
 
 
-def summarize_matrix(matrix, records, per_question, per_chunk):
-    answerable = [row for row in records if row["gold_size"] > 0]
-    zero_gold = [row for row in records if row["gold_size"] == 0]
-    # Pool individual gold ranks; other summaries weight each question equally.
-    pooled_gold_ranks = [rank for row in answerable for rank in json.loads(row["gold_chunk_ranks"])]
-    grouped_rows = {
-        group: [row for row in answerable if gold_group(row["gold_size"]) == group]
-        for group in ("1", "2", "3+")
-    }
-    ranking_values = {
-        metric_name(metric, k): [row[metric_name(metric, k)] for row in answerable]
-        for metric in ("recall", "hit", "all_gold")
-        for k in K_VALUES
-    }
-    reciprocal_ranks = [row["mrr"] for row in answerable]
-    best_gold_margins = [row["best_gold_margin"] for row in answerable]
-    complete_gold_margins = [row["complete_gold_margin"] for row in answerable]
-    ranking_metrics = {
-        key: float(np.mean(values)) if values else None
-        for key, values in ranking_values.items()
-    }
-    ranking_metrics["mrr"] = (
-        float(np.mean(reciprocal_ranks))
-        if reciprocal_ranks
-        else None
-    )
-
+def summarize_gold_sizes(grouped_rows):
+    """Average ranking diagnostics within each non-empty gold-size group."""
     grouped_metrics = {}
     for group, rows in grouped_rows.items():
         if not rows:
@@ -237,15 +237,106 @@ def summarize_matrix(matrix, records, per_question, per_chunk):
         for k in K_VALUES:
             for prefix in ("recall", "hit", "all_gold"):
                 key = metric_name(prefix, k)
-                grouped_metrics[group][key] = float(np.mean([row[key] for row in rows]))
+                grouped_metrics[group][key] = float(
+                    np.mean([row[key] for row in rows])
+                )
+
+    return grouped_metrics
+
+
+def summarize_scores(matrix, answerable, zero_gold):
+    """Summarize similarities for answerable and zero-gold questions."""
+    best_gold_margins = [row["best_gold_margin"] for row in answerable]
+    complete_gold_margins = [row["complete_gold_margin"] for row in answerable]
+    return {
+        "all_matrix_values": summarize(matrix.ravel()),
+        "row_best_score": summarize(np.max(matrix, axis=1)),
+        "row_mean_score": summarize(np.mean(matrix, axis=1)),
+        "row_score_std": summarize(np.std(matrix, axis=1)),
+        "column_mean_score": summarize(np.mean(matrix, axis=0)),
+        "column_max_score": summarize(np.max(matrix, axis=0)),
+        "answerable_best_score": summarize(
+            [row["best_score"] for row in answerable]
+        ),
+        "answerable_second_best_score": summarize(
+            [
+                row["second_best_score"]
+                for row in answerable
+                if row["second_best_score"] is not None
+            ]
+        ),
+        "best_gold_score": summarize(
+            [row["best_gold_score"] for row in answerable]
+        ),
+        "worst_gold_score": summarize(
+            [row["worst_gold_score"] for row in answerable]
+        ),
+        "best_non_gold_score": summarize(
+            [row["best_non_gold_score"] for row in answerable]
+        ),
+        "best_gold_minus_best_non_gold": summarize(best_gold_margins),
+        "worst_gold_minus_best_non_gold": summarize(complete_gold_margins),
+        "zero_gold_best_score": summarize(
+            [row["best_score"] for row in zero_gold]
+        ),
+        "zero_gold_second_best_score": summarize(
+            [
+                row["second_best_score"]
+                for row in zero_gold
+                if row["second_best_score"] is not None
+            ]
+        ),
+        "zero_gold_top1_gap": summarize(
+            [
+                row["top1_gap"]
+                for row in zero_gold
+                if row["top1_gap"] is not None
+            ]
+        ),
+    }
+
+
+def summarize_matrix(matrix, records, per_question, per_chunk):
+    """Combine ranking, score and evidence-size statistics."""
+    answerable = [row for row in records if row["gold_size"] > 0]
+    zero_gold = [row for row in records if row["gold_size"] == 0]
+    # Pool individual gold ranks; other summaries weight each question equally.
+    pooled_gold_ranks = [
+        rank
+        for row in answerable
+        for rank in json.loads(row["gold_chunk_ranks"])
+    ]
+    grouped_rows = {
+        group: [
+            row for row in answerable if gold_group(row["gold_size"]) == group
+        ]
+        for group in ("1", "2", "3+")
+    }
+    ranking_values = {
+        metric_name(metric, k): [
+            row[metric_name(metric, k)] for row in answerable
+        ]
+        for metric in ("recall", "hit", "all_gold")
+        for k in K_VALUES
+    }
+    reciprocal_ranks = [row["mrr"] for row in answerable]
+    best_gold_margins = [row["best_gold_margin"] for row in answerable]
+    complete_gold_margins = [row["complete_gold_margin"] for row in answerable]
+    ranking_metrics = {
+        key: float(np.mean(values)) if values else None
+        for key, values in ranking_values.items()
+    }
+    ranking_metrics["mrr"] = (
+        float(np.mean(reciprocal_ranks)) if reciprocal_ranks else None
+    )
+
+    grouped_metrics = summarize_gold_sizes(grouped_rows)
 
     answerable_count = int(np.sum(per_question["gold_size"] > 0))
     zero_gold_count = int(np.sum(per_question["gold_size"] == 0))
-    top_chunks = (
-        per_chunk
-        .sort_values(["top1_count", "similarity_mean"], ascending=[False, False])
-        .head(TOP_CHUNKS_TO_REPORT)
-    )
+    top_chunks = per_chunk.sort_values(
+        ["top1_count", "similarity_mean"], ascending=[False, False]
+    ).head(TOP_CHUNKS_TO_REPORT)
 
     analysis = {
         "question_counts": {
@@ -256,28 +347,17 @@ def summarize_matrix(matrix, records, per_question, per_chunk):
         "ranking_metrics": ranking_metrics,
         "gold_rank_summary": {
             "pooled_gold_rank": summarize(pooled_gold_ranks),
-            "best_gold_rank_per_question": summarize([row["best_gold_rank"] for row in answerable]),
-            "worst_gold_rank_per_question": summarize([row["worst_gold_rank"] for row in answerable]),
-            "mean_gold_rank_per_question": summarize([row["mean_gold_rank"] for row in answerable]),
+            "best_gold_rank_per_question": summarize(
+                [row["best_gold_rank"] for row in answerable]
+            ),
+            "worst_gold_rank_per_question": summarize(
+                [row["worst_gold_rank"] for row in answerable]
+            ),
+            "mean_gold_rank_per_question": summarize(
+                [row["mean_gold_rank"] for row in answerable]
+            ),
         },
-        "score_summary": {
-            "all_matrix_values": summarize(matrix.ravel()),
-            "row_best_score": summarize(np.max(matrix, axis=1)),
-            "row_mean_score": summarize(np.mean(matrix, axis=1)),
-            "row_score_std": summarize(np.std(matrix, axis=1)),
-            "column_mean_score": summarize(np.mean(matrix, axis=0)),
-            "column_max_score": summarize(np.max(matrix, axis=0)),
-            "answerable_best_score": summarize([row["best_score"] for row in answerable]),
-            "answerable_second_best_score": summarize([row["second_best_score"] for row in answerable if row["second_best_score"] is not None]),
-            "best_gold_score": summarize([row["best_gold_score"] for row in answerable]),
-            "worst_gold_score": summarize([row["worst_gold_score"] for row in answerable]),
-            "best_non_gold_score": summarize([row["best_non_gold_score"] for row in answerable]),
-            "best_gold_minus_best_non_gold": summarize(best_gold_margins),
-            "worst_gold_minus_best_non_gold": summarize(complete_gold_margins),
-            "zero_gold_best_score": summarize([row["best_score"] for row in zero_gold]),
-            "zero_gold_second_best_score": summarize([row["second_best_score"] for row in zero_gold if row["second_best_score"] is not None]),
-            "zero_gold_top1_gap": summarize([row["top1_gap"] for row in zero_gold if row["top1_gap"] is not None]),
-        },
+        "score_summary": summarize_scores(matrix, answerable, zero_gold),
         "by_gold_set_size": grouped_metrics,
         "notable_observations": {
             "answerable_questions": answerable_count,
@@ -314,11 +394,14 @@ def summarize_matrix(matrix, records, per_question, per_chunk):
 
 
 def analyze_matrix(matrix, question_ids, chunk_ids, gold):
+    """Calculate summary statistics and question/chunk tables."""
     chunk_index = {chunk_id: index for index, chunk_id in enumerate(chunk_ids)}
     records = []
     top1_indices = np.empty(matrix.shape[0], dtype=int)
     for row_index, question_id in enumerate(question_ids):
-        record, top1_index = analyze_question(matrix[row_index], question_id, chunk_ids, chunk_index, gold)
+        record, top1_index = analyze_question(
+            matrix[row_index], question_id, chunk_ids, chunk_index, gold
+        )
         records.append(record)
         top1_indices[row_index] = top1_index
 
@@ -329,15 +412,19 @@ def analyze_matrix(matrix, question_ids, chunk_ids, gold):
 
 
 def save_current_figure(path):
+    """Save the plot and close its figure."""
     plt.tight_layout()
     plt.savefig(path, dpi=160)
     plt.close()
 
 
-def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
+def plot_ranking_metrics(analysis, output_dir):
+    """
+    Plot recall, hit rate and complete-evidence rate over candidate
+    ranks.
+    """
     files = []
     ranking = analysis["ranking_metrics"]
-
     plt.figure(figsize=(8, 5))
     for prefix, label in [
         ("recall", "Recall"),
@@ -359,11 +446,19 @@ def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
     save_current_figure(path)
     files.append(path.name)
 
+    return files
+
+
+def plot_gold_distributions(per_question, output_dir):
+    """Plot required-gold ranks and complete-evidence score separation."""
+    files = []
     plots = [
         (
             "worst_gold_rank_distribution.png",
             "worst required-gold rank",
-            per_question.loc[per_question["gold_size"] > 0, "worst_gold_rank"].dropna(),
+            per_question.loc[
+                per_question["gold_size"] > 0, "worst_gold_rank"
+            ].dropna(),
         ),
         (
             "complete_gold_margin_distribution.png",
@@ -390,6 +485,12 @@ def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
         save_current_figure(path)
         files.append(path.name)
 
+    return files
+
+
+def plot_best_scores(per_question, output_dir):
+    """Compare top scores for answerable and zero-gold questions."""
+    files = []
     answerable_best = per_question.loc[
         per_question["gold_size"] > 0,
         "best_score",
@@ -413,11 +514,27 @@ def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
         save_current_figure(path)
         files.append(path.name)
 
+    return files
+
+
+def plot_gold_scores(per_question, output_dir):
+    """Compare the best supporting and non-supporting candidate scores."""
+    files = []
     answerable = per_question[per_question["gold_size"] > 0]
     if not answerable.empty:
         plt.figure(figsize=(8, 5))
-        plt.hist(answerable["best_gold_score"].dropna(), bins=30, alpha=0.65, label="Best gold score")
-        plt.hist(answerable["best_non_gold_score"].dropna(), bins=30, alpha=0.65, label="Best non-gold score")
+        plt.hist(
+            answerable["best_gold_score"].dropna(),
+            bins=30,
+            alpha=0.65,
+            label="Best gold score",
+        )
+        plt.hist(
+            answerable["best_non_gold_score"].dropna(),
+            bins=30,
+            alpha=0.65,
+            label="Best non-gold score",
+        )
         plt.xlabel("Similarity score")
         plt.ylabel("Questions")
         plt.title("Best gold vs. best non-gold score")
@@ -426,12 +543,23 @@ def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
         save_current_figure(path)
         files.append(path.name)
 
+    return files
+
+
+def plot_gold_size_metrics(analysis, output_dir):
+    """Compare at-k retrieval metrics across gold-size groups."""
+    files = []
     for prefix, title, filename in [
         ("recall", "Recall by gold-set size", "recall_by_gold_set_size.png"),
-        ("all_gold", "All-Gold by gold-set size", "all_gold_by_gold_set_size.png"),
+        (
+            "all_gold",
+            "All-Gold by gold-set size",
+            "all_gold_by_gold_set_size.png",
+        ),
     ]:
         groups = [
-            group for group in ("1", "2", "3+")
+            group
+            for group in ("1", "2", "3+")
             if group in analysis["by_gold_set_size"]
         ]
         if not groups:
@@ -447,7 +575,12 @@ def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
                 analysis["by_gold_set_size"][group][metric_name(prefix, k)]
                 for group in groups
             ]
-            plt.bar(x - 0.4 + width / 2 + i * width, values, width=width, label=f"@{k}")
+            plt.bar(
+                x - 0.4 + width / 2 + i * width,
+                values,
+                width=width,
+                label=f"@{k}",
+            )
         plt.xticks(x, [f"{group} gold" for group in groups])
         plt.xlabel("Required gold chunks per question")
         plt.ylabel("Mean metric value")
@@ -458,11 +591,15 @@ def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
         save_current_figure(path)
         files.append(path.name)
 
-    top_chunks = (
-        per_chunk
-        .sort_values(["top1_count", "similarity_mean"], ascending=[False, False])
-        .head(TOP_CHUNKS_TO_REPORT)
-    )
+    return files
+
+
+def plot_chunk_frequency(per_chunk, output_dir):
+    """Plot the most frequently top-ranked evidence chunks."""
+    files = []
+    top_chunks = per_chunk.sort_values(
+        ["top1_count", "similarity_mean"], ascending=[False, False]
+    ).head(TOP_CHUNKS_TO_REPORT)
     if not top_chunks.empty and top_chunks["top1_count"].max() > 0:
         plt.figure(figsize=(10, 6))
         positions = np.arange(len(top_chunks))
@@ -478,3 +615,13 @@ def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
     return files
 
 
+def make_matrix_plots(analysis, per_question, per_chunk, output_dir):
+    """Create the diagnostic plots and return their filenames."""
+    files = []
+    files.extend(plot_ranking_metrics(analysis, output_dir))
+    files.extend(plot_gold_distributions(per_question, output_dir))
+    files.extend(plot_best_scores(per_question, output_dir))
+    files.extend(plot_gold_scores(per_question, output_dir))
+    files.extend(plot_gold_size_metrics(analysis, output_dir))
+    files.extend(plot_chunk_frequency(per_chunk, output_dir))
+    return files

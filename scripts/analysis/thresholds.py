@@ -1,12 +1,9 @@
-import json
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 
 
 def score_summary(values):
+    """Summarize the score quantiles used for development threshold advice."""
     values = np.asarray(values, dtype=float)
     if len(values) == 0:
         return {
@@ -32,7 +29,10 @@ def score_summary(values):
     }
 
 
-def question_scores(name, question_id, scores, gold_chunks, chunk_ids, column_by_chunk):
+def question_scores(
+    name, question_id, scores, gold_chunks, chunk_ids, column_by_chunk
+):
+    """Separate required-gold and competing scores for one aligned question."""
     sorted_scores = np.sort(scores)[::-1]
 
     row = {
@@ -73,6 +73,7 @@ def question_scores(name, question_id, scores, gold_chunks, chunk_ids, column_by
 
 
 def plot_representation(name, answerable, zero_gold, output_dir):
+    """Plot development score distributions relevant to absolute thresholds."""
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.hist(
         answerable["worst_gold_score"].dropna(),
@@ -100,5 +101,3 @@ def plot_representation(name, answerable, zero_gold, output_dir):
     fig.tight_layout()
     fig.savefig(output_dir / f"{name}_threshold_distributions.png", dpi=300)
     plt.close(fig)
-
-

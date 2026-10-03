@@ -1,4 +1,5 @@
-"""Regenerate presentation artifacts without rerunning retrieval."""
+"""Create tables and plots from completed experiment stages."""
+
 import argparse
 from pathlib import Path
 
@@ -8,6 +9,7 @@ from .core.reporting import report_stage
 
 
 def main():
+    """Write reports for the completed stages."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True)
     args = parser.parse_args()
@@ -15,7 +17,8 @@ def main():
     root = Path(config["output_dir"])
     if not (root / "experiment.json").exists():
         raise ValueError("No experiment run to report")
-    initialize_run(config, preflight(config))
+    preflight(config)
+    initialize_run(config)
     for stage in ("development", "validation", "test"):
         if (root / stage / "complete.json").exists():
             report_stage(config, stage)

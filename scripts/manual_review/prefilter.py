@@ -1,16 +1,18 @@
-from ..core.config import load_config, read_json, read_jsonl
-from ..core.pipeline import experiment_name, setting, require_stage, initialize_run, preflight
-
 import csv
-import json
 from pathlib import Path
 
-def load_jsonl(path):
-    with path.open(encoding="utf-8") as file:
-        return [json.loads(line) for line in file if line.strip()]
+from ..core.config import load_config, read_json, read_jsonl
+from ..core.pipeline import (
+    experiment_name,
+    setting,
+    require_stage,
+    initialize_run,
+    preflight,
+)
 
 
 def classify(gold, prediction):
+    """Group errors by gold and predicted evidence-set size."""
     if set(gold) == set(prediction):
         return None
 
@@ -27,34 +29,44 @@ def classify(gold, prediction):
 
 
 def write_csv(path, rows):
+    """Write review inputs with a fixed header, including empty categories."""
     with path.open("w", encoding="utf-8", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=("question_id", "question", "gold_chunk_ids", "predicted_chunk_ids", "gold_chunk_text", "predicted_chunk_text"))
+        writer = csv.DictWriter(
+            file,
+            fieldnames=(
+                "question_id",
+                "question",
+                "gold_chunk_ids",
+                "predicted_chunk_ids",
+                "gold_chunk_text",
+                "predicted_chunk_text",
+            ),
+        )
         writer.writeheader()
         writer.writerows(rows)
 
 
 def prefilter(config, split):
+    """Write the winner's non-exact predictions into review groups."""
     root = Path(config["output_dir"])
     require_stage(root / split)
     summary = read_jsonl(root / split / "summary.jsonl")[0]
-    predictions_path = root / split / f"{experiment_name(setting(summary))}_predictions.jsonl"
+    predictions_path = (
+        root / split / f"{experiment_name(setting(summary))}_predictions.jsonl"
+    )
     output_dir = root / "manual_review" / split
     split_ids = set(read_json(config["splits"][split]))
-    gold_rows = load_jsonl(Path(config["gold_path"]))
-    prediction_rows = load_jsonl(predictions_path)
-    chunks = load_jsonl(Path(config["chunks_path"]))
+    gold_rows = read_jsonl(Path(config["gold_path"]))
+    prediction_rows = read_jsonl(predictions_path)
+    chunks = read_jsonl(Path(config["chunks_path"]))
 
     gold_rows = [row for row in gold_rows if row["question_id"] in split_ids]
 
     predictions = {
-        row["question_id"]: row["chunk_ids"]
-        for row in prediction_rows
+        row["question_id"]: row["chunk_ids"] for row in prediction_rows
     }
 
-    chunk_text = {
-        row["chunk_id"]: row["chunk_text"]
-        for row in chunks
-    }
+    chunk_text = {row["chunk_id"]: row["chunk_text"] for row in chunks}
 
     groups = {
         "category_2_multi_gold_single_prediction": [],
@@ -105,16 +117,25 @@ def prefilter(config, split):
 
 
 def main():
+    """Read the config and prepare review CSVs."""
     import argparse
-    parser = argparse.ArgumentParser(description="Prepare error groups for the configured winner")
+
+    parser = argparse.ArgumentParser(
+        description="Prepare error groups for the configured winner"
+    )
     parser.add_argument("--config", required=True)
     parser.add_argument("--split", choices=("validation", "test"))
     args = parser.parse_args()
     config = load_config(args.config)
     if not (Path(config["output_dir"]) / "experiment.json").exists():
         raise ValueError("Run the experiment before preparing reviews")
-    initialize_run(config, preflight(config))
-    prefilter(config, args.split or config.get("manual_review", {}).get("split", "validation"))
+    preflight(config)
+    initialize_run(config)
+    prefilter(
+        config,
+        args.split
+        or config.get("manual_review", {}).get("split", "validation"),
+    )
 
 
 if __name__ == "__main__":

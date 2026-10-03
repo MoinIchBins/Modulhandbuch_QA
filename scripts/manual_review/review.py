@@ -49,16 +49,12 @@ CATEGORY_DESCRIPTIONS = {
         "A neighboring or near-duplicate clause was retrieved instead "
         "of the required evidence."
     ),
-    "7": (
-        "Chunk boundaries or stored context plausibly caused the failure."
-    ),
+    "7": ("Chunk boundaries or stored context plausibly caused the failure."),
     "8": (
         "The source document itself is ambiguous, duplicated, or "
         "internally inconsistent."
     ),
-    "9": (
-        "The retrieved chunk is not sufficiently related to the question."
-    ),
+    "9": ("The retrieved chunk is not sufficiently related to the question."),
     "10": (
         "The question genuinely requires multiple gold chunks, but the "
         "frozen top-1 selector can return at most one."
@@ -71,34 +67,37 @@ CATEGORY_DESCRIPTIONS = {
         "The question is genuinely unanswerable from the source, but the "
         "system nevertheless returned a chunk."
     ),
-    "13": (
-        "The case cannot currently be classified confidently."
-    ),
+    "13": ("The case cannot currently be classified confidently."),
     "0": "A different explanation not covered above.",
 }
 
-CATEGORY_CODES = {
-    label: code
-    for code, label in CATEGORIES.items()
-}
+CATEGORY_CODES = {label: code for code, label in CATEGORIES.items()}
+
 
 def load_csv(path):
+    """Read review records in their existing order."""
     with path.open(encoding="utf-8", newline="") as file:
         return list(csv.DictReader(file))
 
 
 def split_ids(value):
+    """Decode pipe-separated review IDs; an empty field denotes no chunks."""
     if not value:
         return []
     return [x.strip() for x in value.split("|") if x.strip()]
 
 
 def open_chunk(chunk_id, browser_url):
+    """Open a URL-encoded evidence ID in the local chunk browser."""
     url = f"{browser_url}?chunk_id={quote(chunk_id)}"
     webbrowser.open(url, new=0)
 
 
 def save_rows(rows, output_path):
+    """
+    Atomically replace the review CSV so interrupted saves preserve
+    decisions.
+    """
     if not rows:
         return
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -115,6 +114,7 @@ def save_rows(rows, output_path):
 
 
 def print_categories(error_group=None):
+    """Show review labels and recommendations for the current output group."""
     print()
     print("Categories:")
 
@@ -136,6 +136,7 @@ def print_categories(error_group=None):
 
 
 def print_summary(rows):
+    """Report reviewed cases and category counts within each input group."""
     print()
     print("Review summary:")
 
@@ -147,13 +148,11 @@ def print_summary(rows):
 
     for group in groups:
         group_rows = [
-            row for row in rows
-            if row["source_error_group"] == group
+            row for row in rows if row["source_error_group"] == group
         ]
 
         reviewed_rows = [
-            row for row in group_rows
-            if row.get("manual_category")
+            row for row in group_rows if row.get("manual_category")
         ]
 
         print()
@@ -174,6 +173,7 @@ def print_summary(rows):
 
 
 def normalize_source_row(row, error_group):
+    """Standardize legacy evidence columns and initialize review fields."""
     normalized = dict(row)
 
     normalized["source_error_group"] = error_group
@@ -182,34 +182,34 @@ def normalize_source_row(row, error_group):
     normalized["manual_note"] = ""
 
     if "gold_chunk_ids" not in normalized:
-        normalized["gold_chunk_ids"] = (
-            normalized.get("gold_chunks", "")
-            or normalized.get("gold_chunk_id", "")
-        )
+        normalized["gold_chunk_ids"] = normalized.get(
+            "gold_chunks", ""
+        ) or normalized.get("gold_chunk_id", "")
 
     if "predicted_chunk_ids" not in normalized:
-        normalized["predicted_chunk_ids"] = (
-            normalized.get("predicted_chunks", "")
-            or normalized.get("predicted_chunk_id", "")
-        )
+        normalized["predicted_chunk_ids"] = normalized.get(
+            "predicted_chunks", ""
+        ) or normalized.get("predicted_chunk_id", "")
 
     return normalized
 
+
 def load_reviews(review_files, previous_manual_review, output_path):
+    """
+    Import earlier labels, then let resumable output decisions take
+    precedence.
+    """
     rows = []
 
     for error_group, path in review_files.items():
         source_rows = load_csv(path)
 
         for row in source_rows:
-            rows.append(
-                normalize_source_row(row, error_group)
-            )
+            rows.append(normalize_source_row(row, error_group))
 
     if previous_manual_review is not None and previous_manual_review.exists():
         previous_manual = {
-            row["question_id"]: row
-            for row in load_csv(previous_manual_review)
+            row["question_id"]: row for row in load_csv(previous_manual_review)
         }
 
         imported = 0
@@ -223,15 +223,9 @@ def load_reviews(review_files, previous_manual_review, output_path):
             if not old:
                 continue
 
-            row["manual_category_code"] = old.get(
-                "manual_category_code", ""
-            )
-            row["manual_category"] = old.get(
-                "manual_category", ""
-            )
-            row["manual_note"] = old.get(
-                "manual_note", ""
-            )
+            row["manual_category_code"] = old.get("manual_category_code", "")
+            row["manual_category"] = old.get("manual_category", "")
+            row["manual_note"] = old.get("manual_note", "")
             imported += 1
 
         print(
@@ -273,15 +267,13 @@ def load_reviews(review_files, previous_manual_review, output_path):
 
 
 def review_case(row, index, total, rows, output_path, browser_url):
+    """Show one case, handle browsing commands and save its review label."""
     error_group = row["source_error_group"]
     gold_ids = split_ids(row.get("gold_chunk_ids", ""))
     predicted_ids = split_ids(row.get("predicted_chunk_ids", ""))
 
     print("=" * 76)
-    print(
-        f"[{index}/{total}] "
-        f"{row['question_id']}  [{error_group}]"
-    )
+    print(f"[{index}/{total}] " f"{row['question_id']}  [{error_group}]")
     print()
     print(row.get("question", ""))
     print()
@@ -306,18 +298,26 @@ def review_case(row, index, total, rows, output_path, browser_url):
         open_chunk(gold_ids[0], browser_url)
 
     while True:
-        choice = input(
-            "Category, p/g/a, ?, q"
-            + (", or Enter to keep" if row["manual_category"] else "")
-            + ": "
-        ).strip().lower()
+        choice = (
+            input(
+                "Category, p/g/a, ?, q"
+                + (", or Enter to keep" if row["manual_category"] else "")
+                + ": "
+            )
+            .strip()
+            .lower()
+        )
 
         if choice == "?":
             print_categories(error_group)
             continue
 
         if choice in ("p", "g", "a"):
-            chunk_ids = {"p": predicted_ids, "g": gold_ids, "a": predicted_ids + gold_ids}[choice]
+            chunk_ids = {
+                "p": predicted_ids,
+                "g": gold_ids,
+                "a": predicted_ids + gold_ids,
+            }[choice]
             for chunk_id in chunk_ids:
                 open_chunk(chunk_id, browser_url)
             continue
@@ -348,25 +348,28 @@ def review_case(row, index, total, rows, output_path, browser_url):
     return True
 
 
-def run_review(chunks_path, browser_dir, review_files, previous_manual_review, output_path, port):
+def run_review(
+    chunks_path,
+    browser_dir,
+    review_files,
+    previous_manual_review,
+    output_path,
+    port,
+):
+    """Start the evidence browser and review the supplied cases."""
     if not chunks_path.exists():
         raise FileNotFoundError(f"Chunk file not found: {chunks_path}")
 
     if not (browser_dir / "index.html").exists():
-        raise FileNotFoundError(
-            f"Chunk browser not found: {browser_dir}"
-        )
+        raise FileNotFoundError(f"Chunk browser not found: {browser_dir}")
 
     missing_files = [
-        str(path)
-        for path in review_files.values()
-        if not path.exists()
+        str(path) for path in review_files.values() if not path.exists()
     ]
 
     if missing_files:
         raise FileNotFoundError(
-            "Missing review input file(s):\n  "
-            + "\n  ".join(missing_files)
+            "Missing review input file(s):\n  " + "\n  ".join(missing_files)
         )
     rows = load_reviews(review_files, previous_manual_review, output_path)
     if not rows:
@@ -402,11 +405,13 @@ def run_review(chunks_path, browser_dir, review_files, previous_manual_review, o
         print("  ?  show category descriptions")
         print("  q  save and quit")
         print()
-        print("Enter the category number directly, exactly like the old script.")
+        print("Enter the category number directly.")
         print("For an already reviewed case, press Enter to keep it.")
 
         for index, row in enumerate(rows, start=1):
-            if not review_case(row, index, len(rows), rows, output_path, browser_url):
+            if not review_case(
+                row, index, len(rows), rows, output_path, browser_url
+            ):
                 save_rows(rows, output_path)
                 print_summary(rows)
                 print(f"Saved to: {output_path}")
@@ -422,10 +427,14 @@ def run_review(chunks_path, browser_dir, review_files, previous_manual_review, o
 
 
 def main():
+    """Load the review files and resume the interactive review."""
     import argparse
     from ..core.config import load_config
     from ..core.pipeline import initialize_run, preflight, require_stage
-    parser = argparse.ArgumentParser(description="Review the configured experiment's error groups")
+
+    parser = argparse.ArgumentParser(
+        description="Review the configured experiment's error groups"
+    )
     parser.add_argument("--config", required=True)
     parser.add_argument("--split", choices=("validation", "test"))
     args = parser.parse_args()
@@ -434,23 +443,36 @@ def main():
     split = args.split or options.get("split", "validation")
     root = Path(config["output_dir"])
     require_stage(root / split)
-    initialize_run(config, preflight(config))
+    preflight(config)
+    initialize_run(config)
     folder = root / "manual_review" / split
     files = {
         "manual_wrong_nonempty": folder / "manual_review.csv",
-        "multi_gold_single_prediction": folder / "category_2_multi_gold_single_prediction.csv",
-        "answerable_but_abstained": folder / "category_3_answerable_but_abstained.csv",
-        "zero_gold_but_retrieved": folder / "category_4_zero_gold_but_retrieved.csv",
+        "multi_gold_single_prediction": folder
+        / "category_2_multi_gold_single_prediction.csv",
+        "answerable_but_abstained": folder
+        / "category_3_answerable_but_abstained.csv",
+        "zero_gold_but_retrieved": folder
+        / "category_4_zero_gold_but_retrieved.csv",
     }
     previous = options.get("previous_review")
     previous = Path(config["project_root"]) / previous if previous else None
-    # Each experiment gets its own browser copy; the shared tool assets stay unchanged.
+    # Copy browser assets into the experiment's review folder.
     browser_dir = folder / "browser"
     if not browser_dir.exists():
-        shutil.copytree(Path(config["project_root"]) / "tools/chunk_browser", browser_dir,
-                        ignore=shutil.ignore_patterns("chunks.jsonl"))
-    run_review(Path(config["chunks_path"]), browser_dir, files, previous,
-               folder / "manual_review_all_error_groups.csv", options.get("port", 8000))
+        shutil.copytree(
+            Path(config["project_root"]) / "tools/chunk_browser",
+            browser_dir,
+            ignore=shutil.ignore_patterns("chunks.jsonl"),
+        )
+    run_review(
+        Path(config["chunks_path"]),
+        browser_dir,
+        files,
+        previous,
+        folder / "manual_review_all_error_groups.csv",
+        options.get("port", 8000),
+    )
 
 
 if __name__ == "__main__":

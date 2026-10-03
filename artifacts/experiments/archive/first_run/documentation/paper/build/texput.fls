@@ -1,5 +1,0 @@
-PWD /Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/metadata/report/paper
-INPUT /usr/local/texlive/2025/texmf.cnf
-INPUT /usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf
-INPUT /usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
-OUTPUT build/texput.log
