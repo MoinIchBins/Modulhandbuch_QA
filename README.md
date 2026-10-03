@@ -77,7 +77,7 @@ Expect twelve passing tests and `Input and configuration checks passed.` for eac
 
 ### 2. Create and run separate copies
 
-Generate rerun configs **on the new machine** because they contain absolute project/output paths. The copy command writes a new config with the existing inputs and settings; it neither copies results nor runs the experiment.
+Generate rerun configs on the machine you want to run the experiment because they contain absolute project/output paths. The copy command writes a new config with the existing inputs and settings; it neither copies results nor runs the experiment.
 
 ```bash
 python -m scripts.copy_experiment --config configs/base.json --destination configs/base_rerun.json --name base_rerun --output-dir artifacts/experiments/base_rerun
