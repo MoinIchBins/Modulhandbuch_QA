@@ -63,7 +63,7 @@ python -m pip install --requirement requirements.txt
 
 ## Reproduce and verify the experiments
 
-On a new machine, copy the project **without `.venv/`**, then follow [Setup](#setup). Include both datasets in `data/`, the cached `artifacts/similarity_matrices/`, and the published `artifacts/experiments/base/` and `artifacts/experiments/manual_review_v1/` results for comparison. Cached-matrix runs need no model weights or GPU. Allow several gigabytes for dependencies and outputs.
+On a new machine, copy the project **without `.venv/`**, then follow [Setup](#setup). Include both datasets in `data/`, the prepared `artifacts/representations/full_text/`, and the published `artifacts/experiments/base/` and `artifacts/experiments/manual_review_v1/` results for comparison. Cached-matrix runs need no model weights or GPU. Allow several gigabytes for dependencies and outputs.
 
 ### 1. Check the installation and inputs
 
@@ -89,7 +89,7 @@ python -m scripts.run_experiment --config configs/manual_review_v1_rerun.json --
 
 No hand-written config is needed. Choose unused config names and output directories; existing paths are refused. The complete run searches development, compares **five** candidates on validation, freezes one winner, then evaluates test and generates baselines and reports. `--confirm-test` permits test evaluation.
 
-Each protocol evaluates **157 coarse settings and 4,227 fine settings**, retaining twelve development family winners, five validation candidates and one test winner. Fine refinement uses 201 points; refinement size and candidate count are fixed.
+Each protocol evaluates **157 coarse settings**, retaining twelve development family winners, five validation candidates and one test winner. The base run has **4,227 unique fine settings**; the reviewed run has **4,228**. Both use fixed 201-point refinement; the difference comes from retaining a coarse point not identical to a fine-grid value.
 
 Completed stages cannot be overwritten. For an interrupted stage or changed code, inputs, configuration or environment, create a new run. A successfully completed development stage can continue with validation and test separately:
 
@@ -109,7 +109,7 @@ python -m scripts.compare_results artifacts/experiments/base artifacts/experimen
 python -m scripts.compare_results artifacts/experiments/manual_review_v1 artifacts/experiments/manual_review_v1_rerun
 ```
 
-Use your chosen directory names if different. The script checks all five summary files, expected setting counts, every summary value, and the frozen winner. Floating-point metrics allow `1e-12` absolute differences. Success prints `stage counts, summary values and winner match.`; failure identifies the mismatch and exits with a nonzero status.
+Use your chosen directory names if different. The script checks all five summary files, setting counts against the published run, every summary value, and the frozen winner. Floating-point metrics allow `1e-12` absolute differences. Success prints `stage counts, summary values and winner match.`; failure identifies the mismatch and exits with a nonzero status.
 
 Paths, environment records and plot rendering can differ across machines and are not compared. If numerical results differ, check the datasets, matrices, settings and dependency versions. This reproduces the published evaluation on existing questions, not performance on a new sample.
 
@@ -144,7 +144,7 @@ Current experiments use cosine scores (`higher_is_better: true`). Preparation al
 artifacts/experiments/<name>/
   experiment.json                   # resolved configuration and environment
   development/coarse/               # 157 settings
-  development/fine/                 # 4,227 settings
+  development/fine/                 # 4,227 base / 4,228 reviewed settings
   development/summary.jsonl          # twelve family winners
   development/validation_candidates.json
   validation/summary.jsonl           # five candidates
@@ -203,18 +203,18 @@ Neural preparation can download missing weights. Supply a model ID and immutable
 
 ## Data and model sources
 
-Questions and gold evidence used GPT-5.5 Sol support and author review, with no independent second annotator. Complete generation prompts, a detailed review protocol and the original revised-split generator are unavailable. Reproduction uses the saved datasets, assignments and cosine matrices.
+Questions and gold evidence used GPT-5.5 Sol support and author review, with no independent second annotator. Complete generation prompts, a detailed review protocol and the original revised-split generator are unavailable. Reproduction uses the saved datasets, assignments and newly prepared complete-text cosine matrices.
 
 TF-IDF fits lowercase word 1–3 grams on chunks, without sublinear term-frequency scaling. E5 uses `query: ` for questions and `passage: ` for chunks. Neural vectors are not normalized before cosine calculation.
 
-| Model | Verified reconstruction snapshot | Token limit |
-| --- | --- | ---: |
-| `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | `e8f8c211226b894fcb81acc59f3b34ba3efd5f42` | 128 |
-| `intfloat/multilingual-e5-base` | `d128750597153bb5987e10b1c3493a34e5a4502a` | 512 |
+| Model | Pinned snapshot | Input limit | Longest question / chunk |
+| --- | --- | ---: | ---: |
+| `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | `e8f8c211226b894fcb81acc59f3b34ba3efd5f42` | 512 | 38 / 347 |
+| `intfloat/multilingual-e5-base` | `d128750597153bb5987e10b1c3493a34e5a4502a` | 512 | 41 / 349 |
 
-Offline reconstruction of all 720 questions and 201 chunks reproduced TF-IDF exactly; maximum cosine differences were `6.855e-7` for Sentence-BERT and `1.312e-6` for E5. The selected-setting summaries checked during reconstruction were unchanged. These snapshots are specified in `configs/prepare_neural.example.json`; the original matrices lack revision and truncation logs, so reconstruction does not establish their historical preparation details.
+All current matrices are generated from complete texts in `artifacts/representations/full_text/`. Neural preparation counts tokens including special tokens and E5 prefixes and rejects inputs exceeding the configured limit. Every question and passage fits, so **nothing is truncated**. Preparation metadata records the model revisions, effective limits and observed token lengths.
 
-All questions fit both token limits. Sentence-BERT truncates 35 chunks; E5 truncates none. This may affect the representation comparison, but its independent effect was not tested. Archive weights and preparation outputs when preparing new representations.
+To regenerate all three representations, use `python -m scripts.preparation.representations --config configs/prepare_full_text.json` with a new preparation output directory, then point a new experiment config at the generated `representations.json` paths. Archive weights and preparation outputs for future reproduction.
 
 ## Project files and tests
 

@@ -15,22 +15,22 @@
     "unknown_prediction_count": 0,
     "exact_match_count": 0,
     "exact_match_rate": 0.0,
-    "mean_question_precision": 0.2430555555555546,
-    "mean_question_recall": 0.7164351851851852,
-    "mean_question_f1": 0.36203703703703716,
-    "mean_question_jaccard": 0.2409336419753078,
-    "micro_precision": 0.25059665871121717,
-    "micro_recall": 0.8377659574468085,
-    "micro_f1": 0.3857930189834661,
-    "micro_jaccard": 0.23899848254931716,
-    "average_selected_chunks": 2.9097222222222223,
-    "empty_selection_rate": 0.03009259259259259,
+    "mean_question_precision": 0.242283950617283,
+    "mean_question_recall": 0.7141203703703703,
+    "mean_question_f1": 0.3608796296296298,
+    "mean_question_jaccard": 0.2401620370370362,
+    "micro_precision": 0.2503987240829346,
+    "micro_recall": 0.8351063829787234,
+    "micro_f1": 0.3852760736196319,
+    "micro_jaccard": 0.23860182370820668,
+    "average_selected_chunks": 2.9027777777777777,
+    "empty_selection_rate": 0.032407407407407406,
     "zero_gold_question_count": 74,
     "correct_abstention_count": 0,
     "zero_gold_abstention_rate": 0.0,
-    "total_tp": 315,
-    "total_fp": 942,
-    "total_fn": 61,
+    "total_tp": 314,
+    "total_fp": 940,
+    "total_fn": 62,
     "unanswered_question_ids": [],
     "unknown_prediction_question_ids": []
   },
@@ -1062,26 +1062,19 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C01-P05-A01"
       ],
-      "predicted_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A01",
-        "PO25CL-GEN-C01-P05-A02",
-        "PO25CL-PLAN-S04-PBB"
-      ],
-      "true_positive_chunk_ids": [
+      "predicted_chunk_ids": [],
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [],
+      "false_negative_chunk_ids": [
         "PO25CL-GEN-C01-P05-A01"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A02",
-        "PO25CL-PLAN-S04-PBB"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 2,
-      "fn": 0,
-      "precision": 0.3333333333333333,
-      "recall": 1.0,
-      "f1": 0.5,
-      "jaccard": 0.3333333333333333,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {

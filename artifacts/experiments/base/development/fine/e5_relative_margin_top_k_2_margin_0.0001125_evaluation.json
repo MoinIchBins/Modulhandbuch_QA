@@ -15,22 +15,22 @@
     "unknown_prediction_count": 0,
     "exact_match_count": 1,
     "exact_match_rate": 0.0023148148148148147,
-    "mean_question_precision": 0.35300925925925924,
-    "mean_question_recall": 0.6921296296296297,
-    "mean_question_f1": 0.46604938271604796,
-    "mean_question_jaccard": 0.3491512345679015,
-    "micro_precision": 0.35815602836879434,
-    "micro_recall": 0.8058510638297872,
-    "micro_f1": 0.49590834697217684,
-    "micro_jaccard": 0.3297062023939064,
-    "average_selected_chunks": 1.9583333333333333,
-    "empty_selection_rate": 0.020833333333333332,
+    "mean_question_precision": 0.35185185185185186,
+    "mean_question_recall": 0.6898148148148148,
+    "mean_question_f1": 0.4645061728395048,
+    "mean_question_jaccard": 0.34799382716049404,
+    "micro_precision": 0.3578199052132701,
+    "micro_recall": 0.8031914893617021,
+    "micro_f1": 0.4950819672131147,
+    "micro_jaccard": 0.3289760348583878,
+    "average_selected_chunks": 1.9537037037037037,
+    "empty_selection_rate": 0.023148148148148147,
     "zero_gold_question_count": 74,
     "correct_abstention_count": 1,
     "zero_gold_abstention_rate": 0.013513513513513514,
-    "total_tp": 303,
-    "total_fp": 543,
-    "total_fn": 73,
+    "total_tp": 302,
+    "total_fp": 542,
+    "total_fn": 74,
     "unanswered_question_ids": [],
     "unknown_prediction_question_ids": []
   },
@@ -1943,24 +1943,19 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C03-P11-A03"
       ],
-      "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A01",
+      "predicted_chunk_ids": [],
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [],
+      "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P11-A03"
       ],
-      "true_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A03"
-      ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A01"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {

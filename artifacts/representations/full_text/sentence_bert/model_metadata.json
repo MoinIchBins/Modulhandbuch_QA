@@ -1,0 +1,13 @@
+{
+  "method": "SENTENCE_BERT",
+  "model_name_or_path": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "requested_revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+  "max_seq_length": 512,
+  "query_prefix": null,
+  "passage_prefix": null,
+  "normalize_embeddings": false,
+  "max_input_tokens": {
+    "question": 38,
+    "chunk": 347
+  }
+}

@@ -11,6 +11,7 @@ class TextEmbedder:
         model_name_or_path=None,
         batch_size=32,
         model_revision=None,
+        max_seq_length=None,
     ):
         """Fit TF-IDF on chunks or load the requested neural encoder."""
         self.method = method.upper()
@@ -46,6 +47,15 @@ class TextEmbedder:
             self.model_name_or_path, revision=model_revision
         )
         self.vectorizer = None
+        if max_seq_length is not None:
+            limit = self.model[0].auto_model.config.max_position_embeddings
+            if not isinstance(max_seq_length, int) or not (
+                1 <= max_seq_length <= limit
+            ):
+                raise ValueError(f"max_seq_length must be between 1 and {limit}")
+            self.model.max_seq_length = max_seq_length
+            self.model.tokenizer.model_max_length = max_seq_length
+        self.max_input_tokens = {}
 
     def embed_many(self, texts, text_type="question"):
         """
@@ -58,6 +68,19 @@ class TextEmbedder:
 
         if self.method == "TF_IDF":
             return self.vectorizer.transform(texts).toarray()
+
+        lengths = [
+            len(ids) for ids in self.model.tokenizer(
+                texts, truncation=False, padding=False
+            )["input_ids"]
+        ]
+        maximum = max(lengths, default=0)
+        self.max_input_tokens[text_type] = maximum
+        if maximum > self.model.max_seq_length:
+            raise ValueError(
+                f"{text_type} input has {maximum} tokens; model limit is "
+                f"{self.model.max_seq_length}. Encoding would truncate text."
+            )
 
         return self.model.encode(
             texts,

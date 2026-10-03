@@ -354,7 +354,7 @@
 {"question_id": "Q0620", "chunk_ids": [], "scores": []}
 {"question_id": "Q0611", "chunk_ids": [], "scores": []}
 {"question_id": "Q0550", "chunk_ids": [], "scores": []}
-{"question_id": "Q0038", "chunk_ids": ["PO25CL-GEN-C01-P04-A01", "PO25CL-GEN-C01-P04-A02", "PO25CL-GEN-C01-P04-A03"], "scores": [0.8843696117401123, 0.877289354801178, 0.8701063990592957]}
+{"question_id": "Q0038", "chunk_ids": ["PO25CL-GEN-C01-P04-A01", "PO25CL-GEN-C01-P04-A02", "PO25CL-GEN-C01-P04-A03"], "scores": [0.8843697905540466, 0.8772892355918884, 0.8701063990592957]}
 {"question_id": "Q0177", "chunk_ids": [], "scores": []}
 {"question_id": "Q0326", "chunk_ids": [], "scores": []}
 {"question_id": "Q0027", "chunk_ids": [], "scores": []}

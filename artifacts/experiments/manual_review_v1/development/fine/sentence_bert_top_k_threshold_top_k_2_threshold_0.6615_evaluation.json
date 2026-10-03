@@ -13,24 +13,24 @@
     "unanswered_question_count": 0,
     "answer_coverage": 1.0,
     "unknown_prediction_count": 0,
-    "exact_match_count": 86,
-    "exact_match_rate": 0.20187793427230047,
-    "mean_question_precision": 0.33215962441314556,
-    "mean_question_recall": 0.45539906103286387,
-    "mean_question_f1": 0.37245696400626016,
-    "mean_question_jaccard": 0.32981220657276994,
-    "micro_precision": 0.33796296296296297,
-    "micro_recall": 0.3989071038251366,
-    "micro_f1": 0.3659147869674185,
-    "micro_jaccard": 0.22392638036809817,
-    "average_selected_chunks": 1.0140845070422535,
-    "empty_selection_rate": 0.4061032863849765,
+    "exact_match_count": 85,
+    "exact_match_rate": 0.19953051643192488,
+    "mean_question_precision": 0.318075117370892,
+    "mean_question_recall": 0.4295774647887324,
+    "mean_question_f1": 0.3544600938967139,
+    "mean_question_jaccard": 0.31572769953051644,
+    "micro_precision": 0.32066508313539194,
+    "micro_recall": 0.36885245901639346,
+    "micro_f1": 0.3430749682337993,
+    "micro_jaccard": 0.20705521472392638,
+    "average_selected_chunks": 0.9882629107981221,
+    "empty_selection_rate": 0.4154929577464789,
     "zero_gold_question_count": 78,
     "correct_abstention_count": 49,
     "zero_gold_abstention_rate": 0.6282051282051282,
-    "total_tp": 146,
+    "total_tp": 135,
     "total_fp": 286,
-    "total_fn": 220,
+    "total_fn": 231,
     "unanswered_question_ids": [],
     "unknown_prediction_question_ids": []
   },
@@ -194,19 +194,17 @@
         "PO25CL-GEN-C01-P01-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C01-P03-A01",
-        "PO25CL-GEN-C03-P21-A02"
+        "PO25CL-GEN-C01-P03-A01"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P03-A01",
-        "PO25CL-GEN-C03-P21-A02"
+        "PO25CL-GEN-C01-P03-A01"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C01-P01-A02"
       ],
       "tp": 0,
-      "fp": 2,
+      "fp": 1,
       "fn": 1,
       "precision": 0.0,
       "recall": 0.0,
@@ -601,13 +599,13 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C01-P04-A02",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P05-A01"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C01-P04-A02"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P05-A01"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -886,14 +884,14 @@
         "PO25CL-GEN-C01-P05-A01"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A01",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P01-A01",
+        "PO25CL-GEN-C01-P05-A01"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C01-P05-A01"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P01-A01"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -911,24 +909,21 @@
         "PO25CL-GEN-C01-P05-A01"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A01",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P05-A01"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C01-P05-A01"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A02"
-      ],
+      "false_positive_chunk_ids": [],
       "false_negative_chunk_ids": [],
       "tp": 1,
-      "fp": 1,
+      "fp": 0,
       "fn": 0,
-      "precision": 0.5,
+      "precision": 1.0,
       "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
-      "exact_match": false
+      "f1": 1.0,
+      "jaccard": 1.0,
+      "exact_match": true
     },
     {
       "question_id": "Q0065",
@@ -936,23 +931,22 @@
         "PO25CL-GEN-C01-P05-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A01",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P05-A01"
       ],
-      "true_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A02"
-      ],
+      "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
         "PO25CL-GEN-C01-P05-A01"
       ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
+      "false_negative_chunk_ids": [
+        "PO25CL-GEN-C01-P05-A02"
+      ],
+      "tp": 0,
       "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -1007,23 +1001,22 @@
         "PO25CL-GEN-C01-P05-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A01",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P05-A01"
       ],
-      "true_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P05-A02"
-      ],
+      "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
         "PO25CL-GEN-C01-P05-A01"
       ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
+      "false_negative_chunk_ids": [
+        "PO25CL-GEN-C01-P05-A02"
+      ],
+      "tp": 0,
       "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -1108,12 +1101,12 @@
         "PO25CL-GEN-C02-P07-A01"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C04-P28-A03",
+        "PO25CL-GEN-C04-P28-A01",
         "PO25CL-GEN-C04-P28-A06"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P28-A03",
+        "PO25CL-GEN-C04-P28-A01",
         "PO25CL-GEN-C04-P28-A06"
       ],
       "false_negative_chunk_ids": [
@@ -1633,21 +1626,24 @@
         "PO25CL-GEN-C02-P09-A03"
       ],
       "predicted_chunk_ids": [
+        "PO25CL-APP-R14",
         "PO25CL-GEN-C02-P09-A03"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C02-P09-A03"
       ],
-      "false_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-APP-R14"
+      ],
       "false_negative_chunk_ids": [],
       "tp": 1,
-      "fp": 0,
+      "fp": 1,
       "fn": 0,
-      "precision": 1.0,
+      "precision": 0.5,
       "recall": 1.0,
-      "f1": 1.0,
-      "jaccard": 1.0,
-      "exact_match": true
+      "f1": 0.6666666666666666,
+      "jaccard": 0.5,
+      "exact_match": false
     },
     {
       "question_id": "Q0119",
@@ -1655,21 +1651,24 @@
         "PO25CL-GEN-C02-P09-A03"
       ],
       "predicted_chunk_ids": [
+        "PO25CL-APP-R14",
         "PO25CL-GEN-C02-P09-A03"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C02-P09-A03"
       ],
-      "false_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-APP-R14"
+      ],
       "false_negative_chunk_ids": [],
       "tp": 1,
-      "fp": 0,
+      "fp": 1,
       "fn": 0,
-      "precision": 1.0,
+      "precision": 0.5,
       "recall": 1.0,
-      "f1": 1.0,
-      "jaccard": 1.0,
-      "exact_match": true
+      "f1": 0.6666666666666666,
+      "jaccard": 0.5,
+      "exact_match": false
     },
     {
       "question_id": "Q0121",
@@ -1920,12 +1919,12 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P14-A01",
-        "PO25CL-GEN-C03-P14-A02"
+        "PO25CL-GEN-C03-P21-A02"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
         "PO25CL-GEN-C03-P14-A01",
-        "PO25CL-GEN-C03-P14-A02"
+        "PO25CL-GEN-C03-P21-A02"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P11-A04"
@@ -1969,18 +1968,14 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C03-P11-A05"
       ],
-      "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A07"
-      ],
+      "predicted_chunk_ids": [],
       "true_positive_chunk_ids": [],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A07"
-      ],
+      "false_positive_chunk_ids": [],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P11-A05"
       ],
       "tp": 0,
-      "fp": 1,
+      "fp": 0,
       "fn": 1,
       "precision": 0.0,
       "recall": 0.0,
@@ -1994,14 +1989,14 @@
         "PO25CL-GEN-C03-P11-A06"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A06",
-        "PO25CL-GEN-C03-P14-A05"
+        "PO25CL-GEN-C03-P11-A05",
+        "PO25CL-GEN-C03-P11-A06"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P11-A06"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A05"
+        "PO25CL-GEN-C03-P11-A05"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -2019,14 +2014,14 @@
         "PO25CL-GEN-C03-P11-A06"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A06",
-        "PO25CL-GEN-C03-P13-A01"
+        "PO25CL-GEN-C03-P11-A05",
+        "PO25CL-GEN-C03-P11-A06"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P11-A06"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P13-A01"
+        "PO25CL-GEN-C03-P11-A05"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -2282,13 +2277,13 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P13-A01",
-        "PO25CL-GEN-C03-P14-A10"
+        "PO25CL-GEN-C03-P14-A04"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P13-A01"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A10"
+        "PO25CL-GEN-C03-P14-A04"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -2307,13 +2302,13 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P13-A01",
-        "PO25CL-GEN-C03-P14-A10"
+        "PO25CL-GEN-C03-P14-A04"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P13-A01"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A10"
+        "PO25CL-GEN-C03-P14-A04"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -2332,13 +2327,13 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P13-A01",
-        "PO25CL-GEN-C04-P25-A05"
+        "PO25CL-GEN-C03-P14-A06"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P13-A01"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P25-A05"
+        "PO25CL-GEN-C03-P14-A06"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -2376,14 +2371,14 @@
         "PO25CL-GEN-C03-P13-A01"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A09",
-        "PO25CL-GEN-C03-P13-A01"
+        "PO25CL-GEN-C03-P13-A01",
+        "PO25CL-GEN-C03-P19-A08"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P13-A01"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A09"
+        "PO25CL-GEN-C03-P19-A08"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -2517,13 +2512,13 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P14-A01",
-        "PO25CL-GEN-C03-P14-A09"
+        "PO25CL-GEN-C03-P14-A02"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P14-A01"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A09"
+        "PO25CL-GEN-C03-P14-A02"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -2709,23 +2704,22 @@
         "PO25CL-GEN-C03-P14-A04"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A04",
-        "PO25CL-GEN-C03-P14-A09"
+        "PO25CL-GEN-C03-P14-A07"
       ],
-      "true_positive_chunk_ids": [
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A07"
+      ],
+      "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P14-A04"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A09"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
+      "tp": 0,
       "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -2735,13 +2729,13 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P14-A04",
-        "PO25CL-GEN-C03-P14-A06"
+        "PO25CL-GEN-C03-P15-A10"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P14-A04"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A06"
+        "PO25CL-GEN-C03-P15-A10"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -2780,14 +2774,18 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C03-P14-A05"
       ],
-      "predicted_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A10"
+      ],
       "true_positive_chunk_ids": [],
-      "false_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A10"
+      ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P14-A05"
       ],
       "tp": 0,
-      "fp": 0,
+      "fp": 1,
       "fn": 1,
       "precision": 0.0,
       "recall": 0.0,
@@ -2820,24 +2818,19 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C03-P14-A06"
       ],
-      "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A06",
-        "PO25CL-GEN-C03-P14-A09"
-      ],
-      "true_positive_chunk_ids": [
+      "predicted_chunk_ids": [],
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [],
+      "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P14-A06"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A09"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -2896,14 +2889,14 @@
         "PO25CL-GEN-C03-P14-A06"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A06",
-        "PO25CL-GEN-C03-P14-A10"
+        "PO25CL-GEN-C03-P14-A03",
+        "PO25CL-GEN-C03-P14-A06"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P14-A06"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A10"
+        "PO25CL-GEN-C03-P14-A03"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -3047,17 +3040,19 @@
         "PO25CL-GEN-C03-P15-A03"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P15-A02"
+        "PO25CL-GEN-C03-P15-A02",
+        "PO25CL-GEN-C04-P25-A03"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P15-A02"
+        "PO25CL-GEN-C03-P15-A02",
+        "PO25CL-GEN-C04-P25-A03"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P15-A03"
       ],
       "tp": 0,
-      "fp": 1,
+      "fp": 2,
       "fn": 1,
       "precision": 0.0,
       "recall": 0.0,
@@ -3142,12 +3137,12 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C01-P03-A01",
-        "PO25CL-GEN-C03-P21-A02"
+        "PO25CL-GEN-C02-P09-A01"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
         "PO25CL-GEN-C01-P03-A01",
-        "PO25CL-GEN-C03-P21-A02"
+        "PO25CL-GEN-C02-P09-A01"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P15-A04"
@@ -3352,18 +3347,14 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C03-P16-A01"
       ],
-      "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P21-A02"
-      ],
+      "predicted_chunk_ids": [],
       "true_positive_chunk_ids": [],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P21-A02"
-      ],
+      "false_positive_chunk_ids": [],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P16-A01"
       ],
       "tp": 0,
-      "fp": 1,
+      "fp": 0,
       "fn": 1,
       "precision": 0.0,
       "recall": 0.0,
@@ -3497,12 +3488,12 @@
         "PO25CL-GEN-C03-P16-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P21-A02",
+        "PO25CL-GEN-C03-P15-A02",
         "PO25CL-GEN-C03-P21-A03"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P21-A02",
+        "PO25CL-GEN-C03-P15-A02",
         "PO25CL-GEN-C03-P21-A03"
       ],
       "false_negative_chunk_ids": [
@@ -3524,23 +3515,22 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P13-A01",
-        "PO25CL-GEN-C03-P14-A10"
-      ],
-      "true_positive_chunk_ids": [],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P13-A01",
-        "PO25CL-GEN-C03-P14-A10"
-      ],
-      "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P17-A01"
       ],
-      "tp": 0,
-      "fp": 2,
-      "fn": 1,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "jaccard": 0.0,
+      "true_positive_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A01"
+      ],
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C03-P13-A01"
+      ],
+      "false_negative_chunk_ids": [],
+      "tp": 1,
+      "fp": 1,
+      "fn": 0,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "jaccard": 0.5,
       "exact_match": false
     },
     {
@@ -3549,13 +3539,13 @@
         "PO25CL-GEN-C03-P17-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05",
-        "PO25CL-GEN-C03-P20-A01"
+        "PO25CL-GEN-C03-P20-A01",
+        "PO25CL-GEN-C03-P20-A02"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05",
-        "PO25CL-GEN-C03-P20-A01"
+        "PO25CL-GEN-C03-P20-A01",
+        "PO25CL-GEN-C03-P20-A02"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P17-A02"
@@ -3674,22 +3664,20 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C03-P17-A05"
       ],
-      "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05"
-      ],
-      "true_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05"
-      ],
+      "predicted_chunk_ids": [],
+      "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
+      "false_negative_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A05"
+      ],
+      "tp": 0,
       "fp": 0,
-      "fn": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "jaccard": 1.0,
-      "exact_match": true
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
+      "exact_match": false
     },
     {
       "question_id": "Q0286",
@@ -3698,12 +3686,12 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P14-A02",
-        "PO25CL-GEN-C03-P20-A01"
+        "PO25CL-GEN-C04-P28-A06"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
         "PO25CL-GEN-C03-P14-A02",
-        "PO25CL-GEN-C03-P20-A01"
+        "PO25CL-GEN-C04-P28-A06"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P17-A05"
@@ -3823,14 +3811,14 @@
         "PO25CL-GEN-C03-P18-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P18-A01",
-        "PO25CL-GEN-C03-P18-A02"
+        "PO25CL-GEN-C03-P18-A02",
+        "PO25CL-GEN-C03-P18-A08"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P18-A02"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P18-A01"
+        "PO25CL-GEN-C03-P18-A08"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -3868,23 +3856,24 @@
         "PO25CL-GEN-C03-P18-A03"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P18-A03",
+        "PO25CL-GEN-C03-P18-A05",
         "PO25CL-GEN-C03-P18-A06"
       ],
-      "true_positive_chunk_ids": [
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A05",
+        "PO25CL-GEN-C03-P18-A06"
+      ],
+      "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P18-A03"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P18-A06"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -3893,13 +3882,13 @@
         "PO25CL-GEN-C03-P18-A03"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P18-A05",
-        "PO25CL-GEN-C03-P21-A02"
+        "PO25CL-GEN-C03-P15-A10",
+        "PO25CL-GEN-C03-P18-A05"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P18-A05",
-        "PO25CL-GEN-C03-P21-A02"
+        "PO25CL-GEN-C03-P15-A10",
+        "PO25CL-GEN-C03-P18-A05"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P18-A03"
@@ -4549,14 +4538,14 @@
         "PO25CL-GEN-C03-P20-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05",
+        "PO25CL-GEN-C03-P20-A01",
         "PO25CL-GEN-C03-P20-A02"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P20-A02"
       ],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05"
+        "PO25CL-GEN-C03-P20-A01"
       ],
       "false_negative_chunk_ids": [],
       "tp": 1,
@@ -4613,18 +4602,14 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C03-P20-A04"
       ],
-      "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05"
-      ],
+      "predicted_chunk_ids": [],
       "true_positive_chunk_ids": [],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05"
-      ],
+      "false_positive_chunk_ids": [],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P20-A04"
       ],
       "tp": 0,
-      "fp": 1,
+      "fp": 0,
       "fn": 1,
       "precision": 0.0,
       "recall": 0.0,
@@ -4679,22 +4664,23 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C01-P03-A01",
-        "PO25CL-GEN-C03-P21-A02"
+        "PO25CL-GEN-C03-P15-A05"
       ],
-      "true_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P21-A02"
-      ],
+      "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P03-A01"
+        "PO25CL-GEN-C01-P03-A01",
+        "PO25CL-GEN-C03-P15-A05"
       ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "false_negative_chunk_ids": [
+        "PO25CL-GEN-C03-P21-A02"
+      ],
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -4704,22 +4690,23 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C01-P03-A01",
-        "PO25CL-GEN-C03-P21-A02"
+        "PO25CL-GEN-C03-P15-A05"
       ],
-      "true_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P21-A02"
-      ],
+      "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P03-A01"
+        "PO25CL-GEN-C01-P03-A01",
+        "PO25CL-GEN-C03-P15-A05"
       ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "false_negative_chunk_ids": [
+        "PO25CL-GEN-C03-P21-A02"
+      ],
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -5046,23 +5033,24 @@
         "PO25CL-GEN-C04-P24-A01"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C04-P24-A01",
-        "PO25CL-GEN-C04-P24-A02"
+        "PO25CL-GEN-C04-P24-A04",
+        "PO25CL-GEN-C04-P28-A08"
       ],
-      "true_positive_chunk_ids": [
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C04-P24-A04",
+        "PO25CL-GEN-C04-P28-A08"
+      ],
+      "false_negative_chunk_ids": [
         "PO25CL-GEN-C04-P24-A01"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P24-A02"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -5115,20 +5103,22 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C04-P24-A01"
       ],
-      "predicted_chunk_ids": [],
-      "true_positive_chunk_ids": [],
-      "false_positive_chunk_ids": [],
-      "false_negative_chunk_ids": [
+      "predicted_chunk_ids": [
         "PO25CL-GEN-C04-P24-A01"
       ],
-      "tp": 0,
+      "true_positive_chunk_ids": [
+        "PO25CL-GEN-C04-P24-A01"
+      ],
+      "false_positive_chunk_ids": [],
+      "false_negative_chunk_ids": [],
+      "tp": 1,
       "fp": 0,
-      "fn": 1,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "jaccard": 0.0,
-      "exact_match": false
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "jaccard": 1.0,
+      "exact_match": true
     },
     {
       "question_id": "Q0379",
@@ -5156,24 +5146,23 @@
         "PO25CL-GEN-C04-P24-A01"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P12-A04",
+        "PO25CL-GEN-C04-P24-A01",
         "PO25CL-GEN-C04-P24-A03"
       ],
-      "true_positive_chunk_ids": [],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P12-A04",
-        "PO25CL-GEN-C04-P24-A03"
-      ],
-      "false_negative_chunk_ids": [
+      "true_positive_chunk_ids": [
         "PO25CL-GEN-C04-P24-A01"
       ],
-      "tp": 0,
-      "fp": 2,
-      "fn": 1,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "jaccard": 0.0,
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C04-P24-A03"
+      ],
+      "false_negative_chunk_ids": [],
+      "tp": 1,
+      "fp": 1,
+      "fn": 0,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "jaccard": 0.5,
       "exact_match": false
     },
     {
@@ -5208,12 +5197,12 @@
         "PO25CL-GEN-C04-P24-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05",
+        "PO25CL-GEN-C03-P20-A01",
         "PO25CL-GEN-C03-P20-A02"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05",
+        "PO25CL-GEN-C03-P20-A01",
         "PO25CL-GEN-C03-P20-A02"
       ],
       "false_negative_chunk_ids": [
@@ -5299,12 +5288,12 @@
         "PO25CL-GEN-C04-P24-A06"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05",
+        "PO25CL-GEN-C03-P20-A01",
         "PO25CL-GEN-C03-P20-A02"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A05",
+        "PO25CL-GEN-C03-P20-A01",
         "PO25CL-GEN-C03-P20-A02"
       ],
       "false_negative_chunk_ids": [
@@ -5325,23 +5314,24 @@
         "PO25CL-GEN-C04-P25-A01"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C04-P25-A01",
-        "PO25CL-GEN-C04-P25-A05"
+        "PO25CL-GEN-C04-P25-A05",
+        "PO25CL-GEN-C04-P28-A06"
       ],
-      "true_positive_chunk_ids": [
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C04-P25-A05",
+        "PO25CL-GEN-C04-P28-A06"
+      ],
+      "false_negative_chunk_ids": [
         "PO25CL-GEN-C04-P25-A01"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P25-A05"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -5426,19 +5416,17 @@
         "PO25CL-GEN-C04-P25-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C04-P25-A03",
-        "PO25CL-GEN-C04-P28-A03"
+        "PO25CL-GEN-C04-P25-A03"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P25-A03",
-        "PO25CL-GEN-C04-P28-A03"
+        "PO25CL-GEN-C04-P25-A03"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C04-P25-A02"
       ],
       "tp": 0,
-      "fp": 2,
+      "fp": 1,
       "fn": 1,
       "precision": 0.0,
       "recall": 0.0,
@@ -5685,12 +5673,12 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P14-A02",
-        "PO25CL-GEN-C03-P18-A01"
+        "PO25CL-GEN-C03-P18-A02"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
         "PO25CL-GEN-C03-P14-A02",
-        "PO25CL-GEN-C03-P18-A01"
+        "PO25CL-GEN-C03-P18-A02"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C04-P27-A01-02"
@@ -5945,13 +5933,13 @@
         "PO25CL-GEN-C04-P28-A04"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C04-P28-A01",
-        "PO25CL-GEN-C04-P28-A03"
+        "PO25CL-GEN-C03-P11-A09",
+        "PO25CL-GEN-C04-P28-A01"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P28-A01",
-        "PO25CL-GEN-C04-P28-A03"
+        "PO25CL-GEN-C03-P11-A09",
+        "PO25CL-GEN-C04-P28-A01"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C04-P28-A04"
@@ -6019,12 +6007,12 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-GEN-C03-P17-A06",
-        "PO25CL-GEN-C04-P24-A02"
+        "PO25CL-GEN-C04-P24-A06"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
         "PO25CL-GEN-C03-P17-A06",
-        "PO25CL-GEN-C04-P24-A02"
+        "PO25CL-GEN-C04-P24-A06"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-GEN-C04-P28-A06"
@@ -6109,24 +6097,21 @@
         "PO25CL-GEN-C04-P28-A09"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C04-P28-A06",
         "PO25CL-GEN-C04-P28-A09"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C04-P28-A09"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P28-A06"
-      ],
+      "false_positive_chunk_ids": [],
       "false_negative_chunk_ids": [],
       "tp": 1,
-      "fp": 1,
+      "fp": 0,
       "fn": 0,
-      "precision": 0.5,
+      "precision": 1.0,
       "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
-      "exact_match": false
+      "f1": 1.0,
+      "jaccard": 1.0,
+      "exact_match": true
     },
     {
       "question_id": "Q0447",
@@ -6606,22 +6591,23 @@
       ],
       "predicted_chunk_ids": [
         "PO25CL-APP-R07-M12",
-        "PO25CL-APP-R14"
+        "PO25CL-PLAN-S01-PBB"
       ],
-      "true_positive_chunk_ids": [
-        "PO25CL-APP-R14"
-      ],
+      "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-APP-R07-M12"
+        "PO25CL-APP-R07-M12",
+        "PO25CL-PLAN-S01-PBB"
       ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "false_negative_chunk_ids": [
+        "PO25CL-APP-R14"
+      ],
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -6650,23 +6636,24 @@
         "PO25CL-APP-R14"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-APP-R14",
+        "PO25CL-PLAN-S03-SUM",
         "PO25CL-PLAN-S06-SUM"
       ],
-      "true_positive_chunk_ids": [
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-PLAN-S03-SUM",
+        "PO25CL-PLAN-S06-SUM"
+      ],
+      "false_negative_chunk_ids": [
         "PO25CL-APP-R14"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-PLAN-S06-SUM"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -7207,22 +7194,20 @@
       "gold_chunk_ids": [
         "PO25CL-PLAN-INTRO"
       ],
-      "predicted_chunk_ids": [
-        "PO25CL-PLAN-INTRO"
-      ],
-      "true_positive_chunk_ids": [
-        "PO25CL-PLAN-INTRO"
-      ],
+      "predicted_chunk_ids": [],
+      "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
+      "false_negative_chunk_ids": [
+        "PO25CL-PLAN-INTRO"
+      ],
+      "tp": 0,
       "fp": 0,
-      "fn": 0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "jaccard": 1.0,
-      "exact_match": true
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
+      "exact_match": false
     },
     {
       "question_id": "Q0533",
@@ -7423,20 +7408,18 @@
         "PO25CL-PLAN-S02-SUM"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C01-P03-A02",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P03-A02"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P03-A02",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P03-A02"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-PLAN-LEGEND",
         "PO25CL-PLAN-S02-SUM"
       ],
       "tp": 0,
-      "fp": 2,
+      "fp": 1,
       "fn": 2,
       "precision": 0.0,
       "recall": 0.0,
@@ -7543,20 +7526,18 @@
         "PO25CL-PLAN-S05-SUM"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C01-P03-A02",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P03-A02"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C01-P03-A02",
-        "PO25CL-GEN-C01-P05-A02"
+        "PO25CL-GEN-C01-P03-A02"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-PLAN-LEGEND",
         "PO25CL-PLAN-S05-SUM"
       ],
       "tp": 0,
-      "fp": 2,
+      "fp": 1,
       "fn": 2,
       "precision": 0.0,
       "recall": 0.0,
@@ -7660,13 +7641,13 @@
         "PO25CL-PLAN-S01-M01"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A03",
-        "PO25CL-GEN-C03-P11-A05"
+        "PO25CL-GEN-C03-P11-A01",
+        "PO25CL-GEN-C03-P11-A03"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P11-A03",
-        "PO25CL-GEN-C03-P11-A05"
+        "PO25CL-GEN-C03-P11-A01",
+        "PO25CL-GEN-C03-P11-A03"
       ],
       "false_negative_chunk_ids": [
         "PO25CL-PLAN-S01-M01"
@@ -8047,23 +8028,24 @@
         "PO25CL-GEN-C03-P17-A06"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P17-A06",
+        "PO25CL-GEN-C04-P24-A03",
         "PO25CL-GEN-C04-P24-A06"
       ],
-      "true_positive_chunk_ids": [
+      "true_positive_chunk_ids": [],
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C04-P24-A03",
+        "PO25CL-GEN-C04-P24-A06"
+      ],
+      "false_negative_chunk_ids": [
         "PO25CL-GEN-C03-P17-A06"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P24-A06"
-      ],
-      "false_negative_chunk_ids": [],
-      "tp": 1,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
+      "tp": 0,
+      "fp": 2,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "jaccard": 0.0,
       "exact_match": false
     },
     {
@@ -8226,13 +8208,13 @@
       "question_id": "Q0613",
       "gold_chunk_ids": [],
       "predicted_chunk_ids": [
-        "PO25CL-APP-R06",
-        "PO25CL-GEN-C03-P14-A04"
+        "PO25CL-GEN-C03-P14-A04",
+        "PO25CL-GEN-C03-P14-A06"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-APP-R06",
-        "PO25CL-GEN-C03-P14-A04"
+        "PO25CL-GEN-C03-P14-A04",
+        "PO25CL-GEN-C03-P14-A06"
       ],
       "false_negative_chunk_ids": [],
       "tp": 0,
@@ -8454,13 +8436,13 @@
       "question_id": "Q0632",
       "gold_chunk_ids": [],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A04",
-        "PO25CL-GEN-C03-P14-A06"
+        "PO25CL-GEN-C01-P03-A01",
+        "PO25CL-GEN-C03-P14-A04"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A04",
-        "PO25CL-GEN-C03-P14-A06"
+        "PO25CL-GEN-C01-P03-A01",
+        "PO25CL-GEN-C03-P14-A04"
       ],
       "false_negative_chunk_ids": [],
       "tp": 0,
@@ -9314,13 +9296,13 @@
       "question_id": "Q0705",
       "gold_chunk_ids": [],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A03",
-        "PO25CL-GEN-C03-P14-A04"
+        "PO25CL-GEN-C03-P14-A04",
+        "PO25CL-GEN-C03-P14-A06"
       ],
       "true_positive_chunk_ids": [],
       "false_positive_chunk_ids": [
-        "PO25CL-GEN-C03-P14-A03",
-        "PO25CL-GEN-C03-P14-A04"
+        "PO25CL-GEN-C03-P14-A04",
+        "PO25CL-GEN-C03-P14-A06"
       ],
       "false_negative_chunk_ids": [],
       "tp": 0,

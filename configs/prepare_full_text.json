@@ -1,0 +1,27 @@
+{
+  "project_root": "..",
+  "questions_path": "data/frozen/qSet_PO.jsonl",
+  "chunks_path": "data/frozen/PO_25_CL_chunks.jsonl",
+  "output_dir": "artifacts/representations/full_text",
+  "batch_size": 32,
+  "models": {
+    "tfidf": {
+      "method": "TF_IDF",
+      "similarity": "cosine"
+    },
+    "sentence_bert": {
+      "method": "SENTENCE_BERT",
+      "model_name_or_path": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+      "similarity": "cosine",
+      "max_seq_length": 512
+    },
+    "e5": {
+      "method": "RETRIEVAL_BI_ENCODER",
+      "model_name_or_path": "intfloat/multilingual-e5-base",
+      "revision": "d128750597153bb5987e10b1c3493a34e5a4502a",
+      "similarity": "cosine",
+      "max_seq_length": 512
+    }
+  }
+}

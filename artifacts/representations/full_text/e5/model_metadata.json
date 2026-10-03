@@ -1,0 +1,13 @@
+{
+  "method": "RETRIEVAL_BI_ENCODER",
+  "model_name_or_path": "intfloat/multilingual-e5-base",
+  "requested_revision": "d128750597153bb5987e10b1c3493a34e5a4502a",
+  "max_seq_length": 512,
+  "query_prefix": "query: ",
+  "passage_prefix": "passage: ",
+  "normalize_embeddings": false,
+  "max_input_tokens": {
+    "question": 41,
+    "chunk": 349
+  }
+}

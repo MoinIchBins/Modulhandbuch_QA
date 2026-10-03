@@ -15,22 +15,22 @@
     "unknown_prediction_count": 0,
     "exact_match_count": 9,
     "exact_match_rate": 0.02112676056338028,
-    "mean_question_precision": 0.24569640062597745,
-    "mean_question_recall": 0.6807511737089202,
-    "mean_question_f1": 0.35516431924882647,
-    "mean_question_jaccard": 0.243348982785602,
-    "micro_precision": 0.24467178175618073,
-    "micro_recall": 0.7841530054644809,
-    "micro_f1": 0.37296946068875897,
-    "micro_jaccard": 0.2292332268370607,
-    "average_selected_chunks": 2.7535211267605635,
-    "empty_selection_rate": 0.08215962441314555,
+    "mean_question_precision": 0.24647887323943596,
+    "mean_question_recall": 0.6830985915492958,
+    "mean_question_f1": 0.3563380281690142,
+    "mean_question_jaccard": 0.2441314553990605,
+    "micro_precision": 0.24489795918367346,
+    "micro_recall": 0.7868852459016393,
+    "micro_f1": 0.37354085603112835,
+    "micro_jaccard": 0.22966507177033493,
+    "average_selected_chunks": 2.76056338028169,
+    "empty_selection_rate": 0.07981220657276995,
     "zero_gold_question_count": 78,
     "correct_abstention_count": 9,
     "zero_gold_abstention_rate": 0.11538461538461539,
-    "total_tp": 287,
-    "total_fp": 886,
-    "total_fn": 79,
+    "total_tp": 288,
+    "total_fp": 888,
+    "total_fn": 78,
     "unanswered_question_ids": [],
     "unknown_prediction_question_ids": []
   },
@@ -2950,19 +2950,26 @@
       "gold_chunk_ids": [
         "PO25CL-GEN-C03-P14-A02"
       ],
-      "predicted_chunk_ids": [],
-      "true_positive_chunk_ids": [],
-      "false_positive_chunk_ids": [],
-      "false_negative_chunk_ids": [
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A02",
+        "PO25CL-GEN-C03-P18-A03",
+        "PO25CL-GEN-C04-P28-A09"
+      ],
+      "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P14-A02"
       ],
-      "tp": 0,
-      "fp": 0,
-      "fn": 1,
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "jaccard": 0.0,
+      "false_positive_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A03",
+        "PO25CL-GEN-C04-P28-A09"
+      ],
+      "false_negative_chunk_ids": [],
+      "tp": 1,
+      "fp": 2,
+      "fn": 0,
+      "precision": 0.3333333333333333,
+      "recall": 1.0,
+      "f1": 0.5,
+      "jaccard": 0.3333333333333333,
       "exact_match": false
     },
     {

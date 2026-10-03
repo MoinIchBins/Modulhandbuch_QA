@@ -12,21 +12,21 @@
     "output_dir": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/experiments/base",
     "representations": {
       "tfidf": {
-        "matrix": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/tf_idf/cosine_similarity_matrix.npy",
-        "question_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/tf_idf/question_ids.json",
-        "chunk_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/tf_idf/chunk_ids.json",
+        "matrix": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/tfidf/matrix.npy",
+        "question_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/tfidf/question_ids.json",
+        "chunk_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/tfidf/chunk_ids.json",
         "higher_is_better": true
       },
       "e5": {
-        "matrix": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/retrieval_bi_encoder/cosine_similarity_matrix.npy",
-        "question_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/retrieval_bi_encoder/question_ids.json",
-        "chunk_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json",
+        "matrix": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/e5/matrix.npy",
+        "question_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/e5/question_ids.json",
+        "chunk_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/e5/chunk_ids.json",
         "higher_is_better": true
       },
       "sentence_bert": {
-        "matrix": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/sentence_bert/cosine_similarity_matrix.npy",
-        "question_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/sentence_bert/question_ids.json",
-        "chunk_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/similarity_matrices/sentence_bert/chunk_ids.json",
+        "matrix": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/sentence_bert/matrix.npy",
+        "question_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/sentence_bert/question_ids.json",
+        "chunk_ids": "/Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model/artifacts/representations/full_text/sentence_bert/chunk_ids.json",
         "higher_is_better": true
       }
     },

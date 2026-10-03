@@ -73,7 +73,7 @@
 {"question_id": "Q0124", "chunk_ids": [], "scores": []}
 {"question_id": "Q0372", "chunk_ids": [], "scores": []}
 {"question_id": "Q0088", "chunk_ids": [], "scores": []}
-{"question_id": "Q0053", "chunk_ids": ["PO25CL-GEN-C01-P04-A04", "PO25CL-GEN-C01-P04-A05"], "scores": [0.8614364266395569, 0.848944902420044]}
+{"question_id": "Q0053", "chunk_ids": ["PO25CL-GEN-C01-P04-A04", "PO25CL-GEN-C01-P04-A05"], "scores": [0.8614364266395569, 0.848945140838623]}
 {"question_id": "Q0653", "chunk_ids": [], "scores": []}
 {"question_id": "Q0151", "chunk_ids": [], "scores": []}
 {"question_id": "Q0135", "chunk_ids": [], "scores": []}
@@ -190,7 +190,7 @@
 {"question_id": "Q0179", "chunk_ids": [], "scores": []}
 {"question_id": "Q0104", "chunk_ids": [], "scores": []}
 {"question_id": "Q0717", "chunk_ids": [], "scores": []}
-{"question_id": "Q0324", "chunk_ids": ["PO25CL-GEN-C03-P19-A05", "PO25CL-GEN-C03-P19-A06"], "scores": [0.905125617980957, 0.8986857533454895]}
+{"question_id": "Q0324", "chunk_ids": ["PO25CL-GEN-C03-P19-A05", "PO25CL-GEN-C03-P19-A06"], "scores": [0.905125617980957, 0.8986858129501343]}
 {"question_id": "Q0698", "chunk_ids": [], "scores": []}
 {"question_id": "Q0651", "chunk_ids": [], "scores": []}
 {"question_id": "Q0400", "chunk_ids": [], "scores": []}
@@ -269,7 +269,7 @@
 {"question_id": "Q0482", "chunk_ids": [], "scores": []}
 {"question_id": "Q0563", "chunk_ids": [], "scores": []}
 {"question_id": "Q0130", "chunk_ids": [], "scores": []}
-{"question_id": "Q0056", "chunk_ids": ["PO25CL-GEN-C01-P04-A05", "PO25CL-GEN-C01-P04-A04"], "scores": [0.8498364090919495, 0.8156273365020752]}
+{"question_id": "Q0056", "chunk_ids": ["PO25CL-GEN-C01-P04-A05", "PO25CL-GEN-C01-P04-A04"], "scores": [0.8498362302780151, 0.8156273365020752]}
 {"question_id": "Q0082", "chunk_ids": [], "scores": []}
 {"question_id": "Q0150", "chunk_ids": [], "scores": []}
 {"question_id": "Q0306", "chunk_ids": [], "scores": []}
@@ -391,7 +391,7 @@
 {"question_id": "Q0588", "chunk_ids": [], "scores": []}
 {"question_id": "Q0207", "chunk_ids": [], "scores": []}
 {"question_id": "Q0616", "chunk_ids": [], "scores": []}
-{"question_id": "Q0424", "chunk_ids": ["PO25CL-GEN-C04-P27-A03", "PO25CL-GEN-C04-P27-A01-02"], "scores": [0.8828087449073792, 0.8459767699241638]}
+{"question_id": "Q0424", "chunk_ids": ["PO25CL-GEN-C04-P27-A03", "PO25CL-GEN-C04-P27-A01-02"], "scores": [0.8828086853027344, 0.8459768295288086]}
 {"question_id": "Q0087", "chunk_ids": [], "scores": []}
 {"question_id": "Q0422", "chunk_ids": [], "scores": []}
 {"question_id": "Q0467", "chunk_ids": [], "scores": []}

@@ -7,7 +7,7 @@ import pandas as pd
 
 # Select the file-only backend before importing pyplot.
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 K_VALUES = [1, 2, 3, 5, 10]
 TOP_RESULTS_TO_STORE = 10

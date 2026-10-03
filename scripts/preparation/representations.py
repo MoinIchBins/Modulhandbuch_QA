@@ -53,6 +53,13 @@ def main():
             model_name_or_path=model.get("model_name_or_path"),
             batch_size=config.get("batch_size", 32),
             model_revision=model.get("revision"),
+            max_seq_length=model.get("max_seq_length"),
+        )
+        question_vectors = embedder.embed_many(
+            [row["question"] for row in questions], text_type="question"
+        )
+        chunk_vectors = embedder.embed_many(
+            [row["chunk_text"] for row in chunks], text_type="chunk"
         )
         write_json(
             folder / "model_metadata.json",
@@ -76,13 +83,11 @@ def main():
                     else None
                 ),
                 "normalize_embeddings": False,
+                "max_input_tokens": (
+                    embedder.max_input_tokens
+                    if embedder.model is not None else None
+                ),
             },
-        )
-        question_vectors = embedder.embed_many(
-            [row["question"] for row in questions], text_type="question"
-        )
-        chunk_vectors = embedder.embed_many(
-            [row["chunk_text"] for row in chunks], text_type="chunk"
         )
         np.save(folder / "question_embeddings.npy", question_vectors)
         np.save(folder / "chunk_embeddings.npy", chunk_vectors)

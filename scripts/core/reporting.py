@@ -13,7 +13,7 @@ from .ranking import rank_key
 
 # Select the file-only backend before importing pyplot.
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 
 def plot_ranking(rows, path, title, label_field="experiment"):

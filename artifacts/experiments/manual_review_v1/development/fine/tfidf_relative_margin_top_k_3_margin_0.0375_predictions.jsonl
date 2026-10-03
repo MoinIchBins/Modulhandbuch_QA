@@ -22,7 +22,7 @@
 {"question_id": "Q0210", "chunk_ids": [], "scores": []}
 {"question_id": "Q0688", "chunk_ids": [], "scores": []}
 {"question_id": "Q0370", "chunk_ids": ["PO25CL-GEN-C04-P24-A05", "PO25CL-GEN-C04-P24-A04", "PO25CL-GEN-C04-P25-A01"], "scores": [0.3496111604922596, 0.3268424615982932, 0.12357596353065797]}
-{"question_id": "Q0675", "chunk_ids": ["PO25CL-PLAN-S01-M03", "PO25CL-PLAN-S02-M02", "PO25CL-APP-R07-M03"], "scores": [0.36756379267358397, 0.31099818766511, 0.30683448479613834]}
+{"question_id": "Q0675", "chunk_ids": ["PO25CL-PLAN-S01-M03", "PO25CL-PLAN-S02-M02", "PO25CL-APP-R07-M03"], "scores": [0.36756379267358397, 0.31099818766511, 0.3068344847961383]}
 {"question_id": "Q0646", "chunk_ids": ["PO25CL-PLAN-S04-M02", "PO25CL-APP-R07-M09", "PO25CL-GEN-C02-P09-A01"], "scores": [0.17864266334925064, 0.1631687838821523, 0.04540073072314639]}
 {"question_id": "Q0125", "chunk_ids": ["PO25CL-GEN-C03-P11-A02", "PO25CL-GEN-C04-P30-U01", "PO25CL-GEN-C03-P11-A01"], "scores": [0.09432452063430355, 0.08610962444238182, 0.08374810863759241]}
 {"question_id": "Q0231", "chunk_ids": [], "scores": []}

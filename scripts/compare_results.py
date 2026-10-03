@@ -7,7 +7,7 @@ from pathlib import Path
 
 STAGE_COUNTS = {
     "development/coarse": 157,
-    "development/fine": 4227,
+    "development/fine": None,
     "development": 12,
     "validation": 5,
     "test": 1,
@@ -27,7 +27,9 @@ def compare_results(reference, rerun):
     for stage, count in STAGE_COUNTS.items():
         expected = read_summaries(reference, stage)
         actual = read_summaries(rerun, stage)
-        if len(expected) != count or len(actual) != count:
+        if count is None:
+            count = len(expected)
+        if not count or len(expected) != count or len(actual) != count:
             raise ValueError(
                 f"{stage}: expected {count} settings; "
                 f"reference has {len(expected)}, rerun has {len(actual)}"

@@ -11,21 +11,21 @@
   "output_dir": "artifacts/experiments/base",
   "representations": {
     "tfidf": {
-      "matrix": "artifacts/similarity_matrices/tf_idf/cosine_similarity_matrix.npy",
-      "question_ids": "artifacts/similarity_matrices/tf_idf/question_ids.json",
-      "chunk_ids": "artifacts/similarity_matrices/tf_idf/chunk_ids.json",
+      "matrix": "artifacts/representations/full_text/tfidf/matrix.npy",
+      "question_ids": "artifacts/representations/full_text/tfidf/question_ids.json",
+      "chunk_ids": "artifacts/representations/full_text/tfidf/chunk_ids.json",
       "higher_is_better": true
     },
     "e5": {
-      "matrix": "artifacts/similarity_matrices/retrieval_bi_encoder/cosine_similarity_matrix.npy",
-      "question_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/question_ids.json",
-      "chunk_ids": "artifacts/similarity_matrices/retrieval_bi_encoder/chunk_ids.json",
+      "matrix": "artifacts/representations/full_text/e5/matrix.npy",
+      "question_ids": "artifacts/representations/full_text/e5/question_ids.json",
+      "chunk_ids": "artifacts/representations/full_text/e5/chunk_ids.json",
       "higher_is_better": true
     },
     "sentence_bert": {
-      "matrix": "artifacts/similarity_matrices/sentence_bert/cosine_similarity_matrix.npy",
-      "question_ids": "artifacts/similarity_matrices/sentence_bert/question_ids.json",
-      "chunk_ids": "artifacts/similarity_matrices/sentence_bert/chunk_ids.json",
+      "matrix": "artifacts/representations/full_text/sentence_bert/matrix.npy",
+      "question_ids": "artifacts/representations/full_text/sentence_bert/question_ids.json",
+      "chunk_ids": "artifacts/representations/full_text/sentence_bert/chunk_ids.json",
       "higher_is_better": true
     }
   },

@@ -1,0 +1,10 @@
+{
+  "method": "TF_IDF",
+  "model_name_or_path": null,
+  "requested_revision": null,
+  "max_seq_length": null,
+  "query_prefix": null,
+  "passage_prefix": null,
+  "normalize_embeddings": false,
+  "max_input_tokens": null
+}

@@ -12,23 +12,23 @@
     "unanswered_question_count": 0,
     "answer_coverage": 1.0,
     "unknown_prediction_count": 0,
-    "exact_match_count": 90,
-    "exact_match_rate": 0.20833333333333334,
-    "mean_question_precision": 0.3274775590012657,
+    "exact_match_count": 91,
+    "exact_match_rate": 0.21064814814814814,
+    "mean_question_precision": 0.3286349664086731,
     "mean_question_recall": 0.7569444444444444,
-    "mean_question_f1": 0.3819410315063494,
-    "mean_question_jaccard": 0.32229928819799486,
-    "micro_precision": 0.09508716323296355,
+    "mean_question_f1": 0.38271263644462095,
+    "mean_question_jaccard": 0.3234566956054023,
+    "micro_precision": 0.09511731135066583,
     "micro_recall": 0.7978723404255319,
-    "micro_f1": 0.16992353440951571,
-    "micro_jaccard": 0.09285051067780872,
-    "average_selected_chunks": 7.3032407407407405,
+    "micro_f1": 0.16997167138810199,
+    "micro_jaccard": 0.09287925696594428,
+    "average_selected_chunks": 7.300925925925926,
     "empty_selection_rate": 0.19444444444444445,
     "zero_gold_question_count": 74,
     "correct_abstention_count": 35,
     "zero_gold_abstention_rate": 0.47297297297297297,
     "total_tp": 300,
-    "total_fp": 2855,
+    "total_fp": 2854,
     "total_fn": 76,
     "unanswered_question_ids": [],
     "unknown_prediction_question_ids": []
@@ -7210,24 +7210,21 @@
         "PO25CL-GEN-C03-P21-A02"
       ],
       "predicted_chunk_ids": [
-        "PO25CL-GEN-C03-P21-A02",
-        "PO25CL-GEN-C04-P24-A06"
+        "PO25CL-GEN-C03-P21-A02"
       ],
       "true_positive_chunk_ids": [
         "PO25CL-GEN-C03-P21-A02"
       ],
-      "false_positive_chunk_ids": [
-        "PO25CL-GEN-C04-P24-A06"
-      ],
+      "false_positive_chunk_ids": [],
       "false_negative_chunk_ids": [],
       "tp": 1,
-      "fp": 1,
+      "fp": 0,
       "fn": 0,
-      "precision": 0.5,
+      "precision": 1.0,
       "recall": 1.0,
-      "f1": 0.6666666666666666,
-      "jaccard": 0.5,
-      "exact_match": false
+      "f1": 1.0,
+      "jaccard": 1.0,
+      "exact_match": true
     },
     {
       "question_id": "Q0359",

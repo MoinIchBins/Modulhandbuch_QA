@@ -22,7 +22,7 @@
 {"question_id": "Q0210", "chunk_ids": ["PO25CL-GEN-C03-P14-A06"], "scores": [0.16910846569193855]}
 {"question_id": "Q0688", "chunk_ids": ["PO25CL-PLAN-S01-M03", "PO25CL-PLAN-S03-M04"], "scores": [0.13812845348960592, 0.12413657330974306]}
 {"question_id": "Q0370", "chunk_ids": ["PO25CL-GEN-C04-P24-A05", "PO25CL-GEN-C04-P24-A04"], "scores": [0.3496111604922596, 0.3268424615982932]}
-{"question_id": "Q0675", "chunk_ids": ["PO25CL-PLAN-S01-M03", "PO25CL-PLAN-S02-M02", "PO25CL-APP-R07-M03"], "scores": [0.36756379267358397, 0.31099818766511, 0.30683448479613834]}
+{"question_id": "Q0675", "chunk_ids": ["PO25CL-PLAN-S01-M03", "PO25CL-PLAN-S02-M02", "PO25CL-APP-R07-M03"], "scores": [0.36756379267358397, 0.31099818766511, 0.3068344847961383]}
 {"question_id": "Q0646", "chunk_ids": ["PO25CL-PLAN-S04-M02", "PO25CL-APP-R07-M09"], "scores": [0.17864266334925064, 0.1631687838821523]}
 {"question_id": "Q0125", "chunk_ids": [], "scores": []}
 {"question_id": "Q0231", "chunk_ids": [], "scores": []}

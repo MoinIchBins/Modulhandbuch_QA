@@ -1,0 +1,1504 @@
+{
+  "experiment": "base",
+  "winner": {
+    "representation": "e5",
+    "method": "top_k_threshold",
+    "top_k": 1,
+    "threshold": 0.84
+  },
+  "counts": {
+    "no_gold_overlap": 38,
+    "exact_match": 69,
+    "false_abstention": 23,
+    "incomplete_evidence": 1,
+    "unsupported_retrieval": 13
+  },
+  "per_question": [
+    {
+      "question_id": "Q0015",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P02-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-LEGEND"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0016",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P02-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P02-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0017",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P02-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P02-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0039",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A03"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0040",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A02"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0041",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A05"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0042",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A05"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0043",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P04-A05"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0073",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C01-P05-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P05-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0085",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A02"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0086",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A02"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0087",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A02"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0088",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0089",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0090",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0091",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A05"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0095",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A05"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P07-A05"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0108",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0109",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0110",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0111",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0112",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0113",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P03-A04"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0147",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P11-A08"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P11-A08"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0148",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P11-A08"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P11-A08"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0149",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A03"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0150",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0151",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R08"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0152",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0153",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A03"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0154",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A03"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0155",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P13-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0156",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P13-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0157",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A02"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0158",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A05"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0159",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P03-A01"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0160",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P12-A02"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0206",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0207",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0208",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0209",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0210",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0211",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0212",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0213",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0214",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A06"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0215",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A07"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A07"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0216",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A07"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P14-A07"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0221",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P15-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P15-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0249",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0250",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P15-A05"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0251",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0252",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0253",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0254",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0255",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0276",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0277",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0278",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0279",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0280",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0281",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A04"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P17-A04"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0287",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0288",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0289",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0290",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0291",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0292",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0293",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0294",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0295",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0296",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P18-A01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0327",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P15-A05",
+        "PO25CL-GEN-C03-P19-A06"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P19-A06"
+      ],
+      "f1": 0.6666666666666666,
+      "outcome": "incomplete_evidence"
+    },
+    {
+      "question_id": "Q0328",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P19-A07"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P19-A07"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0329",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P19-A08"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0330",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P19-A08"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P19-A08"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0335",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P20-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P20-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0336",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P20-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P19-A04"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0337",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P20-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P19-A10"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0340",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C03-P20-A03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P20-A03"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0425",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0426",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A03"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0435",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A04"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A01"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0436",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A04"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A04"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0443",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A08"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A08"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0444",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P28-A08"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0452",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P30-U01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C04-P30-U01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0453",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P30-U01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C04-P30-U01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0454",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C04-P30-U01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C04-P30-U01"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0460",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C05-P32-U01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P11-A09"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0461",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C05-P32-U01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-FRONT-PREAMBLE"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0462",
+      "gold_chunk_ids": [
+        "PO25CL-GEN-C05-P32-U01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-FRONT-TITLE"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0464",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S05-M01"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0474",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R11"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R11"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0486",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R07-M02"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0487",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R07-M02"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0488",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S02-M01"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0513",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M11"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R07-M11"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0514",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M11"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R07-M11"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0515",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M11"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S03-M04"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0519",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M13"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R07-M13"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0520",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M13"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R07-M13"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0521",
+      "gold_chunk_ids": [
+        "PO25CL-APP-R07-M13"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S05-M02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0531",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-INTRO"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-INTRO"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0532",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-INTRO"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-INTRO"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0533",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-INTRO"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-INTRO"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0534",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-INTRO"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0542",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S01-SUM"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P11-A03"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0546",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S01-SUM"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P05-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0547",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-S02-SUM"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0549",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-S02-SUM"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0550",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-S02-SUM"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0551",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-S02-SUM"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P03-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0554",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S03-SUM"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P11-A03"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0558",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S03-SUM"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P05-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0566",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S05-SUM"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R06"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0570",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S05-SUM"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C01-P05-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0581",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S01-M03"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S02-M02"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0584",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-S02-M02"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S02-M02"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0587",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S03-M01"
+      ],
+      "predicted_chunk_ids": [],
+      "f1": 0.0,
+      "outcome": "false_abstention"
+    },
+    {
+      "question_id": "Q0590",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-S03-M04"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S03-M04"
+      ],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0596",
+      "gold_chunk_ids": [
+        "PO25CL-PLAN-LEGEND",
+        "PO25CL-PLAN-S05-M01"
+      ],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R14"
+      ],
+      "f1": 0.0,
+      "outcome": "no_gold_overlap"
+    },
+    {
+      "question_id": "Q0613",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S02-M01"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0615",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0616",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S02-M02"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0623",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0627",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0631",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S02-M04"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0635",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0638",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0640",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R07-M08"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0641",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-APP-R07-M01"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0647",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0654",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0657",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0681",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S03-M02"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0701",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [],
+      "f1": 1.0,
+      "outcome": "exact_match"
+    },
+    {
+      "question_id": "Q0706",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S02-M03"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0709",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S03-M04"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0711",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S01-M04"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0714",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C02-P09-A04"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0716",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S03-M02"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0718",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-GEN-C03-P16-A02"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    },
+    {
+      "question_id": "Q0719",
+      "gold_chunk_ids": [],
+      "predicted_chunk_ids": [
+        "PO25CL-PLAN-S06-M02"
+      ],
+      "f1": 0.0,
+      "outcome": "unsupported_retrieval"
+    }
+  ]
+}
