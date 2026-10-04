@@ -3,10 +3,7 @@ from collections import Counter
 
 
 def analyze_gold_sets(file_path):
-    """
-    Print dataset diversity, evidence frequencies and zero-gold
-    statistics.
-    """
+    """Print dataset diversity, evidence frequencies and zero-gold statistics."""
     rows = []
 
     with open(file_path, "r", encoding="utf-8") as f:

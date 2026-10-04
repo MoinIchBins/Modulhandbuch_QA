@@ -2,7 +2,6 @@ import numpy as np
 
 from .ranking import rank_key
 
-
 def expand_sweeps(config):
     """Expand the coarse parameter grids."""
     if config.get("experiments"):
@@ -66,8 +65,7 @@ def expand_sweeps(config):
         }
         if actual != expected:
             raise ValueError(
-                f"Sweep is incomplete; expected {sorted(expected)}, "
-                f"got {sorted(actual)}"
+                f"Sweep is incomplete; expected {sorted(expected)}, got {sorted(actual)}"
             )
     return experiments
 
@@ -98,11 +96,14 @@ def fine_search_bounds(search):
     )
     if search.get("parameter") != parameter:
         raise ValueError(f"Fine search must tune {parameter}")
+
     lower, upper = search["lower"], search["upper"]
     if not np.isfinite([lower, upper]).all() or lower >= upper:
         raise ValueError("Fine-search bounds must be finite and increasing")
+
     if parameter == "margin" and not 0 <= lower < upper <= 1:
         raise ValueError("Fine-search margin bounds must be within [0, 1]")
+
     return parameter, float(lower), float(upper)
 
 
@@ -113,15 +114,16 @@ def validate_fine_searches(config, experiments):
         for row in experiments
         if row["method"] != "top_k"
     }
+
     searches = config.get("fine_searches", [])
     actual = [(row["representation"], row["method"]) for row in searches]
     if len(actual) != len(set(actual)) or set(actual) != expected:
         raise ValueError(
             (
-                "Fine-search specs must cover each non-top_k coarse "
-                "group exactly once"
+                "Fine-search specs must cover each non-top_k coarse group exactly once"
             )
         )
+    
     for search in searches:
         parameter, _, _ = fine_search_bounds(search)
         for top_k in search.get("top_k_values", [None]):
@@ -135,8 +137,7 @@ def validate_fine_searches(config, experiments):
             if len(values) < 2:
                 raise ValueError(
                     (
-                        "Each refined selector/top_k group needs at least two "
-                        "coarse values"
+                        "Each refined selector/top_k group needs at least two coarse values"
                     )
                 )
 
@@ -151,16 +152,17 @@ def refine_selector(search, results):
 
     for top_k in top_k_values:
         matched = [
-            result
-            for result in results
+            result for result in results
             if result["experiment"].get("top_k") == top_k
             and parameter in result["experiment"]
         ]
+
         if not matched:
             raise ValueError(
                 f"No coarse runs for {representation}/{method}, "
                 f"top_k={top_k}"
             )
+
         best_coarse = max(
             matched, key=lambda result: rank_key(result["summary"])
         )["experiment"]
@@ -168,6 +170,7 @@ def refine_selector(search, results):
         coarse_values = sorted(
             {float(result["experiment"][parameter]) for result in matched}
         )
+
         if len(coarse_values) < 2:
             raise ValueError(
                 f"Need at least two coarse {parameter} values for "
@@ -184,8 +187,7 @@ def refine_selector(search, results):
                 f"top_k={top_k}, best={best_value}"
             )
 
-        # Keep the best coarse point even if the local grid does not land
-        # on it.
+        # Keep the best coarse point even if the local grid does not land on it.
         fine_experiments.append(best_coarse)
         for value in np.linspace(lower, upper, 201):
             experiment = {
@@ -246,8 +248,7 @@ def expand_fine_search(config, evaluations):
             )
         )
 
-    # Avoid duplicate runs when neighboring coarse points refine to the same
-    # grid.
+    # Avoid duplicate runs when neighboring coarse points refine to the same grid.
     unique = {}
     for experiment in fine_experiments:
         key = tuple(

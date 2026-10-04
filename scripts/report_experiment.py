@@ -13,12 +13,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", required=True)
     args = parser.parse_args()
+
     config = load_config(args.config)
     root = Path(config["output_dir"])
+
     if not (root / "experiment.json").exists():
         raise ValueError("No experiment run to report")
+
     preflight(config)
     initialize_run(config)
+    
     for stage in ("development", "validation", "test"):
         if (root / stage / "complete.json").exists():
             report_stage(config, stage)

@@ -35,15 +35,14 @@ class ChunkSelector:
 
             if self.method == "top_k":
                 chosen = ranked[: self.top_k]
-
             elif self.method in ("threshold", "top_k_threshold"):
                 if self.higher_is_better:
                     chosen = [i for i in ranked if row[i] >= self.threshold]
                 else:
                     chosen = [i for i in ranked if row[i] <= self.threshold]
+                
                 if self.method == "top_k_threshold":
                     chosen = chosen[: self.top_k]
-
             elif self.method == "relative_margin":
                 selected = ranked[self.top_k - 1]
                 next_best = ranked[self.top_k]
@@ -64,11 +63,8 @@ class ChunkSelector:
                     ) / denominator
 
                 chosen = (
-                    ranked[: self.top_k]
-                    if relative_margin >= self.margin
-                    else []
+                    ranked[: self.top_k] if relative_margin >= self.margin else []
                 )
-
             else:
                 raise ValueError(f"Unknown selector method: {self.method}")
 

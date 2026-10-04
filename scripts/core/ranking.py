@@ -6,14 +6,13 @@ RANK_COLUMNS = [
     "mean_question_precision",
     "average_selected_chunks",
 ]
-RANK_ASCENDING = [False, False, False, True]
+# RANK_ASCENDING = [False, False, False, True]
 
 
 def rank_key(row):
     """Prefer F1, exact match and precision, then fewer selected chunks."""
     return tuple(
-        -row[key] if key == "average_selected_chunks" else row[key]
-        for key in RANK_COLUMNS
+        -row[key] if key == "average_selected_chunks" else row[key] for key in RANK_COLUMNS
     )
 
 
@@ -24,5 +23,6 @@ def group_winners(rows):
         key = (row["representation"], row["method"])
         if key not in winners or rank_key(row) > rank_key(winners[key]):
             winners[key] = row
+            
     # Keep the first encountered setting when all ranking metrics tie.
     return sorted(winners.values(), key=rank_key, reverse=True)

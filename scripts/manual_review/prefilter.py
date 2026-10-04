@@ -49,6 +49,7 @@ def write_csv(path, rows):
 def prefilter(config, split):
     """Write the winner's non-exact predictions into review groups."""
     root = Path(config["output_dir"])
+
     require_stage(root / split)
     summary = read_jsonl(root / split / "summary.jsonl")[0]
     predictions_path = (
@@ -132,9 +133,7 @@ def main():
     preflight(config)
     initialize_run(config)
     prefilter(
-        config,
-        args.split
-        or config.get("manual_review", {}).get("split", "validation"),
+        config, args.split or config.get("manual_review", {}).get("split", "validation"),
     )
 
 

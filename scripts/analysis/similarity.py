@@ -1,11 +1,10 @@
 import json
-
 import matplotlib
 
 import numpy as np
 import pandas as pd
 
-# Select the file-only backend before importing pyplot.
+# Select the file-only backend.
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -15,12 +14,10 @@ TOP_CHUNKS_TO_REPORT = 20
 
 
 def summarize(values):
-    """
-    Summarize finite numeric values; absent observations have null
-    statistics.
-    """
+    """Summarize finite numeric values."""
     values = np.asarray(values, dtype=float)
     values = values[np.isfinite(values)]
+
     if values.size == 0:
         return {
             "count": 0,
@@ -78,10 +75,7 @@ def gold_group(size):
 def gold_ranking_metrics(
     scores, order, gold_chunk_ids, chunk_ids, chunk_index
 ):
-    """
-    Measure gold ranks and score separation using the stable candidate
-    order.
-    """
+    """Measure gold ranks and score separation using the stable candidate order."""
     gold_size = len(gold_chunk_ids)
     gold_indices = np.array(
         [chunk_index[chunk_id] for chunk_id in gold_chunk_ids],
@@ -137,10 +131,7 @@ def gold_ranking_metrics(
 
 
 def analyze_question(scores, question_id, chunk_ids, chunk_index, gold):
-    """
-    Build one diagnostic record; unanswerable questions have no gold
-    ranks.
-    """
+    """Build one diagnostic record."""
     scores = np.asarray(scores, dtype=float)
     order = np.lexsort((np.arange(len(scores)), -scores))
 
@@ -199,7 +190,7 @@ def analyze_question(scores, question_id, chunk_ids, chunk_index, gold):
 
 
 def chunk_statistics(matrix, chunk_ids, top1_indices):
-    """Summarize each candidate's scores and frequency of ranking first."""
+    """Summarize each candidate's scores and frequency of ranking in first position."""
     top1_counts = np.bincount(top1_indices, minlength=len(chunk_ids))
     per_chunk = pd.DataFrame(
         [
@@ -248,6 +239,7 @@ def summarize_scores(matrix, answerable, zero_gold):
     """Summarize similarities for answerable and zero-gold questions."""
     best_gold_margins = [row["best_gold_margin"] for row in answerable]
     complete_gold_margins = [row["complete_gold_margin"] for row in answerable]
+
     return {
         "all_matrix_values": summarize(matrix.ravel()),
         "row_best_score": summarize(np.max(matrix, axis=1)),
@@ -300,7 +292,8 @@ def summarize_matrix(matrix, records, per_question, per_chunk):
     """Combine ranking, score and evidence-size statistics."""
     answerable = [row for row in records if row["gold_size"] > 0]
     zero_gold = [row for row in records if row["gold_size"] == 0]
-    # Pool individual gold ranks; other summaries weight each question equally.
+
+    # Pool individual gold ranks.
     pooled_gold_ranks = [
         rank
         for row in answerable
@@ -319,6 +312,7 @@ def summarize_matrix(matrix, records, per_question, per_chunk):
         for metric in ("recall", "hit", "all_gold")
         for k in K_VALUES
     }
+
     reciprocal_ranks = [row["mrr"] for row in answerable]
     best_gold_margins = [row["best_gold_margin"] for row in answerable]
     complete_gold_margins = [row["complete_gold_margin"] for row in answerable]
@@ -398,6 +392,7 @@ def analyze_matrix(matrix, question_ids, chunk_ids, gold):
     chunk_index = {chunk_id: index for index, chunk_id in enumerate(chunk_ids)}
     records = []
     top1_indices = np.empty(matrix.shape[0], dtype=int)
+
     for row_index, question_id in enumerate(question_ids):
         record, top1_index = analyze_question(
             matrix[row_index], question_id, chunk_ids, chunk_index, gold
@@ -419,13 +414,11 @@ def save_current_figure(path):
 
 
 def plot_ranking_metrics(analysis, output_dir):
-    """
-    Plot recall, hit rate and complete-evidence rate over candidate
-    ranks.
-    """
+    """Plot recall, hit rate and complete-evidence rate over candidate ranks."""
     files = []
     ranking = analysis["ranking_metrics"]
     plt.figure(figsize=(8, 5))
+
     for prefix, label in [
         ("recall", "Recall"),
         ("hit", "Hit"),
@@ -442,6 +435,7 @@ def plot_ranking_metrics(analysis, output_dir):
     plt.ylim(0, 1.02)
     plt.title("Ranking metrics at k")
     plt.legend()
+
     path = output_dir / "ranking_metrics_at_k.png"
     save_current_figure(path)
     files.append(path.name)
@@ -469,18 +463,23 @@ def plot_gold_distributions(per_question, output_dir):
             ].dropna(),
         ),
     ]
+
     for filename, title, values in plots:
         if values.empty:
             continue
+
         plt.figure(figsize=(8, 5))
         plt.hist(values, bins=min(40, max(10, int(np.sqrt(len(values))))))
+
         if filename == "complete_gold_margin_distribution.png":
             plt.axvline(0, linestyle="--")
             plt.xlabel("Worst gold score - best non-gold score")
         else:
             plt.xlabel("Worst required-gold rank")
+
         plt.ylabel("Questions")
         plt.title(title.title())
+
         path = output_dir / filename
         save_current_figure(path)
         files.append(path.name)
@@ -499,6 +498,7 @@ def plot_best_scores(per_question, output_dir):
         per_question["gold_size"] == 0,
         "best_score",
     ].dropna()
+
     if not answerable_best.empty or not zero_gold_best.empty:
         plt.figure(figsize=(8, 5))
         if not answerable_best.empty:
@@ -508,8 +508,10 @@ def plot_best_scores(per_question, output_dir):
         plt.xlabel("Best similarity score")
         plt.ylabel("Questions")
         plt.title("Best-score distribution")
+
         if not answerable_best.empty and not zero_gold_best.empty:
             plt.legend()
+
         path = output_dir / "best_score_distribution.png"
         save_current_figure(path)
         files.append(path.name)
@@ -521,6 +523,7 @@ def plot_gold_scores(per_question, output_dir):
     """Compare the best supporting and non-supporting candidate scores."""
     files = []
     answerable = per_question[per_question["gold_size"] > 0]
+
     if not answerable.empty:
         plt.figure(figsize=(8, 5))
         plt.hist(
@@ -539,6 +542,7 @@ def plot_gold_scores(per_question, output_dir):
         plt.ylabel("Questions")
         plt.title("Best gold vs. best non-gold score")
         plt.legend()
+
         path = output_dir / "best_gold_vs_best_non_gold_scores.png"
         save_current_figure(path)
         files.append(path.name)
@@ -587,6 +591,7 @@ def plot_gold_size_metrics(analysis, output_dir):
         plt.ylim(0, 1.02)
         plt.title(title)
         plt.legend()
+
         path = output_dir / filename
         save_current_figure(path)
         files.append(path.name)
@@ -600,6 +605,7 @@ def plot_chunk_frequency(per_chunk, output_dir):
     top_chunks = per_chunk.sort_values(
         ["top1_count", "similarity_mean"], ascending=[False, False]
     ).head(TOP_CHUNKS_TO_REPORT)
+
     if not top_chunks.empty and top_chunks["top1_count"].max() > 0:
         plt.figure(figsize=(10, 6))
         positions = np.arange(len(top_chunks))
@@ -608,6 +614,7 @@ def plot_chunk_frequency(per_chunk, output_dir):
         plt.xlabel("Chunk ID")
         plt.ylabel("Times ranked first")
         plt.title(f"Most frequent top-ranked chunks (top {len(top_chunks)})")
+        
         path = output_dir / "top_ranked_chunk_frequency.png"
         save_current_figure(path)
         files.append(path.name)

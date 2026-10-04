@@ -26,46 +26,36 @@ CATEGORIES = {
 
 CATEGORY_DESCRIPTIONS = {
     "1": (
-        "Predicted evidence fully supports the correct answer even though "
-        "it differs from the current gold mapping."
+        "Predicted evidence fully supports the correct answer even though it differs from the current gold mapping."
     ),
     "2": (
-        "The current gold mapping or answerability label appears wrong, "
-        "incomplete, or too restrictive."
+        "The current gold mapping or answerability label appears wrong, incomplete, or too restrictive."
     ),
     "3": (
-        "The prediction contains relevant evidence, but not enough to "
-        "fully support the answer."
+        "The prediction contains relevant evidence, but not enough to fully support the answer."
     ),
     "4": (
-        "The prediction is semantically/topically similar, but does not "
-        "provide the required evidence."
+        "The prediction is semantically/topically similar, but does not provide the required evidence."
     ),
     "5": (
-        "Question wording, terminology, or lexical mismatch plausibly "
-        "contributed to the error."
+        "Question wording, terminology, or lexical mismatch plausibly contributed to the error."
     ),
     "6": (
-        "A neighboring or near-duplicate clause was retrieved instead "
-        "of the required evidence."
+        "A neighboring or near-duplicate clause was retrieved instead of the required evidence."
     ),
     "7": ("Chunk boundaries or stored context plausibly caused the failure."),
     "8": (
-        "The source document itself is ambiguous, duplicated, or "
-        "internally inconsistent."
+        "The source document itself is ambiguous, duplicated, or internally inconsistent."
     ),
     "9": ("The retrieved chunk is not sufficiently related to the question."),
     "10": (
-        "The question genuinely requires multiple gold chunks, but the "
-        "frozen top-1 selector can return at most one."
+        "The question genuinely requires multiple gold chunks, but the frozen top-1 selector can return at most one."
     ),
     "11": (
-        "The question is answerable and the gold mapping is defensible, "
-        "but the system abstained because no score passed the threshold."
+        "The question is answerable and the gold mapping is defensible, but the system abstained because no score passed the threshold."
     ),
     "12": (
-        "The question is genuinely unanswerable from the source, but the "
-        "system nevertheless returned a chunk."
+        "The question is genuinely unanswerable from the source, but the system nevertheless returned a chunk."
     ),
     "13": ("The case cannot currently be classified confidently."),
     "0": "A different explanation not covered above.",
@@ -94,10 +84,7 @@ def open_chunk(chunk_id, browser_url):
 
 
 def save_rows(rows, output_path):
-    """
-    Atomically replace the review CSV so interrupted saves preserve
-    decisions.
-    """
+    """Atomically replace the review CSV so interrupted saves preserve decisions."""
     if not rows:
         return
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -113,25 +100,15 @@ def save_rows(rows, output_path):
     temp_path.replace(output_path)
 
 
-def print_categories(error_group=None):
-    """Show review labels and recommendations for the current output group."""
+def print_categories():
+    """Show all review categories and their descriptions."""
     print()
     print("Categories:")
 
-    recommended = {
-        "manual_wrong_nonempty": {"1", "2", "3", "4", "5", "6", "7", "8", "9"},
-        "multi_gold_single_prediction": {"2", "3", "7", "8", "10"},
-        "answerable_but_abstained": {"2", "5", "7", "8", "11"},
-        "zero_gold_but_retrieved": {"2", "4", "5", "8", "9", "12"},
-    }.get(error_group, set(CATEGORIES))
-
     for code, label in CATEGORIES.items():
-        marker = "*" if code in recommended else " "
-        print(f" {marker} {code:>2}  {label}")
+        print(f" {code}  {label}")
         print(f"       {CATEGORY_DESCRIPTIONS[code]}")
 
-    print()
-    print("* = especially relevant for this error group")
     print()
 
 
@@ -195,10 +172,7 @@ def normalize_source_row(row, error_group):
 
 
 def load_reviews(review_files, previous_manual_review, output_path):
-    """
-    Import earlier labels, then let resumable output decisions take
-    precedence.
-    """
+    """Import earlier labels, then let resumable output decisions take precedence."""
     rows = []
 
     for error_group, path in review_files.items():
@@ -309,7 +283,7 @@ def review_case(row, index, total, rows, output_path, browser_url):
         )
 
         if choice == "?":
-            print_categories(error_group)
+            print_categories()
             continue
 
         if choice in ("p", "g", "a"):
@@ -438,13 +412,16 @@ def main():
     parser.add_argument("--config", required=True)
     parser.add_argument("--split", choices=("validation", "test"))
     args = parser.parse_args()
+
     config = load_config(args.config)
     options = config.get("manual_review", {})
     split = args.split or options.get("split", "validation")
     root = Path(config["output_dir"])
+
     require_stage(root / split)
     preflight(config)
     initialize_run(config)
+
     folder = root / "manual_review" / split
     files = {
         "manual_wrong_nonempty": folder / "manual_review.csv",
@@ -455,8 +432,10 @@ def main():
         "zero_gold_but_retrieved": folder
         / "category_4_zero_gold_but_retrieved.csv",
     }
+
     previous = options.get("previous_review")
     previous = Path(config["project_root"]) / previous if previous else None
+
     # Copy browser assets into the experiment's review folder.
     browser_dir = folder / "browser"
     if not browser_dir.exists():
@@ -465,6 +444,7 @@ def main():
             browser_dir,
             ignore=shutil.ignore_patterns("chunks.jsonl"),
         )
+        
     run_review(
         Path(config["chunks_path"]),
         browser_dir,

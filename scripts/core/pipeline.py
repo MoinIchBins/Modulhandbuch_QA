@@ -8,7 +8,6 @@ from pathlib import Path
 import numpy as np
 
 from .config import (
-    SPLITS,
     file_hash,
     read_json,
     read_jsonl,
@@ -26,13 +25,13 @@ IDENTITY_FIELDS = ("representation", "method", "top_k", "threshold", "margin")
 
 
 def experiment_name(experiment):
-    """
-    Build a filename stem from the representation and selector parameters.
-    """
+    """Build a filename stem from the representation and selector parameters."""
     parts = [experiment["representation"], experiment["method"]]
+
     for key in ("top_k", "threshold", "margin"):
         if experiment.get(key) is not None:
             parts.append(f"{key}_{experiment[key]}")
+
     name = "_".join(parts)
     if Path(name).name != name or "/" in name or "\\" in name:
         raise ValueError(
@@ -55,15 +54,17 @@ def preflight(config):
     experiments = expand_sweeps(search_config(config))
     if not experiments:
         raise ValueError("No development experiments configured")
+
     names = []
     for experiment in experiments:
         validate_experiment(experiment, config["representations"])
         names.append(experiment_name(experiment))
+    
     if len(names) != len(set(names)):
         raise ValueError(
             "Duplicate development settings would overwrite each other"
         )
-    # Validate fine-search structure and bounds before creating any outputs.
+    
     if config["development"].get("fine_searches"):
         validate_fine_searches(search_config(config), experiments)
 
@@ -88,6 +89,7 @@ def initialize_run(config):
     root = Path(config["output_dir"])
     state = {"config": config, "environment": environment()}
     manifest = root / "experiment.json"
+
     if root.exists():
         if not manifest.is_file() or read_json(manifest) != state:
             raise ValueError(
@@ -111,9 +113,7 @@ def finish_stage(folder):
     write_json(
         folder / "complete.json",
         {
-            name: file_hash(folder / name)
-            for name in names
-            if (folder / name).exists()
+            name: file_hash(folder / name) for name in names if (folder / name).exists()
         },
     )
 
@@ -123,6 +123,7 @@ def require_stage(folder):
     receipt = folder / "complete.json"
     if not receipt.exists():
         raise ValueError(f"Stage is incomplete or has not run: {folder}")
+
     for name, expected in read_json(receipt).items():
         if file_hash(folder / name) != expected:
             raise ValueError(
@@ -151,8 +152,7 @@ def predict(experiment, files, scores, chunk_ids, question_ids):
     )
     selections = selector.select(scores, chunk_ids)
     return [
-        {"question_id": question_id, **selection}
-        for question_id, selection in zip(question_ids, selections)
+        {"question_id": question_id, **selection} for question_id, selection in zip(question_ids, selections)
     ]
 
 
@@ -162,6 +162,7 @@ def evaluate_settings(config, experiments, split, folder):
         validate_experiment(experiment, config["representations"])
     folder.mkdir(parents=True, exist_ok=False)
     ids = read_json(config["splits"][split])
+
     evaluator = QAMappingEvaluator(config["gold_path"])
     write_json(
         folder / "run_manifest.json",
@@ -173,43 +174,48 @@ def evaluate_settings(config, experiments, split, folder):
             ),
         },
     )
+    
     cache = {}
     summaries = []
     for experiment in experiments:
         representation = experiment["representation"]
         files = config["representations"][representation]
+
         if representation not in cache:
             cache[representation] = load_scores(files, ids)
+
         scores, chunk_ids = cache[representation]
+
         predictions = predict(experiment, files, scores, chunk_ids, ids)
         result = evaluator.eval(predictions, question_ids=ids)
-        if result["summary"]["unanswered_question_count"] or len(
-            predictions
-        ) != len(ids):
+
+        if result["summary"]["unanswered_question_count"] or len(predictions) != len(ids):
             raise ValueError("Generated predictions do not cover the split")
+
         name = experiment_name(experiment)
         write_jsonl(folder / f"{name}_predictions.jsonl", predictions)
         write_json(
             folder / f"{name}_evaluation.json",
             {"experiment": experiment, "split": split, **result},
         )
+
         summaries.append(
             {"experiment": name, **experiment, **result["summary"]}
         )
+
+    # development ranks its results using group_winners(rows) and test only evaluates one experiment.
     if split == "validation":
         summaries.sort(key=rank_key, reverse=True)
+
     write_jsonl(folder / "summary.jsonl", summaries)
     print(f"{split}: evaluated {len(experiments)} settings → {folder}")
     return summaries
 
 
 def setting(row):
-    """
-    Extract the representation and selector parameters from a summary row.
-    """
+    """Extract the representation and selector parameters from a summary row."""
     return {
-        key: row[key]
-        for key in IDENTITY_FIELDS
+        key: row[key] for key in IDENTITY_FIELDS 
         if key in row and row[key] is not None
     }
 
@@ -218,6 +224,7 @@ def development(config):
     """Search development settings and save the validation candidates."""
     root = Path(config["output_dir"]) / "development"
     root.mkdir(parents=True, exist_ok=False)
+
     coarse = evaluate_settings(
         config,
         expand_sweeps(search_config(config)),
@@ -225,6 +232,7 @@ def development(config):
         root / "coarse",
     )
     finish_stage(root / "coarse")
+
     rows = coarse
     if config["development"].get("fine_searches"):
         evaluations = [
@@ -235,6 +243,7 @@ def development(config):
             config, experiments, "development", root / "fine"
         )
         finish_stage(root / "fine")
+
     ranked = group_winners(rows)
     candidates = [setting(row) for row in ranked[:5]]
     write_json(
@@ -249,18 +258,20 @@ def validation(config):
     """Score the candidates on validation and save the winner."""
     root = Path(config["output_dir"])
     require_stage(root / "development")
-    candidates = read_json(root / "development/validation_candidates.json")[
-        "candidates"
-    ]
+
+    candidates = read_json(root / "development/validation_candidates.json")["candidates"]
     pairs = [(row["representation"], row["method"]) for row in candidates]
+
     if not candidates or len(set(pairs)) != len(pairs):
         raise ValueError(
             "Expected one candidate per selected representation/selector pair"
         )
+
     ranked = evaluate_settings(
         config, candidates, "validation", root / "validation"
     )
     winner = setting(ranked[0])
+
     write_json(
         root / "validation/frozen_winner.json",
         {
@@ -280,6 +291,7 @@ def test(config):
     """Load the validation winner and evaluate it on test."""
     root = Path(config["output_dir"])
     require_stage(root / "validation")
+
     frozen = read_json(root / "validation/frozen_winner.json")
     ranked = read_jsonl(root / "validation/summary.jsonl")
     if (
@@ -288,5 +300,6 @@ def test(config):
         or frozen["winner"] != setting(ranked[0])
     ):
         raise ValueError("Frozen winner does not match the validation ranking")
+        
     evaluate_settings(config, [frozen["winner"]], "test", root / "test")
     finish_stage(root / "test")

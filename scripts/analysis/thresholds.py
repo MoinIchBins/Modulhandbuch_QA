@@ -98,6 +98,7 @@ def plot_representation(name, answerable, zero_gold, output_dir):
     ax.set_ylabel("Questions")
     ax.set_title(f"{name}: threshold-relevant score distributions")
     ax.legend()
+    
     fig.tight_layout()
     fig.savefig(output_dir / f"{name}_threshold_distributions.png", dpi=300)
     plt.close(fig)

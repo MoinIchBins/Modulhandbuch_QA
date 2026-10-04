@@ -6,16 +6,14 @@ from typing import Any, Iterable
 
 
 def score_counts(tp, fp, fn):
-    """An empty prediction against empty gold receives perfect scores."""
+    """Compute precision, recall, F1, and Jaccard from true/false positive/negative counts."""
     if tp == fp == fn == 0:
         return 1.0, 1.0, 1.0, 1.0
 
     precision = tp / (tp + fp) if tp + fp else 0.0
     recall = tp / (tp + fn) if tp + fn else 0.0
     f1 = (
-        2 * precision * recall / (precision + recall)
-        if precision + recall
-        else 0.0
+        2 * precision * recall / (precision + recall) if precision + recall else 0.0
     )
     jaccard = tp / (tp + fp + fn) if tp + fp + fn else 0.0
 
@@ -64,7 +62,7 @@ def summarize_questions(
     unanswered_ids,
     unknown_prediction_ids,
 ):
-    """Aggregate scored records; report missing predictions separately."""
+    """Aggregate scored records"""
     selected_counts = [len(row["predicted_chunk_ids"]) for row in per_question]
     total_tp = sum(row["tp"] for row in per_question)
     total_fp = sum(row["fp"] for row in per_question)
@@ -133,8 +131,7 @@ class QAMappingEvaluator:
 
                 row = json.loads(line)
                 self.gold[str(row["question_id"]).strip()] = {
-                    str(chunk_id).strip()
-                    for chunk_id in row["all_required_chunk_ids"]
+                    str(chunk_id).strip() for chunk_id in row["all_required_chunk_ids"]
                 }
 
     def eval(
@@ -142,10 +139,7 @@ class QAMappingEvaluator:
         new_mapping: str | Path | Iterable[dict[str, Any]],
         question_ids: Iterable[str] | None = None,
     ) -> dict[str, Any]:
-        """
-        Score predictions for the requested question IDs. Missing records
-        are counted separately.
-        """
+        """Score predictions for the requested question IDs."""
         if isinstance(new_mapping, (str, Path)):
             with Path(new_mapping).open("r", encoding="utf-8") as file:
                 records = [json.loads(line) for line in file if line.strip()]
@@ -155,21 +149,17 @@ class QAMappingEvaluator:
         predictions = {
             str(row["question_id"]).strip(): {
                 str(chunk_id).strip() for chunk_id in row["chunk_ids"]
-            }
-            for row in records
+            } for row in records
         }
 
         scope_ids = (
-            set(self.gold)
-            if question_ids is None
-            else {str(question_id).strip() for question_id in question_ids}
+            set(self.gold) if question_ids is None else {str(question_id).strip() for question_id in question_ids}
         )
         prediction_ids = set(predictions)
         evaluated_ids = sorted(scope_ids & prediction_ids)
         unanswered_ids = sorted(scope_ids - prediction_ids)
         unknown_prediction_ids = sorted(prediction_ids - set(self.gold))
 
-        # Missing predictions are reported separately; they are not scored.
         per_question = []
         for question_id in evaluated_ids:
             per_question.append(

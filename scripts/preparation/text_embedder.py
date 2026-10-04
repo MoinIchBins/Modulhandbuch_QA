@@ -47,12 +47,14 @@ class TextEmbedder:
             self.model_name_or_path, revision=model_revision
         )
         self.vectorizer = None
+
         if max_seq_length is not None:
             limit = self.model[0].auto_model.config.max_position_embeddings
             if not isinstance(max_seq_length, int) or not (
                 1 <= max_seq_length <= limit
             ):
                 raise ValueError(f"max_seq_length must be between 1 and {limit}")
+
             self.model.max_seq_length = max_seq_length
             self.model.tokenizer.model_max_length = max_seq_length
         self.max_input_tokens = {}
@@ -76,6 +78,7 @@ class TextEmbedder:
         ]
         maximum = max(lengths, default=0)
         self.max_input_tokens[text_type] = maximum
+        
         if maximum > self.model.max_seq_length:
             raise ValueError(
                 f"{text_type} input has {maximum} tokens; model limit is "

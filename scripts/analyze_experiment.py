@@ -30,15 +30,20 @@ def main():
         default="development",
     )
     args = parser.parse_args()
+
     config = load_config(args.config)
     if args.kind == "thresholds" and args.split != "development":
         parser.error("Threshold search advice is restricted to development")
+
     preflight(config)
     initialize_run(config)
+
     root = Path(config["output_dir"]) / "diagnostics" / args.split / args.kind
     root.mkdir(parents=True, exist_ok=True)
+
     ids = read_json(config["splits"][args.split])
     gold = {row["question_id"]: row for row in read_jsonl(config["gold_path"])}
+
     if args.kind == "gold":
         from .core.config import write_jsonl
 
@@ -46,17 +51,19 @@ def main():
         write_jsonl(path, [gold[q] for q in ids])
         analyze_gold_sets(path)
         return
+
     for name, files in config["representations"].items():
         if not files["higher_is_better"]:
             raise ValueError(
                 (
-                    "These optional score-separation diagnostics require "
-                    "higher-is-better scores"
+                    "These optional score-separation diagnostics require higher-is-better scores"
                 )
             )
+
         matrix, chunks = load_scores(files, ids)
         folder = root / name
         folder.mkdir(exist_ok=True)
+        
         if args.kind == "matrices":
             result, questions, chunk_stats = analyze_matrix(
                 matrix, ids, chunks, gold
@@ -80,23 +87,26 @@ def main():
                     for i, q in enumerate(ids)
                 ]
             )
+
             frame.to_csv(folder / "threshold_scores.csv", index=False)
             answerable = frame[frame["gold_size"] > 0]
             zero_gold = frame[frame["gold_size"] == 0]
             unwanted = pd.concat(
                 [answerable["best_non_gold_score"], zero_gold["top_score"]]
             ).dropna()
+
             if answerable.empty or unwanted.empty:
                 raise ValueError(
                     (
-                        "Threshold advice requires answerable questions and "
-                        "unwanted scores"
+                        "Threshold advice requires answerable questions and unwanted scores"
                     )
                 )
+
             boundaries = [
                 float(answerable["worst_gold_score"].quantile(0.1)),
                 float(unwanted.quantile(0.9)),
             ]
+
             write_json(
                 folder / "threshold_advice.json",
                 {
@@ -110,6 +120,7 @@ def main():
                 },
             )
             plot_representation(name, answerable, zero_gold, folder)
+
     print(f"Diagnostics saved to {root}")
 
 

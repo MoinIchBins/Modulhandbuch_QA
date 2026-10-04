@@ -33,20 +33,25 @@ def rebuild_dataset(questions_path, gold_path, splits_dir, output, revised):
     gold_rows = read_jsonl(gold_path)
     unique_ids([row["question_id"] for row in questions], "questions")
     unique_ids([row["question_id"] for row in gold_rows], "gold")
+
     excluded = set(REVIEW_EXCLUSIONS) if revised else set()
     questions = [r for r in questions if r["question_id"] not in excluded]
+    
     gold = {
         r["question_id"]: r
         for r in gold_rows
         if r["question_id"] not in excluded
     }
     expected = {r["question_id"] for r in questions}
+    
     if set(gold) != expected:
         raise ValueError("Questions and annotations must cover the same IDs")
+    
     split_paths = {
         s: Path(splits_dir) / f"{s}_question_ids.json" for s in SPLITS
     }
     splits = {s: read_json(p) for s, p in split_paths.items()}
+    
     assignments = {}
     for split, ids in splits.items():
         unique_ids(ids, split)
@@ -55,8 +60,10 @@ def rebuild_dataset(questions_path, gold_path, splits_dir, output, revised):
                 "Split IDs must be disjoint and reference retained questions"
             )
         assignments.update(dict.fromkeys(ids, split))
+    
     if set(assignments) != expected:
         raise ValueError("Split IDs must cover every retained question")
+    
     rows = []
     order = [q for s in SPLITS for q in splits[s]] if revised else list(gold)
     for question_id in order:
@@ -65,13 +72,17 @@ def rebuild_dataset(questions_path, gold_path, splits_dir, output, revised):
             row.pop("split_group_id", None)
         row["split"] = assignments[question_id]
         rows.append(row)
+    
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     write_jsonl(output / "qSet_PO.jsonl", questions)
     write_jsonl(output / "gold_with_split.jsonl", rows)
+    
     for split, ids in splits.items():
         write_json(output / f"{split}_question_ids.json", ids)
+    
     inputs = [Path(questions_path), Path(gold_path), *split_paths.values()]
+    
     write_json(
         output / "preparation.json",
         {
@@ -91,6 +102,7 @@ def main():
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--revised", action="store_true")
     args = parser.parse_args()
+    
     rebuild_dataset(
         args.questions,
         args.gold,
