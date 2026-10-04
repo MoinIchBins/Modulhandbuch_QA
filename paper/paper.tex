@@ -8,24 +8,10 @@
 \usepackage[english]{babel}
 \usepackage{microtype}
 \usepackage{inconsolata}
-\usepackage{graphicx}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{xcolor}
-\newcommand{\revision}[1]{#1}
-
-% Enforce English designations also where acl.sty specifies headings.
-\usepackage{etoolbox}
-\makeatletter
-\AtBeginDocument{%
-  \renewcommand{\abstractname}{Abstract}%
-  \patchcmd{\thebibliography}
-    {\section*{References\@mkboth {References}{References}}}
-    {\section*{References\@mkboth {References}{References}}}
-    {}{}%
-}
-\makeatother
 
 \title{Comparison of Text Representations and Chunk Selection with Abstention for Evidence Retrieval from German Examination Regulations}
 
@@ -48,7 +34,7 @@ Examination regulations combine general rules, subject-specific provisions, and 
 
 This paper evaluates evidence retrieval by comparing predicted chunk-ID sets with the minimal complete evidence annotated for each question. Evaluating these sets separately from generated answers makes retrieval errors directly observable. Retrieval is a non-parametric knowledge component in QA and RAG systems \citep{lewis2020rag}, and dense bi-encoders retrieve passages for open question answering \citep{karpukhin-etal-2020-dense}. The present evaluation measures whether the required evidence is found; it cannot establish the correctness of a later generated answer.
 
-Some plausibly worded questions presuppose facts that the regulation does not cover. Always returning a chunk then produces unsupported evidence. The system must be able to abstain by predicting the empty set $[\,]$. SQuAD~2.0 includes deliberately unanswerable questions to evaluate this decision in question answering \citep{rajpurkar-etal-2018-know}. Here, abstention is correct when the question has no gold evidence chunk.
+Some plausibly worded questions presuppose facts that the regulation does not cover. Always returning a chunk then produces unsupported evidence. The system must be able to abstain by predicting the empty set \texttt{[]}. SQuAD~2.0 includes deliberately unanswerable questions to evaluate this decision in question answering \citep{rajpurkar-etal-2018-know}. Here, abstention is correct when the question has no gold evidence chunk.
 
 This problem gives rise to three research questions:
 
@@ -64,7 +50,7 @@ The comparison uses TF-IDF, a multilingual Sentence-BERT checkpoint, and multili
 
 \subsection{Sparse and Dense Text Representations}
 
-In the vector space model, documents and queries are vectors that can be compared using cosine similarity \citep{salton1975vector}. TF-IDF weights terms by their frequency in a text and their specificity within the collection \citep{sparckjones1972statistical}. It is a useful baseline here because questions and evidence passages often share technical terms, module names, and regulatory terminology.
+In the vector space model, documents and queries are vectors that can be compared using cosine similarity \citep{salton1975vector}. TF-IDF combines within-document term frequency with inverse document frequency. The latter gives greater weight to terms occurring in fewer documents \citep{sparckjones1972statistical}. It is a useful baseline here because questions and evidence passages often share technical terms, module names, and regulatory terminology.
 
 Dense representations can capture similarity between texts that use different wording. Sentence-BERT produces sentence embeddings using pair or triplet training, allowing direct comparison through cosine similarity \citep{reimers-gurevych-2019-sentence}. Its multilingual extension trains a multilingual model on translated sentence pairs against an English Sentence-BERT reference model \citep{reimers-gurevych-2020-making}. The checkpoint used here is a general multilingual sentence encoder. E5 uses contrastive training on text pairs for tasks including retrieval \citep{wang2022text}; multilingual E5 extends this approach to many languages \citep{wang2024multilingual}. Comparing these checkpoints tests how the different representations perform on the same regulatory corpus.
 
@@ -72,7 +58,7 @@ Results from broad benchmarks depend on the task and corpus. BEIR evaluates zero
 
 \subsection{Abstention and the Legal Retrieval Context}
 
-Selective prediction allows a system to reject a case according to a selection criterion. \citet{pmlr-v97-geifman19a} treat this rejection option as a separate learning problem. Here, abstention uses rules based on similarity scores, without training a rejection model. SQuAD~2.0 evaluates whether a system can recognize questions without a supported answer \citep{rajpurkar-etal-2018-know}; this study applies the same principle to evidence retrieval by allowing the system to return no chunk.
+Selective prediction allows a system to reject a case according to a selection criterion. \citet{pmlr-v97-geifman19a} jointly learn prediction and rejection in an end-to-end neural architecture. Here, abstention uses rules based on similarity scores, without training a rejection model. SQuAD~2.0 evaluates whether a system can recognize questions without a supported answer \citep{rajpurkar-etal-2018-know}; this study applies the same principle to evidence retrieval by allowing the system to return no chunk.
 
 German legal retrieval research examines how queries can be linked to supporting legal sources. GerDaLIR compares lexical and neural retrieval for German court decisions \citep{wrzalik-krechel-2021-gerdalir}, while GerLayQA links lay questions and lawyers' answers to statutory sections \citep{buttner-habernal-2024-answering}. \citet{reuter-etal-2025-towards} examine retrieval reliability in collections containing structurally similar legal documents. These studies provide context for the present comparison, which focuses on evidence selection and abstention within a single examination regulation.
 
@@ -82,7 +68,7 @@ German legal retrieval research examines how queries can be linked to supporting
 
 In the primary grouped experiment, all representations encode the same 720 questions and 201 chunks.
 
-\revision{The follow-up reuses the existing similarity matrices, selecting the 710 retained question rows by question ID; the 201 retrieval chunks and representation methods remain unchanged.} For TF-IDF, \texttt{TfidfVectorizer(lowercase=True, ngram\_range=(1,3))} is used. The vocabulary is learned exclusively from the chunk texts; the questions are then transformed into the same feature space. The configuration thus considers unigrams, bigrams, and trigrams and converts characters to lowercase. Sublinear term-frequency scaling is disabled; raw term frequencies are weighted by inverse document frequency.
+The follow-up reuses the existing similarity matrices, selecting the 710 retained question rows by question ID; the 201 retrieval chunks and representation methods remain unchanged. For TF-IDF, \texttt{TfidfVectorizer(lowercase=True, ngram\_range=(1,3))} is used. The vocabulary is learned exclusively from the chunk texts; the questions are then transformed into the same feature space. The configuration thus considers unigrams, bigrams, and trigrams and converts characters to lowercase. Sublinear term-frequency scaling is disabled; raw term frequencies are weighted by inverse document frequency.
 
 The checkpoint \nolinkurl{sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2} serves as a general dense sentence representation. Its 384-dimensional vectors are generated through the \texttt{SentenceTransformer} interface, with no custom pooling method added. The retrieval-oriented alternative is \texttt{intfloat/multilingual-e5-base}, which uses 768 dimensions; questions receive the prefix \texttt{query:} and chunks the prefix \texttt{passage:}. Neither model is fine-tuned on the project corpus. Both neural encoders use an explicit maximum sequence length of 512 tokens, within the supported transformer input length. Before encoding, the preparation script tokenizes each complete input, including special tokens and E5 prefixes, and rejects inputs exceeding this limit. The maximum question/chunk lengths are 38/347 tokens for Sentence-BERT and 41/349 for E5; no input is truncated. TF-IDF and both neural representations are computed from the complete frozen texts for this evaluation. The pinned model snapshots, input paths, effective sequence limits and maximum observed token lengths are recorded with the preparation outputs under \nolinkurl{artifacts/representations/full_text/}.
 
@@ -108,17 +94,17 @@ S_{\theta}(q)=\{c\in\mathcal{C}\mid s(q,c)\geq\theta\}.
 \end{equation}
 This rule can return zero, one, or multiple chunks; it allows abstention but places no upper bound on the output size.
 
-The combined selector first orders all chunks with $s(q,c)\geq\theta$ by descending similarity and returns at most the first $k$ of them, thus combining an absolute minimum similarity with a fixed upper bound on the output size. For $k=1$, the result is either exactly one evidence passage or $[\,]$.
+The combined selector first orders all chunks with $s(q,c)\geq\theta$ by descending similarity and returns at most the first $k$ of them, thus combining an absolute minimum similarity with a fixed upper bound on the output size. For $k=1$, the result is either exactly one evidence passage or \texttt{[]}.
 
 The relative margin evaluates the separation at the decision boundary rather than the absolute score level. With $s_k$ denoting the similarity score at rank $k$ and $s_{k+1}$ the following score,
 \begin{equation}
 m_k(q)=\frac{s_k-s_{k+1}}{\max(|s_k|,10^{-12})}.
 \end{equation}
-The hyperparameter $\gamma$ specifies the minimum required size of this relative distance. If $m_k(q)\geq\gamma$, the first $k$ chunks are output; otherwise, the prediction is $[\,]$. For $k=1$, the rule measures how clearly the best chunk is separated from the second-best candidate in relative terms. A high absolute peak score is neither necessary nor sufficient for this criterion.
+The hyperparameter $\gamma$ specifies the minimum required size of this relative distance. If $m_k(q)\geq\gamma$, the first $k$ chunks are output; otherwise, the prediction is \texttt{[]}. For $k=1$, the rule measures how clearly the best chunk is separated from the second-best candidate in relative terms. A high absolute peak score is neither necessary nor sufficient for this criterion.
 
 \subsection{Determination of the Search Ranges}
 
-Both experiments use the same representation-specific coarse grids and an adaptive local fine search on the frozen development split. The coarse stage evaluates 157 configurations across three representations and four selector families, with $k\in\{1,2,3\}$ where applicable. For each representation, selector, and $k$, the fine stage brackets the best coarse parameter with its neighboring coarse values and evaluates 201 evenly spaced points. At a grid edge, it extends by one neighboring step within the configured bounds. It retains the best coarse point and removes duplicate configurations, yielding 4,227 fine configurations for the grouped experiment and 4,228 for the revised experiment. Both experiments use the same 201-point refinement procedure; retaining coarse-grid candidates produces a one-configuration difference between their final search spaces. Pure top-$k$ uses discrete candidates. The best configuration for each of the 12 representation/selector pairs is ranked, and the five highest-ranked pairs proceed to validation. Both experiments use identical search grids and parameter bounds, specified in \nolinkurl{configs/base.json} and \nolinkurl{configs/manual_review_v1.json}.
+Both experiments use the same representation-specific coarse grids and parameter bounds, specified in \nolinkurl{configs/base.json} and \nolinkurl{configs/manual_review_v1.json}. Each coarse search evaluates 157 configurations across three representations and four selector families, with $k\in\{1,2,3\}$ where applicable. For selectors with a continuous parameter, the fine search brackets the best coarse value with its neighboring grid values for each representation, selector, and $k$. At a grid edge, the interval extends by one neighboring step within the configured bounds. The search evaluates 201 evenly spaced points in each interval, retains the best coarse value, and removes duplicate configurations. This produces 4,227 fine configurations for the grouped experiment and 4,228 for the revised experiment; the difference arises from retaining coarse values that do not coincide with refinement points. Pure top-$k$ uses discrete candidates. The best configuration from each of the 12 representation/selector pairs is ranked, and the five highest-ranked configurations proceed to validation.
 
 \subsection{Python Implementation and Reproduction}
 \label{sec:implementation}
@@ -141,7 +127,7 @@ Each run records its configuration and package versions, and completed stages ar
 \nolinkurl{core/selection.py}; \nolinkurl{core/evaluation.py} & Convert aligned scores to evidence sets; compare predicted and gold sets and aggregate question-wise and micro metrics. \\
 \nolinkurl{core/baselines.py} & Freeze the frequent development answer and evaluate it, random top-1, and abstention on the configured splits. \\
 \nolinkurl{core/reporting.py}; \nolinkurl{report_experiment.py} & Export stage rankings, plots, single-gold results, and baseline comparisons. \\
-\nolinkurl{preparation/representations.py}; \nolinkurl{preparation/text_embedder.py}; \nolinkurl{preparation/similarity.py} & Prepare chunk-only TF-IDF or neural vectors, retain their ID order, and calculate question-by-chunk score matrices. \\
+\nolinkurl{preparation/representations.py}; \nolinkurl{preparation/text_embedder.py}; \nolinkurl{preparation/similarity.py} & Fit TF-IDF on chunks or encode texts with Sentence-BERT or E5, retain their ID order, and calculate question-by-chunk score matrices. \\
 \nolinkurl{analyze_experiment.py}; \nolinkurl{analysis/gold.py}; \nolinkurl{analysis/similarity.py}; \nolinkurl{analysis/thresholds.py} & Inspect gold distributions and similarity scores; assess thresholds on development data only. \\
 \nolinkurl{analysis/assessment.py} & Check saved test results and report performance by question group, with uncertainty intervals. \\
 \nolinkurl{manual_review/prefilter.py}; \nolinkurl{manual_review/review.py} & Group non-exact outputs and support evidence inspection, category assignment, and resumable annotation through a local chunk browser. \\
@@ -161,7 +147,7 @@ The question dataset comprises 720 entries. Of these, 600 can be answered on the
 
 Chunking was performed manually, preserving clause and table context. Question creation and gold-evidence assignment used GPT-5.5 Sol support, followed by manual review by the author. The stored records retain question IDs, evidence assignments, and supporting annotation fields. Zero-gold items were constructed to be plausible questions without supporting evidence in the indexed collection.
 
-\revision{For the follow-up, dataset version \texttt{manual\_review\_v1} excludes ten questions, leaving 710 entries: 590 answerable and 120 zero-gold questions. Q0485, Q0488, Q0491, Q0494, Q0497, Q0503, Q0515, Q0521, and Q0527 ask whether a named module has a module examination; an alternative study-plan chunk independently supports the same answer as the annotated gold chunk. These exclusions address incomplete coverage of valid evidence alternatives, rather than inherently unanswerable questions. Q0529 is excluded because the formal appendix and exemplary study plan give conflicting semester-hour values (SWS), while the question does not identify the intended source. The retrieval chunks are unchanged. The exclusions and their rationale are documented in \nolinkurl{data/manual_review_v1/README.md}.}
+For the follow-up, dataset version \texttt{manual\_review\_v1} excludes ten questions, leaving 710 entries: 590 answerable and 120 zero-gold questions. Q0485, Q0488, Q0491, Q0494, Q0497, Q0503, Q0515, Q0521, and Q0527 ask whether a named module has a module examination; an alternative study-plan chunk independently supports the same answer as the annotated gold chunk. These exclusions address incomplete coverage of valid evidence alternatives, rather than inherently unanswerable questions. Q0529 is excluded because the formal appendix and exemplary study plan give conflicting semester-hour values (SWS), while the question does not identify the intended source. The retrieval chunks are unchanged. The exclusions and their rationale are documented in \nolinkurl{data/manual_review_v1/README.md}.
 
 \begin{table}[t]
 \centering
@@ -186,11 +172,11 @@ Total       & 720 & 120 & 568 & 32 \\
 
 The primary grouped evaluation divides the 720 questions into 432 development, 144 validation, and 144 test questions. The governing grouping rule is \texttt{same\_non\_empty\_gold\_chunk\_set}: all questions with the same non-empty gold evidence set remain in the same data partition. This prevents an evidence passage tested through several paraphrased questions in the test split from having already appeared in a development or validation question with the same gold set. The split contains 315 groups, the largest of which comprises 13 questions, and no non-empty gold set occurs in more than one split. Zero-gold questions each form their own group because they would otherwise be combined into a single large group solely on the basis of their identical empty sets.
 
-\revision{Questions with identical non-empty gold evidence sets remain in the same split, while all 201 chunks remain searchable.}
+All 201 chunks remain searchable in every split.
 
 Selector families and hyperparameters are compared exclusively on the development split. The primary ranking criterion is the mean question-wise F1 score; ties are broken by exact match, mean question-wise precision, and, finally, a lower average number of selected chunks. Five finalists are frozen before validation. Only these configurations are compared on the validation split; no readjustment based on validation takes place. The winner selected there is then run unchanged on the test split.
 
-\revision{The follow-up uses a seeded random split at the individual-question level (seed 42, proportions 60/20/20), with 426 development, 142 validation, and 142 test questions. No evidence grouping or answer-level stratification is applied. The respective counts of zero-, one-, and two-chunk gold sets are 78/330/18, 22/112/8, and 20/116/6. Both protocols use the same search and five-candidate validation procedure. The selection is recorded in \nolinkurl{frozen_winner.json} and \nolinkurl{summary.jsonl} under \nolinkurl{artifacts/experiments/manual_review_v1/validation/}.}
+The follow-up uses a seeded random split at the individual-question level (seed 42, proportions 60/20/20), with 426 development, 142 validation, and 142 test questions. No evidence grouping or answer-level stratification is applied. The respective counts of zero-, one-, and two-chunk gold sets are 78/330/18, 22/112/8, and 20/116/6. Both protocols use the same search and five-candidate validation procedure. The selection is recorded in \nolinkurl{frozen_winner.json} and \nolinkurl{summary.jsonl} under \nolinkurl{artifacts/experiments/manual_review_v1/validation/}.
 
 \subsection{Metrics and Comparison Methods}
 
@@ -198,7 +184,7 @@ For each question, the predicted set $P_q$ and gold set $G_q$ are compared. If b
 
 The reported metrics also include mean question-wise precision and recall, exact match (EM), micro-F1, zero-gold abstention rate, rate of empty selections, and average number of selected chunks.
 
-Three simple comparison methods contextualize the test performance. \emph{Random top-1} selects one uniformly random chunk per question; the mean and standard deviation across the fixed seeds 0 to 99 are reported. The \emph{most frequent development answer} predicts the most frequent non-empty exact gold set in the development split for every validation and test question. \emph{Always no selection} returns $[\,]$ regardless of the question. This final method directly measures the Q-F1 attainable solely from the proportion of zero-gold questions.
+Three simple comparison methods contextualize the test performance. \emph{Random top-1} selects one uniformly random chunk per question; the mean and standard deviation across the fixed seeds 0 to 99 are reported. The \emph{most frequent development answer} predicts the most frequent non-empty exact gold set in the development split for every validation and test question. \emph{Always no selection} returns \texttt{[]} regardless of the question. This final method directly measures the Q-F1 attainable solely from the proportion of zero-gold questions.
 
 To assess how mean test Q-F1 varies with the composition of the test sample, we use 10,000 cluster-bootstrap resamples with seed 20261003. Questions with identical non-empty gold sets are sampled together, while each zero-gold question forms its own cluster.
 
@@ -206,15 +192,16 @@ The experiments were conducted using Python~3.11. Packages central to reproducti
 
 \section{Results and Evaluation}
 
-\revision{Sections~5.1--5.3 report the frozen grouped experiment, including its baselines and error analysis. Section~\ref{sec:follow-up} reports the revised-dataset experiment separately; its scores do not replace the frozen grouped results.}
+Sections~\ref{sec:development-results}--\ref{sec:error-analysis} report the frozen grouped experiment, including its baselines and error analysis. Section~\ref{sec:follow-up} reports the revised-dataset experiment separately; its scores do not replace the frozen grouped results.
 
 \subsection{Development Results}
+\label{sec:development-results}
 
 Table~\ref{tab:development-results} shows the best development configuration for each representation and selector family. E5 has the highest Q-F1 within every family. Its best configuration is top-1 with absolute threshold $\theta=0.84$, at Q-F1 $=0.6474$. This exceeds pure top-1 ($0.6165$) by $0.0309$ and the best pure threshold ($0.4957$) by $0.1516$. The relative-margin configuration scores $0.6358$.
 
 TF-IDF's best selector is relative margin, with Q-F1 $=0.5725$, slightly ahead of top-1 with threshold at $0.5671$. The selector ordering therefore differs from E5. Sentence-BERT reaches its highest Q-F1 of $0.3920$ with top-1 and threshold and ranks behind both representations in every selector family. These comparisons concern the specified checkpoints without fine-tuning on this dataset.
 
-For E5, adding a threshold to top-1 increases development Q-F1 from $0.6165$ to $0.6474$, suggesting that abstention improves the overall balance between retrieval and rejection. Unrestricted threshold selection achieves higher recall than precision ($0.6285$ versus $0.4591$), indicating that broader retrieval also introduces additional incorrect chunks. However, both top-1 variants remain unable to return complete evidence for questions requiring two passages.
+For E5, the gain from adding a threshold to top-1 suggests that abstention improves development performance. Unrestricted threshold selection has recall $0.6285$ and precision $0.4591$, indicating that many selected chunks are incorrect. Both top-1 variants remain unable to retrieve complete evidence for questions requiring two passages.
 
 \begin{table*}[t]
 \centering
@@ -242,6 +229,7 @@ Sentence-BERT & Threshold & $\theta=0.711$ & 0.3531 & 0.2801 & 0.3309 & 0.4259 \
 \end{table*}
 
 \subsection{Validation and Held-Out Test}
+\label{sec:validation-test}
 
 Among the five finalists frozen in advance, E5 with top-1 and $\theta=0.84$ achieves the highest Q-F1 on the validation split and is therefore selected as the final system. Sentence-BERT is not among these five finalists; validation therefore does not constitute another complete comparison of all three representations. As Table~\ref{tab:final-system} shows, the selected configuration achieves Q-F1 $=0.6042$, EM $=0.5903$, and a zero-gold abstention rate of $0.4167$ on validation.
 
@@ -262,7 +250,7 @@ Test & 0.4838 & 0.4792 & 0.4861 & 0.4826 & 0.5000 & 0.4091 \\
 \label{tab:final-system}
 \end{table*}
 
-The comparison methods in Table~\ref{tab:baselines} show that the test score is not achieved by trivial strategies. Random top-1 achieves a mean Q-F1 of only $0.0047$ across 100 seeds. The most frequent non-empty development answer matches no complete test gold set and therefore achieves Q-F1 $=0$. By contrast, always no selection achieves $0.1528$ because this method handles exactly the 22 zero-gold questions correctly and all 122 answerable questions incorrectly. The final system clearly exceeds these reference points, although its absolute test performance remains limited.
+The comparison methods in Table~\ref{tab:baselines} show that the test score is not achieved by trivial strategies. Random top-1 achieves a mean Q-F1 of only $0.0047$ across 100 seeds. The most frequent non-empty development answer has no chunk overlap with any test gold set and therefore achieves Q-F1 $=0$. By contrast, always no selection achieves $0.1528$ because this method handles exactly the 22 zero-gold questions correctly and all 122 answerable questions incorrectly. The final system clearly exceeds these reference points, although its absolute test performance remains limited. 
 
 \begin{table*}[t]
 \centering
@@ -283,6 +271,7 @@ E5 Top-1 + Threshold & 0.4838 & 0.4861 & 0.4826 & 0.4792 & 0.4091 \\
 \end{table*}
 
 \subsection{Error Analysis and Contextualization}
+\label{sec:error-analysis}
 
 The error analysis covers all 75 test questions without an exact match. Author-assigned categories are matched to the question, gold evidence and prediction in the current run; false abstentions are identified from empty outputs. Table~\ref{tab:error-analysis} assigns a primary error category to each case. The largest group, comprising 20 cases, involves the retrieval of a similar chunk that is nevertheless incorrect for the specific question. Such confusions correspond to the core problem of the corpus: lexically or thematically similar passages can serve different regulatory functions. Twenty cases are classified primarily as false abstentions. The selected threshold leaves substantial errors in both directions: the system abstains on 23 answerable questions and retrieves a chunk for 13 unanswerable questions.
 
@@ -313,16 +302,16 @@ A second source of error is the fixed top-1 restriction. According to the gold s
 \end{equation}
 Nine cases are assigned primarily to the top-1 limitation in the review. Only one retrieves a required chunk; eight retrieve neither of the two required chunks. Thus, the cardinality limit prevents completeness, but the latter eight cases also contain ranking failures.
 
-\revision{Evidence group G0040 contains eight test questions, Q0153 to Q0160, with the shared gold chunk \texttt{PO25CL-GEN-C03-P12-A02}. This non-empty gold set occurs in neither development nor validation. All eight questions in this held-out evidence group score F1 $=0$: six retrieve an incorrect chunk and two trigger abstention.}
+Evidence group G0040 contains eight test questions, Q0153 to Q0160, with the shared gold chunk \texttt{PO25CL-GEN-C03-P12-A02}. This non-empty gold set occurs in neither development nor validation. All eight questions in this held-out evidence group score F1 $=0$: six retrieve an incorrect chunk and two trigger abstention.
 
 Nine predictions contain valid alternative evidence absent from the gold annotations, reflecting an annotation limitation rather than a retrieval failure. All nine receive F1 $=0$ under the original gold-ID scoring. Accepting these reviewed alternatives as correct would raise test Q-F1 from $0.4838$ to $0.5463$, an increase of $0.0625$ without changing the predictions.
 
 The development results answer RQ1 with the ordering E5, TF-IDF, then Sentence-BERT. E5's retrieval-oriented training and the corpus's shared terminology are plausible explanations for the E5 and TF-IDF results, respectively; neither explanation was tested separately. For RQ2, the preferred selector depends on the representation: E5 top-1 with threshold wins validation, while relative margin leads for TF-IDF on development. For RQ3, the selected system scores lower on test than on validation. The review finds both retrieval failures and limits of the evaluation target, rather than one explanation for the remaining errors.
 
-\subsection{\textcolor{black}{Follow-up Evaluation on the Revised Dataset}}
+\subsection{Follow-up Evaluation on the Revised Dataset}
 \label{sec:follow-up}
 
-\revision{On the revised development split, E5 again achieves the highest Q-F1 within each selector family. The best development configuration is E5 top-1 with absolute threshold $\theta=0.8396$, with Q-F1 $=0.6487$. Validation instead selects E5 top-1 with relative margin $\gamma=0.003025$. This configuration obtains validation Q-F1 $=0.5469$, compared with $0.5399$ for E5 top-1 with threshold and $0.5329$ for pure E5 top-1. The margin selector's advantage over the threshold finalist is $0.0070$ Q-F1. It determines the winner under the prescribed selection rule but does not establish a generally superior selector. Table~\ref{tab:follow-up} reports the same frozen relative-margin configuration on all three splits; its development score is therefore distinct from the development maximum.}
+On the revised development split, E5 again achieves the highest Q-F1 within each selector family. The best development configuration is E5 top-1 with absolute threshold $\theta=0.8396$, with Q-F1 $=0.6487$. Validation instead selects E5 top-1 with relative margin $\gamma=0.003025$. This configuration obtains validation Q-F1 $=0.5469$, compared with $0.5399$ for E5 top-1 with threshold and $0.5329$ for pure E5 top-1. The margin selector's advantage over the threshold finalist is $0.0070$ Q-F1. It determines the winner under the prescribed selection rule but does not establish a generally superior selector. Table~\ref{tab:follow-up} reports the same frozen relative-margin configuration on all three splits; its development score is therefore distinct from the development maximum.
 
 \begin{table*}[t]
 \centering
@@ -337,13 +326,13 @@ Validation & 142 & 0.5469 & 0.5423 & 0.5493 & 0.5458 & 0.8169 \\
 Test & 142 & 0.6502 & 0.6408 & 0.6549 & 0.6479 & 0.7606 \\
 \bottomrule
 \end{tabular}
-\caption{\textcolor{black}{Revised-dataset results for the validation-selected E5 relative-margin configuration ($k=1$, $\gamma=0.003025$). Precision and recall are question-wise means. All questions have prediction records.}}
+\caption{Revised-dataset results for the validation-selected E5 relative-margin configuration ($k=1$, $\gamma=0.003025$). Precision and recall are question-wise means. All questions have prediction records.}
 \label{tab:follow-up}
 \end{table*}
 
-\revision{Test Q-F1 exceeds validation Q-F1 by $0.1033$, or 10.33 percentage points. Different sample composition is a possible explanation, but a single split does not establish the cause or the statistical significance of this difference. The test contains six two-chunk questions, compared with eight on validation, and 20 zero-gold questions, compared with 22 on validation. On test, the winner correctly abstains on 10 of the 20 zero-gold questions and retrieves a chunk for the other ten. It produces 91 exact matches and 51 non-exact predictions; the latter were not individually reviewed in the 75-case analysis of the original experiment.}
+Test Q-F1 exceeds validation Q-F1 by $0.1033$, or 10.33 percentage points. Different sample composition is a possible explanation, but a single split does not establish the cause or the statistical significance of this difference. The test contains six two-chunk questions, compared with eight on validation, and 20 zero-gold questions, compared with 22 on validation. On test, the winner correctly abstains on 10 of the 20 zero-gold questions and retrieves a chunk for the other ten. It produces 91 exact matches and 51 non-exact predictions; the latter were not individually reviewed in the 75-case analysis of the original experiment.
 
-\revision{In the follow-up, 110 of 122 answerable test questions share their exact gold set with development or validation, and previously evaluated questions are reused. Its higher test score therefore cannot isolate the effects of the exclusions or the split. A controlled comparison would fix the question set and search procedure while varying only the split.}
+In the follow-up, 110 of 122 answerable test questions share their exact gold set with development or validation, and previously evaluated questions are reused. Its higher test score therefore cannot isolate the effects of the exclusions or the split. A controlled comparison would fix the question set and search procedure while varying only the split.
 
 \subsection{Worked Qualitative Examples}
 \label{sec:examples}
@@ -365,7 +354,7 @@ The question asks how many module examinations appear in the first-semester summ
 \subsection{Subgroup Results and Descriptive Uncertainty}
 \label{sec:uncertainty}
 
-Table~\ref{tab:subgroups} separates answerable, single-gold, and two-gold questions. Correct abstentions contribute F1~$=1$ to the overall mean, so the answerable-only score makes the retrieval component explicit. Multi-gold performance is particularly weak, although the subsets are small and the protocols use different questions. These are descriptions of each frozen winner, not controlled evidence of improvement.
+Table~\ref{tab:subgroups} separates answerable, single-gold, and two-gold questions. Correct abstentions contribute F1~$=1$ to the overall mean, so the answerable-only score makes the retrieval component explicit. Multi-gold performance is particularly weak, although the subsets are small and the protocols use different questions.
 
 \begin{table}[t]
 \centering
@@ -398,17 +387,15 @@ The comparison supports E5 for evidence retrieval in this corpus, but also expos
 
 \section{Limitations and Future Work}
 
-\revision{Error counts below refer to the grouped evaluation. The follow-up's evidence overlap, prior exposure and limits on causal interpretation are detailed in Section~\ref{sec:follow-up}. Neither protocol includes repeated splits. The conditional intervals in Section~\ref{sec:uncertainty} should be complemented by prespecified split repetitions that account for dependence between related questions.}
+Error counts below refer to the grouped evaluation. The follow-up's evidence overlap, prior exposure and limits on causal interpretation are detailed in Section~\ref{sec:follow-up}. Neither protocol includes repeated splits. The conditional intervals in Section~\ref{sec:uncertainty} should be complemented by prespecified split repetitions that account for dependence between related questions.
 
 The empirical scope is limited to one regulatory document for one degree program. Transferability to other examination regulations or universities, as well as to larger collections of legal documents, was not investigated. The questions and gold evidence sets were constructed specifically for the project with language-model support and manually reviewed by the author. Because no independent second annotation was conducted, inter-annotator agreement could not be assessed.
 
 The gold annotations specify one complete evidence set per question but do not cover all valid alternatives. Although the follow-up excludes nine questions with alternative supporting passages, similar omissions may remain elsewhere in the dataset. These exclusions differ from the nine predictions identified as valid alternatives in the grouped test review. Future annotation should record alternative sufficient evidence sets explicitly so that these questions can remain in the benchmark.
 
-A separate limitation is the top-1 selection rule: ten questions in the grouped test require two chunks, which the selected configuration cannot return together.
-
 The system abstains on 23 answerable questions and retrieves a chunk for 13 of the 22 unanswerable questions. A future experiment should test whether calibration by question type improves this trade-off and whether variable-size predictions can recover complete multi-chunk evidence.
 
-The comparison omits BM25, hybrid retrieval, cross-encoder reranking, and generative readers. Two retrieval extensions deserve priority after improving the gold annotations. First, BM25 would add the lexical baseline identified as robust in BEIR \citep{thakur2021beir}. Second, reranking retrieved candidates could be tested against the 20 confusions involving similar but incorrect chunks. Neither extension has been evaluated here. A later RAG evaluation \citep{lewis2020rag} would also need separate measures of answer correctness and faithfulness to the retrieved evidence.
+The comparison omits BM25, hybrid retrieval, cross-encoder reranking, and generative readers. Two retrieval extensions deserve priority after improving the gold annotations. First, BM25 would add the lexical baseline identified as robust in BEIR \citep{thakur2021beir}. Second, reranking retrieved candidates could be tested against the 20 confusions involving similar but incorrect chunks. Neither extension has been evaluated here. The retriever could subsequently be evaluated within a RAG system \citep{lewis2020rag}. Such an evaluation should assess both answer correctness and faithfulness to the retrieved evidence.
 
 \bibliography{references}
 

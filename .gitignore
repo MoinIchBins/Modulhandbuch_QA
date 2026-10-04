@@ -2,4 +2,8 @@
 __pycache__/
 *.py[cod]
 .DS_Store
-paper/build/
+paper/*
+!paper/build/
+paper/build/*
+!paper/build/paper.pdf
+!paper/references.bib

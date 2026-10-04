@@ -2,16 +2,18 @@
 
 Retrieve evidence passages for questions about a German examination regulation, with an option to return no evidence. The project compares TF-IDF, multilingual Sentence-BERT and multilingual E5 using four chunk-selection rules. It evaluates evidence sets; it does not generate answers.
 
-The primary evaluation uses **`configs/base.json`** and the frozen dataset: **720 questions** (600 answerable, 120 zero-gold), **201 chunks**, and grouped development/validation/test partitions of **432/144/144**. Its frozen winner is **E5 top-1 with absolute threshold `0.84`**.
+The primary evaluation uses `configs/base.json` and the frozen dataset: **720 questions** (600 answerable, 120 zero-gold), **201 chunks**, and grouped development/validation/test partitions of **432/144/144**. Its frozen winner is **E5 top-1 with absolute threshold** `0.84`.
 
-| Dataset / protocol | Validation-selected winner | Validation Q-F1 | Test Q-F1 | Test exact match | Test micro-F1 |
-| --- | --- | ---: | ---: | ---: | ---: |
-| Frozen, 720 questions (`base`) | E5 top-1, threshold `0.84` | 0.604167 | 0.483796 | 0.479167 | 0.500000 |
-| Reviewed follow-up, 710 questions (`manual_review_v1`) | E5 top-1, relative margin `0.003025` | 0.546948 | 0.650235 | 0.640845 | 0.703390 |
 
-The frozen winner achieves development Q-F1 **0.647377** and 69 exact matches among 144 test questions. Its saved results are under [`artifacts/experiments/base/`](artifacts/experiments/base/); selection is recorded in [`validation/frozen_winner.json`](artifacts/experiments/base/validation/frozen_winner.json) and test metrics in [`test/summary.jsonl`](artifacts/experiments/base/test/summary.jsonl).
+| Dataset / protocol                                     | Validation-selected winner           | Validation Q-F1 | Test Q-F1 | Test exact match | Test micro-F1 |
+| ------------------------------------------------------ | ------------------------------------ | --------------- | --------- | ---------------- | ------------- |
+| Frozen, 720 questions (`base`)                         | E5 top-1, threshold `0.84`           | 0.604167        | 0.483796  | 0.479167         | 0.500000      |
+| Reviewed follow-up, 710 questions (`manual_review_v1`) | E5 top-1, relative margin `0.003025` | 0.546948        | 0.650235  | 0.640845         | 0.703390      |
 
-The follow-up excludes ten questions and uses a question-level split of 426/142/142. Dataset membership and splitting differ, so its higher test score is not a controlled improvement over the frozen evaluation. The paper reports both protocols separately. The finished paper is [paper/build/paper.pdf](paper/build/paper.pdf).
+
+The frozen winner achieves development Q-F1 **0.647377** and 69 exact matches among 144 test questions. Its saved results are under `[artifacts/experiments/base/](artifacts/experiments/base/)`; selection is recorded in `[validation/frozen_winner.json](artifacts/experiments/base/validation/frozen_winner.json)` and test metrics in `[test/summary.jsonl](artifacts/experiments/base/test/summary.jsonl)`.
+
+The follow-up excludes ten questions and uses a question-level split of 426/142/142. Dataset membership and splitting differ, so its higher test score is not a controlled improvement over the frozen evaluation. The paper reports both protocols separately. The compiled paper is [paper/build/paper.pdf](paper/build/paper.pdf).
 
 ## Contents
 
@@ -21,6 +23,8 @@ The follow-up excludes ten questions and uses a question-level split of 426/142/
 - [Optional workflows](#optional-workflows)
 - [Data and model sources](#data-and-model-sources)
 - [Project files and tests](#project-files-and-tests)
+
+
 
 ## Setup
 
@@ -61,9 +65,11 @@ Install dependencies:
 python -m pip install --requirement requirements.txt
 ```
 
+
+
 ## Reproduce and verify the experiments
 
-On a new machine, copy the project **without `.venv/`**, then follow [Setup](#setup). Include both datasets in `data/`, the prepared `artifacts/representations/full_text/`, and the published `artifacts/experiments/base/` and `artifacts/experiments/manual_review_v1/` results for comparison. Cached-matrix runs need no model weights or GPU. Allow several gigabytes for dependencies and outputs.
+On a new machine, copy the project **without** `.venv/`, then follow [Setup](#setup). Include both datasets in `data/`, the prepared `artifacts/representations/full_text/`, and the published `artifacts/experiments/base/` and `artifacts/experiments/manual_review_v1/` results for comparison. Cached-matrix runs need no model weights or GPU. Allow several gigabytes for dependencies and outputs.
 
 ### 1. Check the installation and inputs
 
@@ -128,13 +134,15 @@ Assessment output directories must be new. Intervals condition on the fixed winn
 
 `project_root` resolves relative to the config file; other paths resolve relative to that root.
 
-| Fields | Purpose |
-| --- | --- |
-| `name`, `output_dir` | Run identity and result directory |
-| `gold_path`, `chunks_path`, `splits` | Evidence annotations, chunks and partition IDs |
-| `representations` | Score matrices, ordered IDs and score direction |
-| `development` | Coarse grids and fine-search bounds |
-| `baselines`, `reports`, `manual_review` | Baseline, report and review settings |
+
+| Fields                                  | Purpose                                         |
+| --------------------------------------- | ----------------------------------------------- |
+| `name`, `output_dir`                    | Run identity and result directory               |
+| `gold_path`, `chunks_path`, `splits`    | Evidence annotations, chunks and partition IDs  |
+| `representations`                       | Score matrices, ordered IDs and score direction |
+| `development`                           | Coarse grids and fine-search bounds             |
+| `baselines`, `reports`, `manual_review` | Baseline, report and review settings            |
+
 
 The four selectors are `top_k`, `threshold`, `top_k_threshold` and `relative_margin`; applicable `top_k` values are 1–3. Fine search brackets coarse winners with neighboring grid points, retains coarse points and removes duplicates. Ranking prefers mean question F1, exact match, precision, then fewer chunks; complete ties retain input order. Empty prediction against empty gold scores perfectly; missing records are reported separately.
 
@@ -203,31 +211,59 @@ Neural preparation can download missing weights. Supply a model ID and immutable
 
 ## Data and model sources
 
-Questions and gold evidence used GPT-5.5 Sol support and author review, with no independent second annotator. Complete generation prompts, a detailed review protocol and the original revised-split generator are unavailable. Reproduction uses the saved datasets, assignments and newly prepared complete-text cosine matrices.
+Questions and gold evidence used GPT-5.5 Sol support and author review, with no independent second annotator. Complete generation prompts and a detailed review protocol are unavailable. The current preparation scripts reproduce the datasets using saved split assignments; they do not regenerate those assignments. Reproduction uses the saved datasets, assignments and prepared complete-text cosine matrices.
 
-TF-IDF fits lowercase word 1–3 grams on chunks, without sublinear term-frequency scaling. E5 uses `query: ` for questions and `passage: ` for chunks. Neural vectors are not normalized before cosine calculation.
+The source document is the [HHU examination regulation dated 20 January 2026](data/raw/PO_25_CL.pdf), including the computational-linguistics appendix and study plan. The [bibliography](paper/references.bib) identifies the cited publications; their PDFs are stored in [literature/papers/](literature/papers/).
 
-| Model | Pinned snapshot | Input limit | Longest question / chunk |
-| --- | --- | ---: | ---: |
-| `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | `e8f8c211226b894fcb81acc59f3b34ba3efd5f42` | 512 | 38 / 347 |
-| `intfloat/multilingual-e5-base` | `d128750597153bb5987e10b1c3493a34e5a4502a` | 512 | 41 / 349 |
+All three representation methods are implemented in `[scripts/preparation/text_embedder.py](scripts/preparation/text_embedder.py)`:
+
+
+| Method                                   | Implementation and source                                                                                                                                                                                                                                                                                        |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TF-IDF (`TF_IDF`)                        | scikit-learn's `TfidfVectorizer`, fitted on chunk texts; no pretrained checkpoint. [Spärck Jones (1972)](https://doi.org/10.1108/eb026526) provides the collection-frequency weighting principle underlying IDF.                                                                                                 |
+| Sentence-BERT (`SENTENCE_BERT`)          | `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`; [model card](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2), [Sentence-BERT paper](https://aclanthology.org/D19-1410/) and [multilingual distillation paper](https://aclanthology.org/2020.emnlp-main.365/). |
+| Multilingual E5 (`RETRIEVAL_BI_ENCODER`) | `intfloat/multilingual-e5-base`; [model card](https://huggingface.co/intfloat/multilingual-e5-base), [E5 paper](https://arxiv.org/abs/2212.03533) and [multilingual E5 report](https://arxiv.org/abs/2402.05672).                                                                                                |
+
+
+TF-IDF fits lowercase word 1–3 grams on chunks, without sublinear term-frequency scaling, and transforms questions using that vocabulary. Sentence-BERT encodes questions and chunks without task prefixes. E5 uses `query:`  for questions and `passage:`  for chunks. Neural vectors are not normalized before cosine calculation.
+
+The neural checkpoints use the following pinned snapshots and project-configured token limits. TF-IDF has no transformer token limit or pretrained snapshot.
+
+
+| Model           | Pinned snapshot                            | Input limit | Longest question / chunk |
+| --------------- | ------------------------------------------ | ----------- | ------------------------ |
+| Sentence-BERT   | `e8f8c211226b894fcb81acc59f3b34ba3efd5f42` | 512         | 38 / 347                 |
+| Multilingual E5 | `d128750597153bb5987e10b1c3493a34e5a4502a` | 512         | 41 / 349                 |
+
 
 All current matrices are generated from complete texts in `artifacts/representations/full_text/`. Neural preparation counts tokens including special tokens and E5 prefixes and rejects inputs exceeding the configured limit. Every question and passage fits, so **nothing is truncated**. Preparation metadata records the model revisions, effective limits and observed token lengths.
 
-To regenerate all three representations, use `python -m scripts.preparation.representations --config configs/prepare_full_text.json` with a new preparation output directory, then point a new experiment config at the generated `representations.json` paths. Archive weights and preparation outputs for future reproduction.
+To regenerate all three representations:
+
+1. Copy `configs/prepare_full_text.json` to `configs/prepare_full_text_rerun.json`.
+2. In the copied file, change `output_dir` to an unused directory, such as `artifacts/representations/full_text_rerun`. Keep the other settings unchanged to reproduce the same preparation.
+3. Run:
+  ```bash
+   python -m scripts.preparation.representations --config configs/prepare_full_text_rerun.json
+  ```
+4. Point a new experiment configuration at the paths exported in `artifacts/representations/full_text_rerun/representations.json`.
+
+Running the original preparation configuration unchanged is refused because its output directory already exists. Archive weights and preparation outputs for future reproduction.
 
 ## Project files and tests
 
-| Directory | Contents |
-| --- | --- |
-| `configs/` | Experiment and preparation configurations |
-| `scripts/core/` | Search, selection, scoring and execution |
-| `scripts/analysis/` | Diagnostics and test-result assessment |
-| `scripts/preparation/` | Dataset replay and representation preparation |
-| `scripts/manual_review/` | Error grouping and review |
-| `data/`, `artifacts/` | Documents, datasets, matrices and results |
-| `tests/` | Twelve focused checks on temporary synthetic datasets |
-| `tools/chunk_browser/` | Optional AI-generated passage viewer |
-| `paper/`, `literature/` | Finished paper, LaTeX source and references |
+
+| Directory                | Contents                                                                      |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| `configs/`               | Experiment and preparation configurations                                     |
+| `scripts/core/`          | Search, selection, scoring and execution                                      |
+| `scripts/analysis/`      | Diagnostics and test-result assessment                                        |
+| `scripts/preparation/`   | Dataset replay; TF-IDF, Sentence-BERT and E5 preparation; similarity matrices |
+| `scripts/manual_review/` | Error grouping and review                                                     |
+| `data/`, `artifacts/`    | Documents, datasets, matrices and results                                     |
+| `tests/`                 | Twelve focused checks on temporary synthetic datasets                         |
+| `tools/chunk_browser/`   | Optional AI-generated passage viewer                                          |
+| `paper/`, `literature/`  | Finished paper, LaTeX source and references                                   |
+
 
 The tests check stage execution and order, five validation candidates, scoring, overwrite protection, input validity, configuration consistency, winner-file changes, missing predictions, ranking ties, refinement boundaries and dataset-replay overlap. They do not modify published results or run the full search. Run them with `python -m unittest discover -s tests -v`; compare complete experiment results using the reproduction steps above.
