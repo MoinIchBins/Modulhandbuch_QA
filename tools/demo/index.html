@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prüfungsordnung · QA Demo</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header><a class="brand" href="/">PO<span> / </span>QA</a><span class="tag">BASE EXPERIMENT · DEMO</span></header>
+  <main>
+    <aside>
+      <div class="eyebrow">FRAGEN AN DIE PRÜFUNGSORDNUNG</div>
+      <h1>Finde eine Antwort auf Deine Frage.</h1>
+      <p class="intro">Stelle deine Frage und finde die Textstellen, die das gewählte Modell als Belege auswählt.</p>
+      <form id="question-form">
+        <label for="question">Deine Frage</label>
+        <textarea id="question" rows="4" maxlength="4000" required placeholder="Wie oft darf ich eine Prüfung wiederholen?"></textarea>
+        <div class="examples"><button type="button" data-question="Wie oft darf ich eine Prüfung wiederholen?">Wiederholung</button><button type="button" data-question="Wie lange habe ich für die Bachelorarbeit Zeit?">Bachelorarbeit</button><button type="button" data-question="Kann ich eine Prüfung wegen Krankheit verschieben?">Krankheit</button></div>
+        <label for="model">Modell auswählen</label>
+        <select id="model" disabled aria-describedby="model-info"><option>Modelle werden geladen …</option></select>
+        <p id="model-info" class="hint"></p>
+        <button id="submit" class="primary" type="submit" disabled>Textstellen finden <span aria-hidden="true">↗</span></button>
+      </form>
+      <div id="status" role="status" aria-live="polite">Die Prüfungsordnung wird geladen …</div>
+      <div id="results"></div>
+    </aside>
+    <section class="document-pane" aria-labelledby="document-title">
+      <div class="document-toolbar"><div><div class="eyebrow">QUELLDOKUMENT</div><h2 id="document-title">Prüfungsordnung</h2><p>HHU Düsseldorf · Bachelor of Arts · 20.01.2026</p></div><a href="/regulation.pdf#zoom=125" target="_blank" rel="noopener">Original-PDF ↗</a></div>
+      <div class="document-controls"><span id="chunk-count">Textansicht</span><label><input id="selected-only" type="checkbox" disabled> Nur Treffer</label></div>
+      <div id="document" tabindex="0" aria-label="Prüfungsordnung in Dokumentreihenfolge"></div>
+    </section>
+  </main>
+</body>
+</html>

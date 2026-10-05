@@ -6,3 +6,4 @@ scikit-learn==1.9.0
 sentence-transformers==3.4.1
 torch==2.1.2
 transformers==4.46.3
+pypdf==6.10.0

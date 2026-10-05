@@ -79,7 +79,7 @@ python -m scripts.run_experiment --config configs/base.json --stage check
 python -m scripts.run_experiment --config configs/manual_review_v1.json --stage check
 ```
 
-Expect twelve passing tests and `Input and configuration checks passed.` for each dataset. Input checks validate IDs, disjoint splits, gold evidence, matrix alignment, finite scores and parameter grids without writing results.
+Expect eighteen passing tests and `Input and configuration checks passed.` for each dataset. Input checks validate IDs, disjoint splits, gold evidence, matrix alignment, finite scores and parameter grids without writing results.
 
 ### 2. Create and run separate copies
 
@@ -261,9 +261,19 @@ Running the original preparation configuration unchanged is refused because its 
 | `scripts/preparation/`   | Dataset replay; TF-IDF, Sentence-BERT and E5 preparation; similarity matrices |
 | `scripts/manual_review/` | Error grouping and review                                                     |
 | `data/`, `artifacts/`    | Documents, datasets, matrices and results                                     |
-| `tests/`                 | Twelve focused checks on temporary synthetic datasets                         |
+| `tests/`                 | Eighteen focused checks on temporary synthetic datasets                         |
 | `tools/chunk_browser/`   | Optional AI-generated passage viewer                                          |
 | `paper/`, `literature/`  | Finished paper, LaTeX source and references                                   |
 
 
 The tests check stage execution and order, five validation candidates, scoring, overwrite protection, input validity, configuration consistency, winner-file changes, missing predictions, ranking ties, refinement boundaries and dataset-replay overlap. They do not modify published results or run the full search. Run them with `python -m unittest discover -s tests -v`; compare complete experiment results using the reproduction steps above.
+
+## Interactive QA demo
+
+Try the five base-run validation finalists on your own question and see the selected passages highlighted in the Prüfungsordnung:
+
+```bash
+python -m tools.demo
+```
+
+Open [http://127.0.0.1:8001](http://127.0.0.1:8001). The existing project environment and prepared representations are required. The E5 checkpoint must be cached locally; its first prediction takes longer to load. The five saved settings all use top-1, so they select zero or one chunk. The demo displays up to two chunks and opens PDF copies with the clicked chunk highlighted at 125% zoom. See [demo instructions](tools/demo/README.md).

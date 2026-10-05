@@ -7,3 +7,4 @@ paper/*
 paper/build/*
 !paper/build/paper.pdf
 !paper/references.bib
+declarationOfAIUsage.md

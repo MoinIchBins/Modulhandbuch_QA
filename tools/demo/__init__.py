@@ -1,0 +1,1 @@
+"""Local Prüfungsordnung retrieval demo."""
