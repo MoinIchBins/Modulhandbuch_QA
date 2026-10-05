@@ -17,6 +17,12 @@ cd /Users/alexanderdrewes/Desktop/Projects/PythonII_AP_QA_Model
 
 Öffne anschließend **http://127.0.0.1:8001** im Browser.
 Eine Aktivierung der Umgebung ist bei diesem Aufruf nicht erforderlich.
+Beim Start werden E5 und TF-IDF einschließlich ihrer Chunk-Embeddings geladen und
+mit einer kurzen Frage aufgewärmt. Alle fünf auswählbaren Varianten teilen sich
+diese beiden Encoder. Warte auf **All models ready** im Terminal; erst dann nimmt
+der Server Fragen entgegen. Danach bleiben beide Modelle für alle Fragen und
+Modellwechsel im Speicher. Jeder neue Serverprozess muss sie erneut laden; lass
+das Terminal geöffnet, um diese Startzeit nicht wiederholen zu müssen.
 
 Zum Beenden im Terminal **Ctrl+C** drücken. Zum erneuten Starten denselben Befehl
 verwenden. Nach Änderungen an Python-Dateien den Server neu starten; nach Änderungen
@@ -65,8 +71,8 @@ zulassen:
 HF_HUB_OFFLINE=0 .venv/bin/python -m tools.demo
 ```
 
-Wähle im Browser ein E5-Modell und stelle eine Frage. Dabei wird der festgelegte
-Checkpoint heruntergeladen; dafür ist Internet erforderlich. Danach den Server mit
+Beim Start wird der festgelegte E5-Checkpoint heruntergeladen; dafür ist Internet
+erforderlich. Warte auf **All models ready**. Danach den Server mit
 **Ctrl+C** beenden und wieder mit dem normalen Startbefehl starten. TF-IDF benötigt
 keinen heruntergeladenen Checkpoint.
 
@@ -78,7 +84,7 @@ keinen heruntergeladenen Checkpoint.
 4. Die ausgewählten Chunks erscheinen gelb markiert in der Textansicht. **Nur Treffer** blendet andere Passagen aus.
 5. Der Seitenlink eines Chunks öffnet eine vollständige PDF-Kopie mit diesem Chunk gelb markiert und 125 % Startzoom. Die Originaldatei wird nicht verändert.
 
-Der erste E5-Aufruf dauert etwas länger, weil die Gewichte geladen werden. Die fünf
+Die Modelle sind bereits vor der ersten Frage geladen und aufgewärmt. Die fünf
 Base-Finalisten verwenden Top-1; sie wählen deshalb null oder einen Chunk. Die
 Anzeige unterstützt bis zu zwei Chunks. Top-1 ohne Schwelle wählt auch bei einer
 unpassenden Frage einen Chunk. Ein Modell mit Schwelle oder Margin kann keine

@@ -154,6 +154,17 @@ class Demo:
             self.representations[name] = (encoder, vectors, chunk_ids)
         return self.representations[name]
 
+    def preload_models(self):
+        # The five choices share two encoders; warm each encoder only once.
+        warmed = set()
+        for model in self.models:
+            name = model["representation"]
+            if name in warmed:
+                continue
+            print(f"Loading and warming up {name} …", flush=True)
+            self.predict("Wie oft darf ich eine Prüfung wiederholen?", model["experiment"])
+            warmed.add(name)
+
     def predict(self, question, model_id):
         if not isinstance(question, str) or not question.strip():
             raise ValueError("Bitte gib eine Frage ein.")
@@ -259,9 +270,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8001)
     args = parser.parse_args()
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(Demo()))
-    print(f"QA demo: http://127.0.0.1:{args.port}", flush=True)
+    demo = Demo()
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(demo))
     try:
+        demo.preload_models()
+        print(f"All models ready. QA demo: http://127.0.0.1:{args.port}", flush=True)
         server.serve_forever()
     except KeyboardInterrupt:
         pass

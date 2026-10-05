@@ -276,4 +276,4 @@ Try the five base-run validation finalists on your own question and see the sele
 python -m tools.demo
 ```
 
-Open [http://127.0.0.1:8001](http://127.0.0.1:8001). The existing project environment and prepared representations are required. The E5 checkpoint must be cached locally; its first prediction takes longer to load. The five saved settings all use top-1, so they select zero or one chunk. The demo displays up to two chunks and opens PDF copies with the clicked chunk highlighted at 125% zoom. See [demo instructions](tools/demo/README.md).
+Open [http://127.0.0.1:8001](http://127.0.0.1:8001). The existing project environment and prepared representations are required. The E5 checkpoint must be cached locally. E5 and TF-IDF are preloaded and warmed up during startup; wait for `All models ready` before using the demo. The five saved settings all use top-1, so they select zero or one chunk. The demo displays up to two chunks and opens PDF copies with the clicked chunk highlighted at 125% zoom. See [demo instructions](tools/demo/README.md).

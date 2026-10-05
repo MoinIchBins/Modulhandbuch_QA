@@ -94,7 +94,7 @@ form.addEventListener('submit', async event => {
   }
   clearPrediction();
   status.classList.remove('error');
-  status.textContent = 'Das Modell sucht … E5 kann beim ersten Aufruf etwas länger brauchen.';
+  status.textContent = 'Das Modell sucht …';
   submit.disabled = true;
   model.disabled = true;
   question.disabled = true;
